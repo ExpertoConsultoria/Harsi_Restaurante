@@ -1,0 +1,13 @@
+.boton_1{
+    text-decoration: none;
+    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: 15;
+    font-size: 14px;
+    color: black;
+    border-radius: 6px;
+    opacity: 0.9;
+    -webkit-filter: grayscale(50%);
+    filter: grayscale(50%);
+  }

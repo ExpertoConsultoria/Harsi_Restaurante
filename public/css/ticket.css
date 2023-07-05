@@ -1,0 +1,40 @@
+  {
+        font-size: 12px;
+        font-family: 'Times New Roman';
+    }
+
+    td,
+    th,
+    tr,
+    table {
+        border-top: 1px solid black;
+        border-collapse: collapse;
+    }
+
+
+
+    .centrado {
+        text-align: center;
+        align-content: center;
+    }
+
+    .ticket {
+        width: 200px;
+        max-width: 200px;
+    }
+
+    img {
+        max-width: inherit;
+        width: inherit;
+    }
+
+        @media print {
+        .oculto-impresion,
+        .oculto-impresion * {
+            display: none !important;
+        }
+        .oculto-enviar,
+        .oculto-enviar * {
+            display: none !important;
+        }
+    }

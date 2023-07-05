@@ -1,0 +1,285 @@
+   
+    .table-bordered  {
+       font-family: 'Montserrat';
+       border-collapse: collapse;
+       border-radius: 10px 10px 10px 10px;
+       /*overflow: hidden;*/
+       margin: 0 0 1em 0;
+       caption-side: top; 
+      
+
+    }
+
+    /* Este media query ocultará los elementos que tengan la clase hide-on-mobile con una resolución menor o igual a 320px*/
+    @media screen and (min-width: 320px) and (max-width:800px){
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+     .btn-warning{
+      font-size: 0.7em;
+     }
+     #fecha{
+      font-size: 0.5em;
+     }
+     
+    }
+    .btn-consumo{
+      color: white;background-color: #006b8e;border: #006b8e;border-radius: 10px;
+      font-family: 'Montserrat';
+      src: url('/fonts/Montserrat-SemiBold.ttf');
+     }
+
+    @media only screen and (min-width: 768px) and (max-width: 1024px) 
+    {
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+
+  
+caption, td, th {
+   padding: 0.3em;
+}
+
+tbody th, tfoot th {
+   border: 0;
+}
+
+  @font-face {
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf');
+   }
+  
+    label {
+        color: #006b8e;
+        font-family: Montserrat;
+        src: url('/fonts/Montserrat-SemiBold.ttf');
+    }
+    .btn-warning{
+            color: white;background-color: #006b8e;border: #006b8e;border-radius: 10px;
+             font-family: Montserrat;
+             src: url('/fonts/Montserrat-SemiBold.ttf');
+        }
+        .btn-warning:hover{
+    color: white;
+    background-color: #006b8e;  
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf'); 
+  }
+ .btn-warning:active after{
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+  .btn-warning:onclick {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #006b8e;
+  }
+  .btn-warning:active {
+    background-color: #006b8e;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #006b8e;
+   }
+
+    .table-success{
+    	color: white;background-color: #006b8e;border:2px solid #C0C0C0;border-radius: 10px;opacity: 0.6;
+      font-family: Montserrat;
+      src: url('/fonts/Montserrat-SemiBold.ttf');
+      -moz-border-radius:10px;
+      -webkit-border-radius: 10px;
+      -o-border-radius: 10px;
+      -ms-border-radius: 10px;
+    }
+    .table-success:hover{
+    color: white;
+    background-color: #006b8e;
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf');
+   
+  }
+     .table-primary{
+    color: #006b8e;
+    background-color: white;
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf');
+    border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius: 10px;
+    -o-border-radius: 10px;
+    -ms-border-radius: 10px;
+    border-color: gray;
+   border-radius: 20px;
+   }
+   
+   
+    .tablaTotal{
+    	color: #006b8e;
+      font-family: Montserrat;
+      src: url('/fonts/Montserrat-SemiBold.ttf');
+    }
+    h1,h2,h4{ 
+   color: #006b8e;
+   font-family: Montserrat;
+   src: url('/fonts/Montserrat-SemiBold.ttf');
+   }
+   figure{
+     color: #006b8e;
+   }
+   .spanTotal{
+   	color: #006b8e;
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf');
+   }
+   .form-control{
+   	border:2px solid #C0C0C0;border-radius: 10px;
+   }
+   #select-categoria{
+  text-align-last: left;  
+  color: #000000;
+  font-family: Montserrat;
+  font-size: 0.8em;
+  src: url('/fonts/Montserrat-SemiBold.ttf');
+}
+  #producto{
+  text-align-last: left;  
+  color: #000000;
+  font-family: Montserrat;
+  font-size:0.8em;
+  src: url('/fonts/Montserrat-SemiBold.ttf');
+}
+   #fecha {
+  background-image: url('../img/fecha.png');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position:left; 
+  text-align:center;
+  font-family: Montserrat;
+  font-size: 0.8em;
+  src: url('/fonts/Montserrat-SemiBold.ttf');
+}
+  #id_proveedor {
+  background-image: url('../img/iconos32px-03.png');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position:left; 
+  text-align:center;
+  font-family: Montserrat;
+  font-size: 0.8em;
+  src: url('/fonts/Montserrat-SemiBold.ttf');
+}
+  #cajero {
+  background-image: url('../img/iconos32px-04.png');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position:left; 
+  text-align:center;
+  font-size: 0.8em;
+  font-family: Montserrat;
+  src: url('/fonts/Montserrat-SemiBold.ttf');
+}
+  #forma_pago{
+  background-image: url('../img/iconos32px-02.png');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position:left; 
+  text-align-last: right;  
+  font-family: Montserrat;
+  font-size: 0.8em;
+  src: url('/fonts/Montserrat-SemiBold.ttf');
+}
+ 
+ #totalEtiqueta {
+ color: #006b8e;
+ font-family: Montserrat;
+ src: url('/fonts/Montserrat-SemiBold.ttf');
+}
+.filaMesa{
+ color: #006b8e;
+ font-family: Montserrat;
+ src: url('/fonts/Montserrat-SemiBold.ttf');
+}
+   .btn-success{
+   	color: white;background-color: #006b8e;border: #006b8e;border-radius: 10px;
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf');
+    margin-bottom: 20px;
+    height:45px;
+
+   }
+   .btn-success:hover{
+    color: white;
+    background-color:#006b8e;
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf');
+  }
+
+input::-webkit-input-placeholder {
+  src: url('/fonts/Montserrat-Light.ttf');
+  opacity: 0.6;
+  }
+
+  input[type="text"]{
+   font-size: 0.8em;
+  font-family: Montserrat;
+  src: url('/fonts/Montserrat-SemiBold.ttf');
+   }
+   input::placeholder {
+ 
+   font-family: Montserrat;
+   src: url('/fonts/Montserrat-SemiBold.ttf');
+   }
+   ::placeholder{
+   font-family: Montserrat;
+   src: url('/fonts/Montserrat-SemiBold.ttf');
+   }
+
+   #mesa{
+   	color:#006b8e ;background-color: white;	border:2px solid #C0C0C0;border-radius: 10px;
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf');
+   
+
+   }
+   #mesa:hover{
+    color: #006b8e;
+    background-color:white;
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf');
+    border:2px solid #C0C0C0;
+    
+   
+  }
+  .btn-primary{
+  color: white;background-color: #006b8e;border: #006b8e;border-radius: 10px;
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-SemiBold.ttf');
+  }
+  .btn-primary:hover{
+    color: white;
+    font-family: Montserrat;
+    src: url('/fonts/Montserrat-SemiBold.ttf');
+    font-family: 'Montserrat';
+   
+  }
+  .border-dark{
+  border-radius: 10px;
+  }
+  .border-success{
+  border-radius: 10px;
+
+  }
+  .sample_venta{
+  border: #006b8e;
+  color: white;
+  }
+  .border-dark{
+  border: #C0C0C0;
+  }
+  .border-success{
+  border: #C0C0C0;
+  }
+  .card-body{
+  border:4px solid #C0C0C0;
+  border-radius: 15px;
+
+  }
