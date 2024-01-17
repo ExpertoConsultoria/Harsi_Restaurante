@@ -15,11 +15,6 @@ use App\Models\Restaurante;
 
 class FullSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         /* Categorias */

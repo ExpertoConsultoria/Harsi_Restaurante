@@ -120,7 +120,7 @@
                                             @if($restaurante['subcategoria'] != 'No')
 
                                                 <div class="col-12">
-                                                    <div class="form-group mb-1" id="searchProducto">
+                                                    <div class="mb-1 form-group" id="searchProducto">
                                                         {{-- <label for="producto">Buscador</label> --}}
                                                         <input id="product_name" value="" class="form-control"
                                                             type="text" placeholder="Buscar Producto"
@@ -128,7 +128,7 @@
                                                     </div>
 
                                                     <!-- Hover added -->
-                                                    <div class="list-group mb-3" id="showProducts" tabindex="1">
+                                                    <div class="mb-3 list-group" id="showProducts" tabindex="1">
                                                         <div id="showProducts"></div>
                                                     </div>
 
@@ -183,7 +183,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12 mt-0">
+                                                        <div class="mt-0 col-12">
                                                             <div class="form-group">
                                                                 <label for="pprecio_compra" class="mb-0">Precio</label>
                                                                 <input id="pprecio_compra" class="form-control" type="text"
@@ -201,7 +201,7 @@
                                                         </div>
 
                                                         <div class="col-12">
-                                                            <div class="form-group text-center">
+                                                            <div class="text-center form-group">
                                                                 <button type="button" id="bt_add"
                                                                     class="text-center btn btn-warning">
                                                                     Registrar
@@ -214,7 +214,7 @@
                                             @else
 
                                                 <div class="col-12">
-                                                    <div class="form-group mb-1" id="searchProducto">
+                                                    <div class="mb-1 form-group" id="searchProducto">
                                                         {{-- <label for="producto">Buscador</label> --}}
                                                         <input id="product_name" value="" class="form-control"
                                                             type="text" placeholder="Buscar Producto"
@@ -222,18 +222,18 @@
                                                     </div>
 
                                                     <!-- Hover added -->
-                                                    <div class="list-group mb-3" id="showProducts" tabindex="1">
+                                                    <div class="mb-3 list-group" id="showProducts" tabindex="1">
                                                         <div id="showProducts"></div>
                                                     </div>
 
                                                 </div>
 
-                                                <div class="col-6 pb-5">
+                                                <div class="pb-5 col-6">
                                                     <div class="row justify-content-center align-items-center g-2">
                                                         <input type="hidden" id="rsubcategoria" class="form-control"
                                                             value="{{ $restaurante['subcategoria'] }}">
 
-                                                        <div class="form-group mb-3">
+                                                        <div class="mb-3 form-group">
                                                             <label for="select_categoria">Categoría</label>
                                                             <select id="select_categoria" name="select_categoria" size="6"
                                                                 class="form-control selectpicker" data-live-search="true">
@@ -261,7 +261,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12 mt-0">
+                                                        <div class="mt-0 col-12">
                                                             <div class="form-group">
                                                                 <label for="pprecio_compra" class="mb-0">Precio</label>
                                                                 <input id="pprecio_compra" class="form-control" type="text"
@@ -279,7 +279,7 @@
                                                         </div>
 
                                                         <div class="col-12">
-                                                            <div class="form-group text-center">
+                                                            <div class="text-center form-group">
                                                                 <button type="button" id="bt_add"
                                                                     class="text-center btn btn-warning">
                                                                     Registrar
@@ -328,7 +328,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-12" style="margin-top: -1.01rem">
-                                                <div class="form-group text-center">
+                                                <div class="text-center form-group">
                                                     <button type="button" id="agrega" class="btn btn-warning">
                                                         Registrar
                                                     </button>
@@ -434,8 +434,8 @@
 
 
                                                                 <input id="desc" class="form-control" name="descuento" onchange="calcular()"
-                                                                    placeholder="Descuento %" style="margin-top:5px;" value="0"
-                                                                    autocomplete="off">
+                                                                    placeholder="Descuento %" style="margin-top:5px;" value=""
+                                                                    autocomplete="off" type="number">
 
 
                                                                 <label for="" id="lbdesc"></label>
@@ -455,8 +455,8 @@
                                                                 <label for="" id="lbres"></label>
 
                                                                 <input id="propina" class="form-control " name="propina"
-                                                                    placeholder="Propina $" style="margin-top:5px;" value="0"
-                                                                    autocomplete="off" required>
+                                                                    placeholder="Propina $" style="margin-top:5px;" value=""
+                                                                    autocomplete="off" required type="number" onchange="redondearDecimales('propina')">
 
                                                                 <label for="" id="lbpropina"></label>
                                                                 {{-- <input id="cupon" class="form-control" name="cupon"
@@ -470,7 +470,8 @@
                                                                     style="background-color:#FFF;cursor: no-drop;">
                                                                 <label for="" id="lbtotal2"></label>
                                                                 <input id="dos" class="form-control" name="pago" placeholder="Pago"
-                                                                    style="margin-top:5px;" autocomplete="off" required>
+                                                                    style="margin-top:5px;" autocomplete="off" required type="number" step=".01"
+                                                                    onchange="redondearDecimales('dos')">
                                                                 <label for="" id="lbdos"></label>
                                                                 <input id="tres" class="form-control" name="cambio"
                                                                     placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
@@ -495,7 +496,8 @@
                                                                     style="background-color:#FFF;cursor: no-drop;">
                                                                 <label for="" id="lbtotal2"></label>
                                                                 <input id="dos" class="form-control" name="pago" placeholder="Pago"
-                                                                    style="margin-top:5px;" autocomplete="off" required>
+                                                                    style="margin-top:5px;" autocomplete="off" required type="number"
+                                                                    onchange="redondearDecimales('dos')" step=".01">
                                                                 <label for="" id="lbdos"></label>
                                                                 <input id="tres" class="form-control" name="cambio"
                                                                     placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
@@ -652,7 +654,7 @@
                                             @if($restaurante['subcategoria'] != 'No')
 
                                                 <div class="col-12">
-                                                    <div class="form-group mb-1" id="searchProducto">
+                                                    <div class="mb-1 form-group" id="searchProducto">
                                                         {{-- <label for="producto">Buscador</label> --}}
                                                         <input id="product_name" value="" class="form-control"
                                                             type="text" placeholder="Buscar Producto"
@@ -660,7 +662,7 @@
                                                     </div>
 
                                                     <!-- Hover added -->
-                                                    <div class="list-group mb-3" id="showProducts" tabindex="1">
+                                                    <div class="mb-3 list-group" id="showProducts" tabindex="1">
                                                         <div id="showProducts"></div>
                                                     </div>
 
@@ -715,7 +717,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12 mt-0">
+                                                        <div class="mt-0 col-12">
                                                             <div class="form-group">
                                                                 <label for="pprecio_compra" class="mb-0">Precio</label>
                                                                 <input id="pprecio_compra" class="form-control" type="text"
@@ -733,7 +735,7 @@
                                                         </div>
 
                                                         <div class="col-12">
-                                                            <div class="form-group text-center">
+                                                            <div class="text-center form-group">
                                                                 <button type="button" id="bt_add"
                                                                     class="text-center btn btn-warning">
                                                                     Registrar
@@ -746,7 +748,7 @@
                                             @else
 
                                                 <div class="col-12">
-                                                    <div class="form-group mb-1" id="searchProducto">
+                                                    <div class="mb-1 form-group" id="searchProducto">
                                                         {{-- <label for="producto">Buscador</label> --}}
                                                         <input id="product_name" value="" class="form-control"
                                                             type="text" placeholder="Buscar Producto"
@@ -754,18 +756,18 @@
                                                     </div>
 
                                                     <!-- Hover added -->
-                                                    <div class="list-group mb-3" id="showProducts" tabindex="1">
+                                                    <div class="mb-3 list-group" id="showProducts" tabindex="1">
                                                         <div id="showProducts"></div>
                                                     </div>
 
                                                 </div>
 
-                                                <div class="col-6 pb-5">
+                                                <div class="pb-5 col-6">
                                                     <div class="row justify-content-center align-items-center g-2">
                                                         <input type="hidden" id="rsubcategoria" class="form-control"
                                                             value="{{ $restaurante['subcategoria'] }}">
 
-                                                        <div class="form-group mb-3">
+                                                        <div class="mb-3 form-group">
                                                             <label for="select_categoria">Categoría</label>
                                                             <select id="select_categoria" name="select_categoria" size="6"
                                                                 class="form-control selectpicker" data-live-search="true">
@@ -793,7 +795,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12 mt-0">
+                                                        <div class="mt-0 col-12">
                                                             <div class="form-group">
                                                                 <label for="pprecio_compra" class="mb-0">Precio</label>
                                                                 <input id="pprecio_compra" class="form-control" type="text"
@@ -811,7 +813,7 @@
                                                         </div>
 
                                                         <div class="col-12">
-                                                            <div class="form-group text-center">
+                                                            <div class="text-center form-group">
                                                                 <button type="button" id="bt_add"
                                                                     class="text-center btn btn-warning">
                                                                     Registrar
@@ -860,7 +862,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-12" style="margin-top: -1.01rem">
-                                                <div class="form-group text-center">
+                                                <div class="text-center form-group">
                                                     <button type="button" id="agrega" class="btn btn-warning">
                                                         Registrar
                                                     </button>
@@ -966,7 +968,7 @@
 
 
                                                                 <input id="desc" class="form-control" name="descuento" onchange="calcular()"
-                                                                    placeholder="Descuento %" style="margin-top:5px;" value="0"
+                                                                    placeholder="Descuento %" style="margin-top:5px;" value="" type="number"
                                                                     autocomplete="off">
 
 
@@ -988,7 +990,8 @@
 
 
                                                                 <input id="propina" class="form-control " name="propina"
-                                                                    placeholder="Propina $" style="margin-top:5px;" value="0"
+                                                                    placeholder="Propina $" style="margin-top:5px;" value="" type="number"
+                                                                    onchange="redondearDecimales('propina')"
                                                                     autocomplete="off">
 
 
@@ -1004,7 +1007,8 @@
                                                                     style="background-color:#FFF;cursor: no-drop;">
                                                                 <label for="" id="lbtotal2"></label>
                                                                 <input id="dos" class="form-control" name="pago" placeholder="Pago"
-                                                                    style="margin-top:5px;" autocomplete="off" required>
+                                                                    style="margin-top:5px;" autocomplete="off" required type="number"
+                                                                    onchange="redondearDecimales('dos')" step=".01">
                                                                 <label for="" id="lbdos"></label>
                                                                 <input id="tres" class="form-control" name="cambio"
                                                                     placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
@@ -1029,7 +1033,8 @@
                                                                     style="background-color:#FFF;cursor: no-drop;">
                                                                 <label for="" id="lbtotal2"></label>
                                                                 <input id="dos" class="form-control" name="pago" placeholder="Pago"
-                                                                    style="margin-top:5px;" autocomplete="off" required>
+                                                                    style="margin-top:5px;" autocomplete="off" required type="number"
+                                                                    onchange="redondearDecimales('dos')" step=".01">
                                                                 <label for="" id="lbdos"></label>
                                                                 <input id="tres" class="form-control" name="cambio"
                                                                     placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
@@ -1075,6 +1080,25 @@
 
 @section('funciones')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    {{-- Redondear Decimales --}}
+    <script>
+        function redondearDecimales(inputId) {
+
+            var result = 0;
+            var numero = $('#'+inputId).val();
+            numero = parseFloat(numero);
+
+            numeroRegexp = new RegExp('\\d\\.(\\d){' + 2 + ',}');   // Expresion regular para numeros con un cierto numero de decimales o mas
+            if (numeroRegexp.test(numero)) {         // Ya que el numero tiene el numero de decimales requeridos o mas, se realiza el redondeo
+                result = Number(numero.toFixed(2));
+                $("#"+inputId).val(result);
+            } else {
+                result = Number(numero.toFixed(2)) === 0 ? 0 : numero;  // En valores muy bajos, se comprueba si el numero es 0 (con el redondeo deseado), si no lo es se devuelve el numero otra vez.
+                $("#"+inputId).val(result);
+            }
+        }
+    </script>
 
     {{-- Guardar Comentarios y Reiniciar Mesa --}}
     <script type="text/javascript">
@@ -3216,7 +3240,7 @@
 
     </script>
 
-    {{--Selects Dinamicos--}}
+    {{-- Buscador por Selects Dinamicos--}}
     <script>
         $(document).ready(function () {
 
@@ -3224,7 +3248,7 @@
 
             if (rsubcategoria != 'Si') {
                 console.log($('#select_categoria').val());
-                $('#select_categoria').on('change', function () {
+                $('#select_categoria').on('input', function () {
                     var id_categoria = $('#select_categoria').val();
                     console.log(id_categoria);
                     $.ajax({
@@ -3247,7 +3271,7 @@
                 });
             } else {
 
-                $('#select_categoria').on('change', function () {
+                $('#select_categoria').on('input', function () {
                     var id_categoria = $('#select_categoria').val();
 
                     $.ajax({
@@ -3293,7 +3317,7 @@
                 });
             }
 
-            $('#producto').on('change', function () {
+            $('#producto').on('input', function () {
                 var id_producto = $('#producto').val();
                 $.ajax({
                     url: "/precio/" + id_producto,
@@ -5059,10 +5083,9 @@
             if (product_name.length > 1) {
                 $.get('api/producto/' + product_name + '/titulo', function (data) {
                     var html_select = ``;
-                    var productSelected = ``;
                     for (var i = 0; i < data.length; ++i){
                         html_select += `
-                            <button type="button" id="productResult" class="list-group-item list-group-item-action pe-0 pt-0 pb-0" onclick="onSelectProducto(${data[i].id})">
+                            <button type="button" id="productResult" class="pt-0 pb-0 list-group-item list-group-item-action pe-0" onclick="onSelectProducto(${data[i].id})">
                                 ${data[i].titulo}
                             </button>`;
                     }
@@ -5314,7 +5337,7 @@
             });
         }
         $( document ).ready(function() {
-            setInterval(getTables, 10000);//Cada 10 segundo (30 mil milisegundos)
+            setInterval(getTables, 90000);//Cada 1 minuto y medio (90 mil milisegundos)
         });
 
     </script>

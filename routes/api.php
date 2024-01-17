@@ -38,6 +38,3 @@ Route::get('/tables', [ApiController::class, 'getTables']);
 Route::get('/resumeSales', [ApiController::class, 'getResumeSales']);
 
 Route::get('/calendar/events', [ApiController::class, 'createEvents']);
-
-
-

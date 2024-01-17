@@ -398,15 +398,14 @@ class OrdenController extends Controller
                 ->first();
 
             $pedido = DB::table('comanda as d')
-//                    ->join('productos as a', 'a.id', '=', 'd.articulo_id')
                     ->select('d.articulo','d.cantidad', 'd.precio_compra', 'd.subtotal')
                     ->where('d.pedido_id', '=', $id)
                     ->get();
 
             $detalle = DB::table('comandaesp as x')
-                     ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                     ->where('x.pedido_id', '=', $id)
-                     ->get();
+                    ->select('x.producto','x.cant','x.precio_c','x.sub_total')
+                    ->where('x.pedido_id', '=', $id)
+                    ->get();
             $asunto="Su consumo en restaurante: ".$nombre;
 
             $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);

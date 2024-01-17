@@ -10,7 +10,7 @@
 
 <header class="clearfix">
   <div id="logo">
-    <img src="{{public_path('/img/imagenes-07.png')}}" width="200" height="80">
+    <img src="{{asset('/img/imagenes-07.png')}}" width="200" height="80">
   </div>
   <div id="company">
     <h2 class="name">{{$restaurante['nombre']}}</h2>
