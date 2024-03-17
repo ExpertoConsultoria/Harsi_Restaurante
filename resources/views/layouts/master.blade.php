@@ -51,12 +51,12 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav mr-auto">
+            <ul class="mr-auto navbar-nav">
 
             </ul>
 
             <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
+            <ul class="ml-auto navbar-nav">
                 <!-- Authentication Links -->
                 @guest
                     {{-- <li class="nav-item">

@@ -40,7 +40,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="bg-white shadow-sm navbar navbar-expand-md navbar-light">
             <div class="container">
                 @yield('imagen')
                 <label id="imagen" name="imagen"><a class="navbar-brand" href="{{ url('/inicio') }}">
@@ -69,7 +69,7 @@
 
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto" style="margin-right: 2rem !important">
+                    <ul class="ml-auto navbar-nav" style="margin-right: 2rem !important">
                         <!-- Authentication Links -->
                         @guest
 
@@ -121,43 +121,43 @@
                             @if ((Auth::check() && Auth::user()->role == 'administrador') || Auth::check() && Auth::user()->role == 'desarrollador')
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ url('/inicio') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-home fa-sm"></i></div>
                                         <div class="col-9">Inicio</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item" href="{{ url('/home') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-file-alt"></i></div>
                                         <div class="col-9">Comanda</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item" href="{{ url('/Reportes') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-book"></i></div>
                                         <div class="col-9">Reportes</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item" href="{{ url('/Graficas') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-chart-bar"></i></div>
                                         <div class="col-9">Estadísticas</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item" href="{{ url('/Calendar') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-calendar-alt"></i></div>
                                         <div class="col-9">Reservación</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item" href="{{ url('/Ordenes') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-file-alt"></i></div>
                                         <div class="col-9">Ver Ordenes</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item" href="{{ url('/Setting') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-cog"></i></div>
                                         <div class="col-9">Configuración</div>
                                     </div>
@@ -167,25 +167,25 @@
                             @if (Auth::check() && Auth::user()->role == 'cajero')
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ url('/inicio') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-home"></i></div>
                                         <div class="col-9">Inicio</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item" href="{{ url('/home') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-file-alt"></i></div>
                                         <div class="col-9">Comanda</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item" href="{{ url('/Calendar') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-calendar-alt"></i></div>
                                         <div class="col-9">Reservación</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item" href="{{ url('/Ordenes') }}">
-                                    <div class="row justify-content-center  align-items-center ">
+                                    <div class="row justify-content-center align-items-center ">
                                         <div class="col-1"><i class="fas fa-file-alt"></i></div>
                                         <div class="col-9">Ver Ordenes</div>
                                     </div>

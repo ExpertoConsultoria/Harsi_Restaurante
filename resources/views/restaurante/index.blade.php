@@ -6,42 +6,45 @@
 <div class="row">
     <div class="col-xs-12">
         <div>
-            <br>
             <input type="hidden" name="contador" id="contador" class="form-control" value="{{$contador}}" />
             <input type="hidden" name="validar" id="validar" class="form-control" value="{{$user['expiracion']}}" />
-            <h1 align="left">INFORMACIÓN DEL RESTAURANTE</h1>
+            <h1 class="mt-3">INFORMACIÓN DEL RESTAURANTE</h1>
 
-            <div class="row">
-                <div class="col-md-3">
-                    <button type="button" name="create_record" id="create_record" class="btn btn-primary">Agrega
-                        información importante</button>
-                </div>
-                <div class="col-md-3">
+            <div class="m-2 row">
+
+                <div class="col-3 d-flex justify-content-center align-items-center">
                     <button type="button" name="descuento" id="descuento" class="btn btn-primary">Descuentos por
                         usuario</button>
                 </div>
-                <div class="col-md-2">
-                    <button type="button" name="fechaExpiracion" id="fechaExpiracion" class="btn btn-primary">Fecha de
-                        expiración</button>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" name="subcategoria" id="subcategoria" class="btn btn-primary">¿Tiene
-                        subcategoría?</button>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" name="elementos" id="elementos" class="btn btn-primary">¿Reducir?</button>
-                </div>
-                <div class="col-md-1">
-                    <a href="Manual/manual.pdf" target="_blank"><img src="/img/manual.jpg" height="50"
-                            width="50"><br>Manual</a>
-                </div>
-                <div class="col-md-1">
+                <div class="col-3 d-flex justify-content-center align-items-center">
                     <button type="button" name="hotel" id="hotel" class="btn btn-primary">¿Está integrado con
                         hotel?</button>
                 </div>
+                <div class="col-3 d-flex justify-content-center align-items-center">
+                    <button type="button" name="subcategoria" id="subcategoria" class="btn btn-primary">¿Tiene
+                        subcategoría?</button>
+                </div>
+                <div class="col-2 d-flex justify-content-center align-items-center">
+                    <button type="button" name="elementos" id="elementos" class="btn btn-primary">¿Reducir?</button>
+                </div>
+                <div class="col-1 d-flex justify-content-center align-items-center">
+                    <a href="Manual/manual.pdf" target="_blank"><img src="/img/manual.jpg" height="50"
+                        width="50"><br>Manual</a>
+                </div>
             </div>
-            <br>
-            <div class="table-responsive">
+
+            <div class="m-2 row">
+                <div class="col-3 d-flex justify-content-center align-items-center"> {{-- Not Always --}}
+                    <button type="button" name="fechaExpiracion" id="fechaExpiracion" class="btn btn-primary">Fecha de
+                        expiración</button>
+                </div>
+                <div class="col-3 d-flex justify-content-center align-items-center"> {{-- Not Always --}}
+                    <button type="button" name="create_record" id="create_record" class="btn btn-primary">Agrega
+                        información importante</button>
+                </div>
+            </div>
+
+            <div class="mt-3 table-responsive">
                 <table class="table table-bordered table-striped table-hover " id="user_table">
                     <thead>
                         <tr>
