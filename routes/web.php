@@ -1,30 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-use App\Http\Controllers\SubcategoriaProductoController;
-use App\Http\Controllers\CategoriaProductoController;
-use App\Http\Controllers\PrecioProductoController;
-use App\Http\Controllers\DetalleOrdenController;
-use App\Http\Controllers\ComandaHomeController;
-use App\Http\Controllers\RestauranteController;
-use App\Http\Controllers\ComandaEspController;
-use App\Http\Controllers\UserChartController;
-use App\Http\Controllers\PayMethodController;
-use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\ReportesController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\CategoriaProductoController;
 use App\Http\Controllers\ComandaController;
-use App\Http\Controllers\PedidoController;
-use App\Http\Controllers\EstadoController;
+use App\Http\Controllers\ComandaEspController;
+use App\Http\Controllers\ComandaHomeController;
+use App\Http\Controllers\DetalleOrdenController;
 use App\Http\Controllers\ErrorsExceptions;
-use App\Http\Controllers\PanelController;
-use App\Http\Controllers\OrdenController;
-use App\Http\Controllers\MesaController;
+use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\MesaController;
+use App\Http\Controllers\OrdenController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PayMethodController;
+use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\RestauranteController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SubcategoriaProductoController;
 use App\Http\Controllers\Turno;
+use App\Http\Controllers\UserChartController;
+use App\Http\Controllers\UserController;
 
 
 /*

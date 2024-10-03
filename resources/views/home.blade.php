@@ -24,12 +24,16 @@
                     </div>
                 </div>
 
+                <!-- Formulario de Comandas -->
                 <div class="col-sm-9">
-                    <form method="POST" action="/inicio" id="sample_venta" name="sample_venta" class="form-horizontal"
-                        enctype="multipart/form-data">
+                    <form method="POST" action="/inicio" id="sample_venta" name="sample_venta" class="form-horizontal" enctype="multipart/form-data">
+
+                        <!-- Detalles Generales -->
                         <div class="card border-dark">
                             <div class="card-body">
                                 <div class="row">
+
+                                    {{-- Fecha --}}
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="fecha">Fecha</label>
@@ -38,14 +42,18 @@
                                                 style="background-color:#FFF;cursor: no-drop;">
                                         </div>
                                     </div>
+
+                                    {{-- Mesa Atendida --}}
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="mesa">Mesa</label>
                                             <input type="text" name="mesa" id="id_proveedor" class="form-control"
-                                                readonly="readonly" style="background-color:#FFF;cursor: no-drop;" required="">
+                                                readonly="readonly" style="background-color:#FFF;cursor: no-drop;" required>
                                             <label for="" id="lbmesa"></label>
                                         </div>
                                     </div>
+
+                                    {{-- Usuario --}}
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="cajero">Atiende</label>
@@ -53,7 +61,9 @@
                                                 id="cajero" type="text" class="form-control" name="cajero"
                                                 value="{{Auth::user()->name}}" required>
                                         </div>
-                                    </div><!-- fin col-md-3 -->
+                                    </div>
+
+                                    {{-- Forma de Pago --}}
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="cajero">Forma de pago</label>
@@ -65,6 +75,7 @@
                                         </div>
                                     </div>
 
+                                    {{-- Turno de Atención --}}
                                     <div style="display:none" class="col-md-6">
                                         <div class="form-group">
                                             <label name="turnolb" id="turno" for="turnolb">Turno</label>
@@ -74,6 +85,7 @@
                                         </div>
                                     </div>
 
+                                    {{-- Cliente --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label name="clientelb" id="clientelb" for="clientelb">Cliente</label>
@@ -82,6 +94,7 @@
                                         </div>
                                     </div>
 
+                                    {{-- Dirección del Cliente --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label name="direccionlb" id="direccionlb" for="direccionlb">Dirección</label>
@@ -94,197 +107,144 @@
                             </div>
                         </div>
 
-                        <!--Comanda Productos-->
+                        <!-- Comanda Productos -->
                         <div class="row justify-content-center align-items-center g-2">
+
+                            {{-- Select Products --}}
                             <div class="col-9">
+
+                                {{-- CSRF Token --}}
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+
+                                {{-- Search Product --}}
                                 <div class="card border-success" style="margin-top:10px">
                                     <div class="card-body">
                                         <div class="row justify-content-center align-items-center g-2">
-                                            <!-- Seccion 1 -->
+
+                                            {{-- Serach by Name --}}
+                                            <div class="col-12">
+                                                {{-- Search bar --}}
+                                                <div class="mb-1 form-group" id="searchProducto">
+                                                    <input id="product_name" value="" class="form-control" type="text" placeholder="Buscar Producto" data-live-search="true">
+                                                </div>
+                                                {{-- List of Results --}}
+                                                <div class="mb-3 list-group" id="showProducts" tabindex="1">
+                                                    <div id="showProducts"></div>
+                                                </div>
+                                            </div>
+
+                                            {{-- Filter by Categories --}}
                                             @if($restaurante['subcategoria'] != 'No')
 
-                                                <div class="col-12">
-                                                    <div class="mb-1 form-group" id="searchProducto">
-                                                        {{-- <label for="producto">Buscador</label> --}}
-                                                        <input id="product_name" value="" class="form-control"
-                                                            type="text" placeholder="Buscar Producto"
-                                                            data-live-search="true">
-                                                    </div>
-
-                                                    <!-- Hover added -->
-                                                    <div class="mb-3 list-group" id="showProducts" tabindex="1">
-                                                        <div id="showProducts"></div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-6">
-                                                    <input type="hidden" id="rsubcategoria" class="form-control"
-                                                        value="{{ $restaurante['subcategoria'] }}">
-
-                                                        <div class="row justify-content-center align-items-center g-2">
-
-                                                            <div class="col-11">
-                                                                <div class="form-group">
-                                                                    <label class="mb-0" for="subcategoria">Categoría</label>
-                                                                    <select id="select_categoria" name="select_categoria"
-                                                                        size="4" class="form-control selectpicker"
-                                                                        data-live-search="true">
-                                                                        <option selected disabled>-- Selecciona --</option>
-                                                                        @foreach($product_categories as $cta)
-                                                                        <option value="{{ $cta->id }}">{{ $cta->titulo }}
-                                                                        </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-11">
-                                                                <div class="form-group">
-                                                                    <label class="mb-0" for="subcategoria">Subcategoría</label>
-                                                                    <select id="select_subcategoria" name="select_subcategoria"
-                                                                        size="4" class="form-control selectpicker"
-                                                                        data-live-search="true">
-                                                                        <option selected disabled>-- Selecciona --</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                </div>
+                                                {{-- is Subcategories enable? --}}
+                                                <input type="hidden" id="rsubcategoria" class="form-control" value="{{ $restaurante['subcategoria'] }}">
 
                                                 <div class="col-6">
-
                                                     <div class="row justify-content-center align-items-center g-2">
-                                                        <div class="col-12">
+
+                                                        {{-- Categoria --}}
+                                                        <div class="col-11">
                                                             <div class="form-group">
-                                                                <label for="producto" class="mb-0">Producto</label>
-                                                                <select id="producto" class="form-control selectpicker"
-                                                                    data-live-search="true">
-                                                                    <option value="">-- -- --</option>
+                                                                <label class="mb-0" for="select_categoria">Categoría</label>
+                                                                <select id="select_categoria" name="select_categoria" size="4" class="form-control selectpicker" data-live-search="true">
+                                                                    <option selected disabled>-- Selecciona --</option>
+                                                                    @foreach($product_categories as $cta)
+                                                                        <option value="{{ $cta->id }}">{{ $cta->titulo }}</option>
+                                                                    @endforeach
                                                                 </select>
-                                                                <input id="pid_articulo" class="form-control user" type="text">
                                                             </div>
                                                         </div>
 
-                                                        <div class="mt-0 col-12">
+                                                        {{-- Subcategoria --}}
+                                                        <div class="col-11">
                                                             <div class="form-group">
-                                                                <label for="pprecio_compra" class="mb-0">Precio</label>
-                                                                <input id="pprecio_compra" class="form-control" type="text"
-                                                                    readonly="readonly"
-                                                                    style="background-color:#FFF;cursor: no-drop;">
-                                                                <label for="" id="lbprecio_compra"></label>
+                                                                <label class="mb-0" for="select_subcategoria">Subcategoría</label>
+                                                                <select id="select_subcategoria" name="select_subcategoria" size="4" class="form-control selectpicker" data-live-search="true">
+                                                                    <option selected disabled>-- Selecciona --</option>
+                                                                </select>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12" style="margin-top: -1.5rem">
-                                                            <label for="pcantidad" class="mb-0">Cantidad</label>
-                                                            <input type="number" min="1" max="9" id="pcantidad" class="form-control"
-                                                                value="1">
-                                                            <label for="" id="lbcantidad"></label>
-                                                        </div>
-
-                                                        <div class="col-12">
-                                                            <div class="text-center form-group">
-                                                                <button type="button" id="bt_add"
-                                                                    class="text-center btn btn-warning">
-                                                                    Registrar
-                                                                </button>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
-
                                             @else
-
-                                                <div class="col-12">
-                                                    <div class="mb-1 form-group" id="searchProducto">
-                                                        {{-- <label for="producto">Buscador</label> --}}
-                                                        <input id="product_name" value="" class="form-control"
-                                                            type="text" placeholder="Buscar Producto"
-                                                            data-live-search="true">
-                                                    </div>
-
-                                                    <!-- Hover added -->
-                                                    <div class="mb-3 list-group" id="showProducts" tabindex="1">
-                                                        <div id="showProducts"></div>
-                                                    </div>
-
-                                                </div>
-
                                                 <div class="pb-5 col-6">
                                                     <div class="row justify-content-center align-items-center g-2">
-                                                        <input type="hidden" id="rsubcategoria" class="form-control"
-                                                            value="{{ $restaurante['subcategoria'] }}">
 
-                                                        <div class="mb-3 form-group">
-                                                            <label for="select_categoria">Categoría</label>
-                                                            <select id="select_categoria" name="select_categoria" size="6"
-                                                                class="form-control selectpicker" data-live-search="true">
-                                                                <option selected disabled>-- Selecciona una Categoría --
-                                                                </option>
-                                                                @foreach($product_categories as $cta)
-                                                                <option value="{{ $cta->id }}">{{ $cta->titulo }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                        {{-- is Subcategories enable? --}}
+                                                        <input type="hidden" id="rsubcategoria" class="form-control" value="{{ $restaurante['subcategoria'] }}">
 
-                                                <div class="col-6">
-
-                                                    <div class="row justify-content-center align-items-center g-2">
+                                                        {{-- Categoria --}}
                                                         <div class="col-12">
                                                             <div class="form-group">
-                                                                <label for="producto" class="mb-0">Producto</label>
-                                                                <select id="producto" class="form-control selectpicker"
-                                                                    data-live-search="true">
-                                                                    <option value="">-- -- --</option>
+                                                                <label for="select_categoria">Categoría</label>
+                                                                <select id="select_categoria" name="select_categoria" size="6" class="form-control selectpicker" data-live-search="true">
+                                                                    <option selected disabled>-- Selecciona una Categoría --</option>
+                                                                    @foreach($product_categories as $cta)
+                                                                        <option value="{{ $cta->id }}">{{ $cta->titulo }}</option>
+                                                                    @endforeach
                                                                 </select>
-                                                                <input id="pid_articulo" style="z-index:2" class="form-control user" type="text">
                                                             </div>
                                                         </div>
 
-                                                        <div class="mt-0 col-12">
-                                                            <div class="form-group">
-                                                                <label for="pprecio_compra" class="mb-0">Precio</label>
-                                                                <input id="pprecio_compra" class="form-control" type="text"
-                                                                    readonly="readonly"
-                                                                    style="background-color:#FFF;cursor: no-drop;">
-                                                                <label for="" id="lbprecio_compra"></label>
-                                                            </div>
-                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
 
-                                                        <div class="col-12" style="margin-top: -1.5rem">
-                                                            <label for="pcantidad" class="mb-0">Cantidad</label>
-                                                            <input type="number" min="1" max="9" id="pcantidad" class="form-control"
-                                                                value="1">
-                                                            <label for="" id="lbcantidad"></label>
-                                                        </div>
+                                            {{-- Product Data --}}
+                                            <div class="col-6">
+                                                <div class="row justify-content-center align-items-center g-2">
 
-                                                        <div class="col-12">
-                                                            <div class="text-center form-group">
-                                                                <button type="button" id="bt_add"
-                                                                    class="text-center btn btn-warning">
-                                                                    Registrar
-                                                                </button>
-                                                            </div>
+                                                    {{-- Nombre --}}
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="producto" class="mb-0">Producto</label>
+                                                            <select id="producto" class="form-control selectpicker" data-live-search="true">
+                                                                <option value="">-- -- --</option>
+                                                            </select>
+                                                            <input id="pid_articulo" class="form-control user" type="text">
                                                         </div>
                                                     </div>
 
+                                                    {{-- Precio --}}
+                                                    <div class="mt-0 col-12">
+                                                        <div class="form-group">
+                                                            <label for="pprecio_compra" class="mb-0">Precio</label>
+                                                            <input id="pprecio_compra" class="form-control" type="text" readonly="readonly" style="background-color:#FFF;cursor: no-drop;">
+                                                            <label for="" id="lbprecio_compra"></label>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Cantidad Adquirida --}}
+                                                    <div class="col-12" style="margin-top: -1.5rem">
+                                                        <label for="pcantidad" class="mb-0">Cantidad</label>
+                                                        <input type="number" min="1" max="9" id="pcantidad" class="form-control" value="1">
+                                                        <label for="" id="lbcantidad"></label>
+                                                    </div>
+
+                                                    {{-- Submit --}}
+                                                    <div class="col-12">
+                                                        <div class="text-center form-group">
+                                                            <button type="button" id="bt_add" class="text-center btn btn-warning">Registrar</button>
+                                                        </div>
+                                                    </div>
 
                                                 </div>
+                                            </div>
 
-                                            @endif
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
 
+                            {{-- Use Extra Product --}}
                             <div class="col-3">
+
+                                {{-- CSRF Token --}}
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+
+                                {{-- Descrive Product --}}
                                 <div class="card border-success" style="margin-top:10px">
                                     <div class="card-body">
                                         <div class="row justify-content-center align-items-center g-2">
@@ -325,198 +285,228 @@
 
                             </div>
                         </div>
-                        <!--  Fin Productos -->
 
-                        <!--Comanda Restante -->
+                        <!-- Cobro del Servicio -->
                         <div class="row">
                             <div class="col-sm-12">
+
+                                {{-- CSRF Token --}}
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+
+                                {{-- Comentarios y Finanzas --}}
                                 <div class="card border-success" style="margin-top:10px">
                                     <div class="card-body">
                                         <div class="row">
 
-                                            <!--  Sección comentarios -->
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label name="comentariolb" id="comentariolb"
-                                                        for="comentariolb">Comentarios</label>
-                                                    <input type="text" name="comentario" id="comentario" class="form-control" value="Ninguno">
-                                                    <label for="" id="lbcomentario"></label>
+                                            {{-- Sección comentarios --}}
+                                                <div class="col-md-10">
+                                                    <div class="form-group">
+                                                        <label name="comentariolb" id="comentariolb"
+                                                            for="comentariolb">Comentarios</label>
+                                                        <input type="text" name="comentario" id="comentario" class="form-control" value="Ninguno">
+                                                        <label for="" id="lbcomentario"></label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2" style="margin-top:30px">
-                                                <div class="form-group">
-                                                    <button type="button" id="guardarComentario" class="btn btn-warning">
-                                                        Guardar
-                                                    </button>
+                                                <div class="col-md-2" style="margin-top:30px">
+                                                    <div class="form-group">
+                                                        <button type="button" id="guardarComentario" class="btn btn-warning">
+                                                            Guardar
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <!--  Sección 3 -->
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <input type="hidden" id="userDescuento" name="userDescuento"
-                                                        value="{{$descuento}}" class="form-control">
+
+                                            {{-- Secret Values --}}
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <input type="hidden" id="userDescuento" name="userDescuento"
+                                                            value="{{$descuento}}" class="form-control">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <input type="hidden" id="motivo" name="motivo" class="form-control">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <input type="hidden" id="motivo" name="motivo" class="form-control">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <input type="hidden" id="valor" name="valor" class="form-control" value="0">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <input type="hidden" id="valor" name="valor" class="form-control" value="0">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <input type="hidden" id="incrementa" name="incrementa" class="form-control"
-                                                        value="0">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <input type="hidden" id="incrementa" name="incrementa" class="form-control"
+                                                            value="0">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <input type="hidden" id="mesa_estado" name="mesa_estado"
-                                                        class="form-control">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <input type="hidden" id="mesa_estado" name="mesa_estado"
+                                                            class="form-control">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div style="display:none" class="col-md-2" style="margin-top:30px">
-                                                <div class="form-group">
-                                                    <button type="button" id="guardarComanda" class="btn btn-primary">
-                                                        Guardar
-                                                    </button>
+                                                <div style="display:none" class="col-md-2" style="margin-top:30px">
+                                                    <div class="form-group">
+                                                        <button type="button" id="guardarComanda" class="btn btn-primary">
+                                                            Guardar
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="table-responsive" style="overflow:hidden;">
-                                                <table id="detalles" name="detalles" class="table table-bordered table-striped"
-                                                    style="margin-top: 10px">
-                                                    <thead class="table-success">
-                                                        <th>Acciones</th>
-                                                        <th>Producto</th>
-                                                        <th>Cantidad</th>
-                                                        <th>Precio Compra</th>
-                                                        <th>Subtotal</th>
-                                                    </thead>
-                                                    <tfoot>
-                                                        <th id="totalEtiqueta">Subtotal</th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th>
+                                            {{-- Resumen del Servicio --}}
+                                                <div class="table-responsive" style="overflow:hidden;">
+                                                    <table id="detalles" name="detalles" class="table table-bordered table-striped">
 
-                                                            {{-- Pago Form --}}
+                                                        {{-- Headers --}}
+                                                        <thead class="table-success">
+                                                            <th>Acciones</th>
+                                                            <th>Producto</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Precio Compra</th>
+                                                            <th>Subtotal</th>
+                                                        </thead>
 
-                                                                                    {{-- == 'No' --}}
-                                                            @if($restaurante['reducir'] != 'Si')
-                                                                <input type="hidden" id="reducir" name="reducir"
-                                                                    class="form-control" value="{{$restaurante['reducir']}}">
-                                                                <h1 id="total" style="margin-bottom: -1rem;">0.00</h1>
-                                                                <input type="hidden" id="total1" class="m-0" name="total1">
-                                                                <input id="conftotal" class="m-0" name="conf_total" type="hidden"
-                                                                    placeholder="Confirma el importe" style="" autocomplete="off" required>
-                                                                <label for="" id="lbconf_total"></label>
+                                                        {{-- Footer - Cobro --}}
+                                                        <tfoot>
+                                                            <th id="totalEtiqueta">Subtotal</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th>
 
+                                                                {{-- Formulario de Pago No Reducido --}}
+                                                                    @if($restaurante['reducir'] === 'No')
 
-                                                                <input id="desc" class="form-control" name="descuento" onchange="calcular()"
-                                                                    placeholder="Descuento %" style="margin-top:5px;" value=""
-                                                                    autocomplete="off" type="number">
+                                                                        {{-- Is Reduced Value --}}
+                                                                        <input type="hidden" id="reducir" name="reducir"
+                                                                            class="form-control" value="{{$restaurante['reducir']}}">
 
+                                                                        {{-- Total (Text) --}}
+                                                                        <h1 id="total" style="margin-bottom: -1rem;">0.00</h1>
 
-                                                                <label for="" id="lbdesc"></label>
-                                                                <input id="motivoDescuento" class="form-control"
-                                                                    name="motivoDescuento" placeholder="Motivo del descuento"
-                                                                    style="">
-                                                                <label for="" id="lbmotivoDescuento"></label>
-                                                                <input type="hidden" id="descuento1" class="form-control"
-                                                                    name="descuento1">
-                                                                {{-- <input type="button" class="btn btn-success btn-sm form-control"
-                                                                    value="{{ __('Calcular Total') }}" onclick="calcular()"
-                                                                    style="margin-top:5px;"> --}}
-                                                                <input id="res" class="form-control " name="total" autocomplete="off"
-                                                                    placeholder="Subtotal" required style="margin-top:5px;" required
-                                                                    readonly="readonly" type="hidden"
-                                                                    style="background-color:#FFF;cursor: no-drop;">
-                                                                <label for="" id="lbres"></label>
+                                                                        {{-- Total for Products --}}
+                                                                        <input type="hidden" id="total1" class="m-0" name="total1">
 
-                                                                <input id="propina" class="form-control " name="propina"
-                                                                    placeholder="Propina $" style="margin-top:5px;" value=""
-                                                                    autocomplete="off" required type="number" onchange="redondearDecimales('propina')">
+                                                                        {{-- Total Original sin Modificaciones --}}
+                                                                        <input id="conftotal" class="m-0" name="conf_total" type="hidden"
+                                                                            placeholder="Confirma el importe" style="" autocomplete="off" required>
+                                                                        <label for="" id="lbconf_total"></label>
 
-                                                                <label for="" id="lbpropina"></label>
-                                                                {{-- <input id="cupon" class="form-control" name="cupon"
-                                                                    placeholder="Cupón $" style="margin-top:5px;" autocomplete="off"
-                                                                    required> --}}
-                                                                <label for="" id="lbcupon"></label>
-                                                                <input id="total2" class="form-control" name="total2"
-                                                                    autocomplete="off" placeholder="Total" required
-                                                                    style="margin-top:5px;font-weight: bold;" required
-                                                                    readonly="readonly"
-                                                                    style="background-color:#FFF;cursor: no-drop;">
-                                                                <label for="" id="lbtotal2"></label>
-                                                                <input id="dos" class="form-control" name="pago" placeholder="Pago"
-                                                                    style="margin-top:5px;" autocomplete="off" required type="number" step=".01"
-                                                                    onchange="redondearDecimales('dos')">
-                                                                <label for="" id="lbdos"></label>
-                                                                <input id="tres" class="form-control" name="cambio"
-                                                                    placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
-                                                                    required readonly="readonly"
-                                                                    style="background-color:#FFF;cursor: no-drop;">
-                                                                <label for="" id="lbtres"></label>
-                                                            @endif
-                                                                                    {{-- == 'Si' --}}
-                                                            @if($restaurante['reducir'] != 'No')
-                                                                <input type="hidden" id="reducir" name="reducir"
-                                                                    class="form-control" value="{{$restaurante['reducir']}}">
-                                                                <h1 id="total">0.00</h1>
-                                                                <input type="hidden" id="total1" class="form-control" name="total1">
-                                                                {{-- <input id="cupon" class="form-control" name="cupon"
-                                                                    placeholder="Cupón $" style="margin-top:5px;" autocomplete="off"
-                                                                    required> --}}
-                                                                <label for="" id="lbcupon"></label>
-                                                                <input id="total2" class="form-control" name="total2"
-                                                                    autocomplete="off" placeholder="Total" required
-                                                                    style="margin-top:5px;font-weight: bold;" required
-                                                                    readonly="readonly"
-                                                                    style="background-color:#FFF;cursor: no-drop;">
-                                                                <label for="" id="lbtotal2"></label>
-                                                                <input id="dos" class="form-control" name="pago" placeholder="Pago"
-                                                                    style="margin-top:5px;" autocomplete="off" required type="number"
-                                                                    onchange="redondearDecimales('dos')" step=".01">
-                                                                <label for="" id="lbdos"></label>
-                                                                <input id="tres" class="form-control" name="cambio"
-                                                                    placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
-                                                                    required readonly="readonly"
-                                                                    style="background-color:#FFF;cursor: no-drop;">
-                                                                <label for="" id="lbtres"></label>
-                                                            @endif
-                                                        </th>
-                                                        {{--<th></th>--}}
-                                                    </tfoot>
-                                                    <tbody id="detalle1">
-                                                    </tbody>
-                                                </table>
-                                                <div class="row">
+                                                                        {{-- Desceunto Asignado --}}
+                                                                        <input id="desc" class="form-control" name="descuento" onchange="calcular()"
+                                                                            placeholder="Descuento %" style="margin-top:5px;" value=""
+                                                                            autocomplete="off" type="number">
+                                                                        <label for="" id="lbdesc"></label>
 
-                                                    <div class="col-md-9"></div>
+                                                                        {{-- Motivo de Descuento --}}
+                                                                        <input id="motivoDescuento" class="form-control"
+                                                                            name="motivoDescuento" placeholder="Motivo del descuento"
+                                                                            style="">
+                                                                        <label for="" id="lbmotivoDescuento"></label>
 
-                                                    <div class="col-md-3" id="guardar">
-                                                        <div class="form-group">
-                                                            <button class="btn btn-primary pagar" id="pComanda" type="button">
-                                                                Pagar
-                                                            </button>
+                                                                        {{-- Cantidad Descontada --}}
+                                                                        <input type="hidden" id="descuento1" class="form-control"
+                                                                            name="descuento1">
+
+                                                                        {{-- Total Calculado (Sin Propina) --}}
+                                                                        <input id="res" class="form-control " name="total" autocomplete="off"
+                                                                            placeholder="Subtotal" required style="margin-top:5px;" required
+                                                                            readonly="readonly" type="hidden"
+                                                                            style="background-color:#FFF;cursor: no-drop;">
+                                                                        <label for="" id="lbres"></label>
+
+                                                                        {{-- Propina --}}
+                                                                        <input id="propina" class="form-control " name="propina"
+                                                                        placeholder="Propina $" style="margin-top:5px;" value=""
+                                                                        autocomplete="off" required type="number" onchange="redondearDecimales('propina')">
+                                                                        <label for="" id="lbpropina"></label>
+
+                                                                        {{-- Total Calculado (Con Propina) --}}
+                                                                        <input id="total2" class="form-control" name="total2"
+                                                                            autocomplete="off" placeholder="Total" required
+                                                                            style="margin-top:5px;font-weight: bold;" required
+                                                                            readonly="readonly"
+                                                                            style="background-color:#FFF;cursor: no-drop;">
+                                                                        <label for="" id="lbtotal2"></label>
+
+                                                                        {{-- Cantidad Pagada --}}
+                                                                        <input id="dos" class="form-control" name="pago" placeholder="Pago"
+                                                                            style="margin-top:5px;" autocomplete="off" required type="number" step=".01"
+                                                                            onchange="redondearDecimales('dos')">
+                                                                        <label for="" id="lbdos"></label>
+
+                                                                        {{-- Cambio Regresado --}}
+                                                                        <input id="tres" class="form-control" name="cambio"
+                                                                            placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
+                                                                            required readonly="readonly"
+                                                                            style="background-color:#FFF;cursor: no-drop;">
+                                                                        <label for="" id="lbtres"></label>
+
+                                                                    @endif
+
+                                                                {{-- Formulario de Pago Reducido --}}
+                                                                    @if($restaurante['reducir'] === 'Si')
+
+                                                                        {{-- Is Reduced Value --}}
+                                                                        <input type="hidden" id="reducir" name="reducir"
+                                                                            class="form-control" value="{{$restaurante['reducir']}}">
+
+                                                                        {{-- Total (Text) --}}
+                                                                        <h1 id="total">0.00</h1>
+
+                                                                        {{-- Total for Products --}}
+                                                                        <input type="hidden" id="total1" class="form-control" name="total1">
+
+                                                                        {{-- Total Original sin Modificaciones --}}
+                                                                        <input id="total2" class="form-control" name="total2"
+                                                                            autocomplete="off" placeholder="Total" required
+                                                                            style="margin-top:5px;font-weight: bold;" required
+                                                                            readonly="readonly"
+                                                                            style="background-color:#FFF;cursor: no-drop;">
+                                                                        <label for="" id="lbtotal2"></label>
+
+                                                                        {{-- Cantidad Pagada --}}
+                                                                        <input id="dos" class="form-control" name="pago" placeholder="Pago"
+                                                                            style="margin-top:5px;" autocomplete="off" required type="number"
+                                                                            onchange="redondearDecimales('dos')" step=".01">
+                                                                        <label for="" id="lbdos"></label>
+
+                                                                        {{-- Cambio Regresado --}}
+                                                                        <input id="tres" class="form-control" name="cambio"
+                                                                            placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
+                                                                            required readonly="readonly"
+                                                                            style="background-color:#FFF;cursor: no-drop;">
+                                                                        <label for="" id="lbtres"></label>
+
+                                                                    @endif
+
+                                                            </th>
+                                                        </tfoot>
+
+                                                        {{-- Resumen de Productos Adquiridos --}}
+                                                        <tbody id="detalle1"></tbody>
+
+                                                    </table>
+
+                                                    {{-- Guardar Orden --}}
+                                                    <div class="row">
+                                                        <div class="col-md-9"></div>
+
+                                                        <div class="col-md-3" id="guardar">
+                                                            <div class="form-group">
+                                                                <button class="btn btn-primary pagar" id="pComanda" type="button">
+                                                                    Pagar
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div><!-- fin row buttons -->
-                                            </div>
+
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
-                                <br>
-                                <br>
                             </div>
                         </div>
-                        <!--  Fin comanda -->
+
                     </form>
                 </div>
 
@@ -530,7 +520,9 @@
 @endsection
 
 @section('funciones')
+    {{-- Importaciones --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     {{-- Redondear Decimales --}}
     <script>
@@ -2785,8 +2777,6 @@
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
     {{-- Mesa 2 - Abrir Mesa --}}
     <script>
         setTimeout(function(){
@@ -4509,8 +4499,6 @@
         }
 
     </script>
-
-    {{--  --}}
 
     {{-- Buscador de Productos --}}
     <script>
