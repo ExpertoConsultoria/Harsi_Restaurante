@@ -1,138 +1,91 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>Inicio</title>
-    <link href="/css/inicio.css" rel="stylesheet" type="text/css">
+    <head>
+        <title>Inicio</title>
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!------ Include the above in your HEAD tag ---------->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="icon" href="../imagenes-05.ico" type="image/x-icon  ">
-</head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="icon" href="../imagenes-05.ico" type="image/x-icon  ">
 
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
-<body>
-    <section class="our-webcoderskull padding-lg">
-        <div class="container">
-            <div class="row heading heading-icon">
-                <img src="/img/imagenes-07.png">
-            </div>
-            <div>
-                <br><br>
-            </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <link href="/css/inicio.css" rel="stylesheet" type="text/css">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
 
 
-            <input type="hidden" name="expiracion" id="expiracion" class="form-control" value="{{$total}}" />
-            @if(Auth::check() && Auth::user()->role == 'administrador')
+    <body>
 
-                <ul class="row justify-content-center align-items-center g-2">
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/home') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB_Mesa de trabajo 1.png" class="img-responsive" alt="">
-                                </figure>
+        <section class="our-webcoderskull padding-lg">
+            <div class="container">
 
-                            </div>
-                        </a>
-                    </li>
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/Reportes') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB-02.png" class="img-responsive" alt=""></figure>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/Calendar') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB-03.png" class="img-responsive" alt=""></figure>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/Setting') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB-04.png" class="img-responsive" alt=""></figure>
-
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-
-                <div class="row justify-content-center align-items-center g-2">
-                    <div class="col-md-11" style="margin-top:10px">
-                        <br>
-                        <h5 align="right" style="color:#999999;">{{ $mensaje }}</h5>
-                    </div>
-                    <div class="col-md-1" style="margin-top:10px">
-                        <div class="form-group">
-                            <a id="logout" name="logout" class="logout" href="{{ route('logout') }}"><img
-                                    src="/img/imagenes-06.png" height="50" width="50" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </div>
-                    </div>
+                {{-- Logo --}}
+                <div class="mb-4 row heading heading-icon">
+                    <img src="/img/imagenes-07.png">
                 </div>
 
-            @elseif(Auth::check() && Auth::user()->role == 'cajero')
+                <input type="hidden" name="expiracion" id="expiracion" class="form-control" value="{{$days_left}}" />
 
-                <ul class="row justify-content-center align-items-center g-2">
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/home') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB_Mesa de trabajo 1.png" class="img-responsive" alt="">
-                                </figure>
+                @if(Auth::check())
+                    @php
+                        $menuItems = [
+                            'administrador' => [
+                                ['url' => '/home', 'img' => '/img/harhomB_Mesa de trabajo 1.png'],
+                                ['url' => '/Reportes', 'img' => '/img/harhomB-02.png'],
+                                ['url' => '/Calendar', 'img' => '/img/harhomB-03.png'],
+                                ['url' => '/Setting', 'img' => '/img/harhomB-04.png']
+                            ],
+                            'cajero' => [
+                                ['url' => '/home', 'img' => '/img/harhomB_Mesa de trabajo 1.png'],
+                                ['url' => '/Calendar', 'img' => '/img/harhomB-03.png']
+                            ]
+                        ];
+                    @endphp
 
+                    <ul class="row justify-content-center align-items-center g-2">
+                        @foreach ($menuItems[Auth::user()->role] ?? [] as $item)
+                            <li class="col-12 col-md-6 col-lg-3">
+                                <a href="{{ url($item['url']) }}">
+                                    <div class="cnt-block equal-hight" style="height: 300px;">
+                                        <figure>
+                                            <img src="{{ $item['img'] }}" class="img-responsive" alt="">
+                                        </figure>
+                                    </div>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <div class="row justify-content-center align-items-center g-2">
+                        <div class="col-md-11" style="margin-top:10px">
+                            <br>
+                            <h5 align="right" style="color:#999999;">{{ $message }}</h5>
+                        </div>
+                        <div class="col-md-1" style="margin-top:10px">
+                            <div class="form-group">
+                                <a id="logout" name="logout" class="logout" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <img src="/img/imagenes-06.png" height="50" width="50">
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
-                        </a>
-                    </li>
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/Calendar') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB-03.png" class="img-responsive" alt=""></figure>
-                            </div>
-                        </a>
-                    </li>
-
-                </ul>
-
-                <div class="row">
-                    <div class="col-md-11" style="margin-top:10px">
-                        <br>
-                        <h5 align="right" style="color:#999999;">{{ $mensaje }}</h5>
-                    </div>
-                    <div class="col-md-1" style="margin-top:10px">
-                        <div class="form-group">
-                            <a id="logout" name="logout" class="logout" href="{{ route('logout') }}"><img
-                                    src="/img/imagenes-06.png" height="50" width="50" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
                         </div>
                     </div>
-                    <div class="col-md-3" style="margin-top:10px">
-                    </div>
-                </div>
 
-            @else
-            @include('error')
-            @endif
+                @else
+                    @include('error')
+                @endif
 
-        </div>
-    </section>
 
-</body>
+            </div>
+        </section>
+
+    </body>
 
 </html>
 
@@ -146,5 +99,4 @@
             'info'
         )
     }
-
 </script>

@@ -12,9 +12,10 @@ use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\Restaurante;
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -26,46 +27,38 @@ class HomeController extends Controller
 
     public function inicio()
     {
-        $dato = User::min('id');
+        $dato = User::min('id'); // Obtenemos el Usuario Administrador Base
+
         if ($dato != null) {
-            $user = \DB::table('users')
-                ->select('id', 'name', 'role', 'expiracion')
-                ->where('role', 'administrador')
-                ->first();
-            //dd($user);
+
+            $user = User::select('id', 'name', 'role', 'expiracion')
+                            ->where('role', 'administrador')
+                            ->first();
+
             if ($user->expiracion != null) {
 
-                $fecha = Carbon::parse($user->expiracion);
-                $fecha = strtotime($fecha);
-                $hoy = Carbon::today();
-                $hoy = strtotime($hoy);
-                $diferiencia = $fecha - $hoy;
-                $dias = $diferiencia / 86400;
-                $total = floor($dias);
-                //$diff = $fecha->diffInDays($hoy);
-                //$dias =date_diff($fecha, $hoy)->format('%R%a');
-                if ($total <= 10) {
-                    $mensaje = 'Faltan ' . $total . ' días para que el sistema expire!';
+                $expiration_date = Carbon::parse($user->expiracion);
+                $expiration_date = strtotime($expiration_date);
+                $current_date = Carbon::today();
+                $current_date = strtotime($current_date);
+                $days_difference = $expiration_date - $current_date;
+                $days_difference = $days_difference / 86400;
+                $days_left = floor($days_difference);
 
+                if ($days_left <= 20) {
+                    $message = 'Faltan ' . $days_left . ' días para que el sistema expire!';
                 } else {
-                    $mensaje = '';
+                    $message = '';
                 }
-                //dd($mensaje);
+
             } else {
-                $user = array(
-                    'id' => 0,
-                    'name' => '',
-                    'role' => '',
-                    'expiracion' => '',
-                );
-                $mensaje = '';
-                $total = '';
+                $message = '';
+                $days_left = '';
             }
 
         }
-        //$prueba = Prueba::all();
-        //dd($prueba);
-        return view('inicio', compact('mensaje', 'total'));
+
+        return view('inicio', compact('message', 'days_left'));
     }
 
     public function index()
