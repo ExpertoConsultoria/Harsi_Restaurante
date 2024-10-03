@@ -16,7 +16,6 @@ class Restaurante extends Model
         'email',
         'subcategoria',
         'reducir',
-        'hotel',
         'facebook',
         'instagram',
         'twitter',

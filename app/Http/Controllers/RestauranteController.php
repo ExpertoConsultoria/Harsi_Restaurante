@@ -203,43 +203,6 @@ class RestauranteController extends Controller
 
     }
 
-    public function editHotel()
-    {
-        if(request()->ajax()){
-
-            $dato=Restaurante::min('id');
-            if($dato != null){
-                $data = Restaurante::select('id','hotel')->first();
-              if($data->hotel != null){
-                $data = array(
-                    'id'=> $data->id,
-                    'hotel'=> $data->hotel
-                    );
-               }
-            }else{
-                $data = array(
-                'id'=> 0,
-                'hotel'=>'No'
-                );
-            }
-            return response()->json(['data' => $data]);
-        }
-    }
-    public function updateHotel(Request $request)
-    {
-
-        $dato=Restaurante::min('id');
-
-        if($dato != null){
-            Restaurante::whereId($request->hidden_id5)->update(['hotel'=>$request->shotel]);
-            return response()->json(['success', ' Bien Hecho']);
-        }else{
-            return response()->json(['error', 'No hay datos del restaurante, agregue
-            información del restaurante.']);
-        }
-
-    }
-
     public function update(Request $request)
     {
         $form_data = array(

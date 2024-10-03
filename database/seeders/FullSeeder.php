@@ -230,7 +230,6 @@ class FullSeeder extends Seeder
                 'email' => 'Desconocido',
                 'subcategoria' => 'No',
                 'reducir' => 'No',
-                'hotel' => 'No',
                 'facebook' => 'Ninguno',
                 'instagram' => 'Ninguno',
                 'twitter' => 'Ninguno',

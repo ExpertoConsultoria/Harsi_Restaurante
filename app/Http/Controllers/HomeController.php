@@ -87,14 +87,13 @@ class HomeController extends Controller
 
             if ($dato != null) {
                 $restaurante = \DB::table('restaurante')
-                    ->select('subcategoria', 'reducir', 'hotel')
+                    ->select('subcategoria', 'reducir', )
                     ->first();
 
                 if ($restaurante->subcategoria != null) {
                     $restaurante = array(
                         'subcategoria' => $restaurante->subcategoria,
                         'reducir' => $restaurante->reducir,
-                        'hotel' => $restaurante->hotel,
                     );
                 }
 
@@ -102,7 +101,6 @@ class HomeController extends Controller
                 $restaurante = array(
                     'subcategoria' => 'No',
                     'reducir' => 'No',
-                    'hotel' => 'No',
                 );
             }
 

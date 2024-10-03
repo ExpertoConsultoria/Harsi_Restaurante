@@ -17,10 +17,6 @@
                         usuario</button>
                 </div>
                 <div class="col-3 d-flex justify-content-center align-items-center">
-                    <button type="button" name="hotel" id="hotel" class="btn btn-primary">¿Está integrado con
-                        hotel?</button>
-                </div>
-                <div class="col-3 d-flex justify-content-center align-items-center">
                     <button type="button" name="subcategoria" id="subcategoria" class="btn btn-primary">¿Tiene
                         subcategoría?</button>
                 </div>
@@ -299,40 +295,6 @@
                                     <input type="hidden" name="hidden_id4" id="hidden_id4" />
                                     <input type="submit" name="action_button4" id="action_button4"
                                         class="btn btn-warning" value="Add4" />
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="formModal5" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title5">Integración con hotel</h4>
-                        </div>
-                        <div class="modal-body">
-                            <span id="form_result5"></span>
-                            <form method="post" id="sample_form5" class="form-horizontal" enctype="multipart/form-data"
-                                autocomplete="off">
-                                @csrf
-                                <div class="form-group">
-                                    <label class="control-label col-md-2">¿Está ingrado con hotel? </label>
-                                    <div class="col-md-8">
-                                        <select id="shotel" name="shotel" class="form-control" required="">
-                                            <option value="No">No</option>
-                                            <option value="Si">Si</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group" align="center">
-                                    <input type="hidden" name="action5" id="action5" />
-                                    <input type="hidden" name="hidden_id5" id="hidden_id5" />
-                                    <input type="submit" name="action_button5" id="action_button5"
-                                        class="btn btn-warning" value="Add5" />
                                 </div>
                             </form>
                         </div>
@@ -631,81 +593,6 @@
                             'success'
                         );
                         $('#formModal4').modal('hide');
-                        //$('#user_table').DataTable().ajax.reload();
-
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        Swal.fire(
-                            'Error!',
-                            'No se ha podido guardar!',
-                            'error'
-                        );
-                    }
-                });
-            }
-        });
-
-        $('#hotel').click(function () {
-            $('#form_result5').html('');
-            $.ajax({
-                url: "/editIntegrarHotel",
-                dataType: "json",
-                success: function (html) {
-                    console.log(html);
-                    $('#shotel').val(html.data.hotel);
-                    $('#hidden_id5').val(html.data.id);
-                    $('.modal-title5').text("Integración de hotel");
-                    $('#action_button5').val("Modificar");
-                    $('#action5').val("Add5");
-                    $('#formModal5').modal('show');
-                }
-            })
-        });
-
-        $('#sample_form5').on('submit', function (event) {
-            event.preventDefault();
-
-            if ($('#action5').val() == "Add5") {
-                $.ajax({
-                    url: "{{ route('restaurante.updateHotel') }}",
-                    method: "POST",
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    dataType: "json",
-                    success: function (data) {
-
-                        console.log(data);
-                        var html = '';
-                        if (data.errors) {
-                            html = '<div class="alert alert-danger">';
-                            for (var count = 0; count < data.errors.length; count++) {
-                                html += '<p>' + data.errors[count] + '</p>';
-                            }
-                            html += '</div>';
-                            Swal.fire(
-                                'Error!',
-                                'No se ha podido guardar!',
-                                'error'
-                            );
-                        }
-                        if (data.success) {
-                            Swal.fire(
-                                'Exito!',
-                                'Agregado correctamente!',
-                                'success'
-                            );
-                            $('#sample_form5')[0].reset();
-
-                        }
-                        Swal.fire(
-                            'Exito!',
-                            'Actualizado correctamente!',
-                            'success'
-                        );
-                        $('#formModal5').modal('hide');
                         //$('#user_table').DataTable().ajax.reload();
 
                     },

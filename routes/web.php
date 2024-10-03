@@ -103,8 +103,6 @@ Route::middleware([
     Route::get('/editSubcategoria', [RestauranteController::class, 'editSubcategoria']);
     Route::post('restaurante/updateReducir', [RestauranteController::class, 'updateReducir'])->name('restaurante.updateReducir');
     Route::get('/editReducirElementos', [RestauranteController::class, 'editReducir']);
-    Route::post('restaurante/updateHotel', [RestauranteController::class, 'updateHotel'])->name('restaurante.updateHotel');
-    Route::get('/editIntegrarHotel', [RestauranteController::class, 'editHotel']);
 
     //Mesas
     Route::resource('Mesa', MesaController::class);
