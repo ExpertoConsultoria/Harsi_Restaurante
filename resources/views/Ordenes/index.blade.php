@@ -9,60 +9,6 @@
             <div>
                 <h1 align="left">Órdenes realizadas por consumos</h1>
                 <br>
-                @if (Auth::check() && Auth::user()->role == 'desarrollador')
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover tableUserList" id="user_table">
-                        <thead>
-                            <tr>
-                                <th width="col">Folio</th>
-                                <th width="col">Fecha</th>
-                                <th width="col">Mesa</th>
-                                <th width="col">Cajero</th>
-                                <th width="col">Forma de Pago</th>
-                                <th width="col">Importe</th>
-                                <th width="col">Descuento</th>
-                                <th width="col">Subtotal</th>
-                                <th width="col">Propina</th>
-                                <th width="col">Total</th>
-                                <th scope="col">Creación</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($orden as $orden)
-                            <tr>
-                                <td>{{$orden['id']}}</td>
-                                <td>{{$orden['fecha']}}</td>
-                                <td>{{$orden['mesa']}}</td>
-                                <td>{{$orden['cajero']}}</td>
-                                <td>{{$orden['forma_pago']}}</td>
-                                <td>{{$orden['conf_total']}}</td>
-                                <td>{{$orden['descuento']}}</td>
-                                <td>{{$orden['total']}}</td>
-                                <td>{{$orden['propina']}}</td>
-                                <td>{{$orden['total2']}}</td>
-                                <td>{{$orden['created_at']}}</td>
-                                <td>
-                                    <form action="{{ route('Ordenes.destroy', $orden->id) }}" method="post">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
-                                        <a type="submit" class="btn btn-success"
-                                            href="{{ route('Ordenes.show',$orden->id) }}">
-                                            Ver Ticket
-                                        </a>
-
-                                        <button type="submit" class="btn btn-danger"
-                                            onclick="return confirm('Seguro quieres eliminar a {{ $orden->id }}  ?')">
-                                            Borrar
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                @endif
                 @if (Auth::check() && Auth::user()->role == 'administrador')
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover tableUserList" id="user_table">

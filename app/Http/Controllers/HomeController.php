@@ -70,39 +70,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        if (Auth::check() && Auth::user()->role == 'desarrollador') {
-            $mesas = Mesa::all();
-            $mesa = Mesa::all();
-            $mesaedit = Mesa::all();
-            $cta = CategoriaProducto::all();
-            $producto = Producto::all();
-            $pedido = Pedido::all();
-            $desarrollador = \DB::table('descuento_usuario')
-                ->select('id', 'role', 'descuento')
-                ->where('role', 'Desarrollador')
-                ->first();
-            $dato = Restaurante::min('id');
-            if ($dato != null) {
-                $restaurante = \DB::table('restaurante')
-                    ->select('subcategoria', 'reducir')
-                    ->first();
-                if ($restaurante->subcategoria != null) {
-                    $restaurante = array(
-                        'subcategoria' => $restaurante->subcategoria,
-                        'reducir' => $restaurante->reducir,
-                    );
-                }
-
-            } else {
-                $restaurante = array(
-                    'subcategoria' => 'No',
-                    'reducir' => 'No',
-                );
-            }
-
-            return view('/home', compact('mesas', 'mesa', 'producto',
-                'cta', 'pedido',  'mesaedit', 'desarrollador', 'restaurante'));
-        }
         if (Auth::check() && Auth::user()->role == 'administrador') {
 
             $mesas = Mesa::all();

@@ -169,13 +169,6 @@
                                 autocomplete="off">
                                 @csrf
                                 <div class="form-group">
-                                    <label class="control-label col-md-2">Desarrollador </label>
-                                    <div class="col-md-8">
-                                        <input type="text" name="desarrollador" id="desarrollador"
-                                            placeholder="Descuento permitido %" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label class="control-label col-md-2">Administrador </label>
                                     <div class="col-md-8">
                                         <input type="text" name="administrador" id="administrador"
@@ -215,13 +208,6 @@
                             <form method="post" id="sample_form2" class="form-horizontal" enctype="multipart/form-data"
                                 autocomplete="off">
                                 @csrf
-                                <div class="form-group">
-                                    <label class="control-label col-md-2">Desarrollador </label>
-                                    <div class="col-md-8">
-                                        <input type="datetime-local" name="desarrollador" id="desarrollador"
-                                            class="form-control" />
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-md-2">Administrador </label>
                                     <div class="col-md-8">
@@ -753,7 +739,6 @@
                 url: "/editDescuento",
                 dataType: "json",
                 success: function (html) {
-                    $('#desarrollador').val(html.data.descuento);
                     $('#administrador').val(html.data1.descuento);
                     $('#cajero').val(html.data2.descuento);
                     $('#hidden_id').val(html.data.id);

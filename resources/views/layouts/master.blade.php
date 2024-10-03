@@ -106,25 +106,6 @@
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Opciones <span class="caret"></span>
                             </a>
-                              @if (Auth::check() && Auth::user()->role == 'desarrollador')
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ url('/inicio') }}">
-                                        Inicio
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url('/home') }}">
-                                        Comanda
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url('/Reportes') }}">
-                                        Reportes
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url('/Calendar') }}">
-                                        Reservación
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url('/Setting') }}">
-                                        Configuración
-                                    </a>
-                                </div>
-                              @endif
                               @if (Auth::check() && Auth::user()->role == 'administrador')
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ url('/inicio') }}">

@@ -17,11 +17,6 @@
                         <thead>
                         <tr>
                             <th width="10%">Título</th>
-                            @if (Auth::check() && Auth::user()->role == 'desarrollador')
-                                <th scope="col">Creación</th>
-                                <th scope="col">Actualización</th>
-                                <th scope="col">Acciones</th>
-                            @endif
                             @if (Auth::check() && Auth::user()->role == 'administrador')
                                 <th scope="col">Creación</th>
                                 <th scope="col">Actualización</th>

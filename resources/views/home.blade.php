@@ -1,32 +1,32 @@
 @extends('layouts.app')
+
 @section('content')
 
     @if(Auth::check() && Auth::user()->role == 'administrador')
         <div class="container">
             <div class="row">
+
                 <!--Mesas-->
-                <div class="col-sm-3">
+                <div class="mt-2 col-sm-3">
                     <div class="row">
-                        <table id="tableUserList" class="table" style="margin-top:10px;">
-                            <thead class="table-primary">
+                        <table id="tableUserList" class="table">
+                            <thead class="text-center table-primary">
                                 <tr>
                                     <th scope="col">Nombre</th>
                                     <th style="width:1%">Estado</th>
                                     <th scope="col">Acción</th>
                                 </tr>
                             </thead>
-                            <tbody id="mesaStatus">
 
-                            </tbody>
+                            <tbody id="mesaStatus"></tbody>
                         </table>
                     </div>
                 </div>
-                <!--Fin Mesas-->
 
-                <div class="col-sm-9">
+                <div class="mt-2 col-sm-9">
                     <form method="POST" action="/inicio" id="sample_venta" name="sample_venta" class="form-horizontal"
                         enctype="multipart/form-data">
-                        <div class="card border-dark" style="margin-top:10px">
+                        <div class="card border-dark">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-3">
@@ -36,7 +36,7 @@
                                                 value="<?php echo date("Y-m-d");?>" required readonly="readonly"
                                                 style="background-color:#FFF;cursor: no-drop;">
                                         </div>
-                                    </div><!-- fin col-md-3 -->
+                                    </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="mesa">Mesa</label>
@@ -44,7 +44,7 @@
                                                 readonly="readonly" style="background-color:#FFF;cursor: no-drop;" required="">
                                             <label for="" id="lbmesa"></label>
                                         </div>
-                                    </div><!-- fin col-md-3 -->
+                                    </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="cajero">Atiende</label>
@@ -62,23 +62,7 @@
                                             </select>
                                             <label for="" id="lbpago"></label>
                                         </div>
-                                    </div><!-- fin col-md-3 -->
-                                    <!--  Sección 2 -->
-                                    @if($restaurante['hotel'] != 'No')
-                                    <input type="hidden" id="rhotel" class="form-control" value="{{ $restaurante['hotel'] }}">
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="habitacion">Habitación</label>
-                                            <select required class="form-control" name="habitacion" id="habitacion"
-                                                title="Seleccione la habitación solicitante">
-                                                <option value="">Seleccionar</option>
-                                            </select>
-                                            <label for="" id="lbhabitacion"></label>
-                                        </div>
-                                    </div><!-- fin col-md-3 -->
-
-                                    @endif
+                                    </div>
 
                                     <div style="display:none" class="col-md-6">
                                         <div class="form-group">
@@ -513,20 +497,7 @@
                                                 </table>
                                                 <div class="row">
 
-                                                    @if($restaurante['hotel'] != 'No')
-                                                    <div class="col-md-7">
-                                                    </div>
-                                                    <div class="col-md-2" id="consumo">
-                                                        <div class="form-group">
-                                                            <button class="btn btn-consumo hotelConsumo" id="hConsumo"
-                                                                type="button">
-                                                                Consumo
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    @else
                                                     <div class="col-md-9"></div>
-                                                    @endif
 
                                                     <div class="col-md-3" id="guardar">
                                                         <div class="form-group">
@@ -547,34 +518,35 @@
                         <!--  Fin comanda -->
                     </form>
                 </div>
-            </div> <!-- row -->
-        </div> <!-- container -->
+
+            </div>
+        </div>
     @elseif(Auth::check() && Auth::user()->role == 'cajero')
+
         <div class="container">
             <div class="row">
+
                 <!--Mesas-->
-                <div class="col-sm-3">
+                <div class="mt-2 col-scroll-m-3">
                     <div class="row">
-                        <table id="tableUserList" class="table" style="margin-top:10px;">
-                            <thead class="table-primary">
+                        <table id="tableUserList" class="table">
+                            <thead class="text-center table-primary">
                                 <tr>
                                     <th scope="col">Nombre</th>
                                     <th style="width:1%">Estado</th>
                                     <th scope="col">Acción</th>
                                 </tr>
                             </thead>
-                            <tbody id="mesaStatus">
 
-                            </tbody>
+                            <tbody id="mesaStatus"></tbody>
                         </table>
                     </div>
                 </div>
-                <!--Fin Mesas-->
 
-                <div class="col-sm-9">
+                <div class="mt-2 col-sm-9scroll-m-3">
                     <form method="POST" action="/inicio" id="sample_venta" name="sample_venta" class="form-horizontal"
                         enctype="multipart/form-data">
-                        <div class="card border-dark" style="margin-top:10px">
+                        <div class="card border-dark">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-3">
@@ -584,7 +556,7 @@
                                                 value="<?php echo date("Y-m-d");?>" required readonly="readonly"
                                                 style="background-color:#FFF;cursor: no-drop;">
                                         </div>
-                                    </div><!-- fin col-md-3 -->
+                                    </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="mesa">Mesa</label>
@@ -592,7 +564,7 @@
                                                 readonly="readonly" style="background-color:#FFF;cursor: no-drop;" required="">
                                             <label for="" id="lbmesa"></label>
                                         </div>
-                                    </div><!-- fin col-md-3 -->
+                                    </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="cajero">Atiende</label>
@@ -1071,8 +1043,9 @@
                         <!--  Fin comanda -->
                     </form>
                 </div>
-            </div> <!-- row -->
-        </div> <!-- container -->
+            </div>
+        </div>
+
     @else
         @include('error')
     @endif

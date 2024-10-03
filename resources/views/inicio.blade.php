@@ -27,62 +27,7 @@
 
 
             <input type="hidden" name="expiracion" id="expiracion" class="form-control" value="{{$total}}" />
-            @if(Auth::check() && Auth::user()->role == 'desarrollador')
-                <ul class="row">
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/home') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB_Mesa de trabajo 1.png" class="img-responsive" alt="">
-                                </figure>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/Reportes') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB-02.png" class="img-responsive" alt=""></figure>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/Calendar') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB-03.png" class="img-responsive" alt=""></figure>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li class="col-12 col-md-6 col-lg-3">
-                        <a href="{{ url('/Setting') }}">
-                            <div class="cnt-block equal-hight" style="height: 300px;">
-                                <figure><img src="/img/harhomB-04.png" class="img-responsive" alt=""></figure>
-
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-
-                <div class="row">
-                    <div class="col-md-11" style="margin-top:10px">
-                        <br>
-                        <h5 align="right" style="color:#999999;">{{ $mensaje }}</h5>
-                    </div>
-                    <div class="col-md-1" style="margin-top:10px">
-                        <div class="form-group">
-                            <a id="logout" name="logout" class="logout" href="{{ route('logout') }}"><img
-                                    src="/img/imagenes-06.png" height="50" width="50" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-            @elseif(Auth::check() && Auth::user()->role == 'administrador')
+            @if(Auth::check() && Auth::user()->role == 'administrador')
 
                 <ul class="row justify-content-center align-items-center g-2">
                     <li class="col-12 col-md-6 col-lg-3">

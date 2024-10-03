@@ -24,14 +24,13 @@
             <th>Email</th>
             <th>Rol</th>
             <th>Fecha de ingreso</th>
-        </tr>                            
+        </tr>
     </thead>
     <tbody>
     @php
         $no = 1;
     @endphp
      @foreach($user as $user)
-        @if($user->role != 'desarrollador')
           <tr>
             <td>{{ $no++ }}</td>
             <td><h3>{{ $user->name }}</h3>{{ $user->apellidos }}</td>
@@ -39,7 +38,6 @@
             <td>{{ $user->role }}</td>
             <td>{{ $user->created_at }}</td>
           </tr>
-       @endif
      @endforeach
     </tbody>
   </table>
@@ -48,6 +46,6 @@
 <script>
     function imprimir() {
       window.print();
-    }    
+    }
 </script>
 @endsection

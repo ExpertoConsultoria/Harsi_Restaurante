@@ -1,60 +1,7 @@
 @extends('adminlte::page')
 @section('content')
-@if(Auth::check() && Auth::user()->role == 'desarrollador')
-<div class="panel panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">Reportes</h3>
-    </div>
-
-    <div class="panel-body">
-        <div class="row">
-
-            <div class="hidden-sm hidden-xs col-md-4">
-                <a id="anual" name="anual" onclick=" modal()" class="btn btn-default btn-lg btn-block"
-                    style=" background-color: white;">
-                    <i class="fas fa-caret-down" style="padding-right: 5px">Venta anual</i>
-                </a>
-            </div>
-
-            <div class="hidden-sm hidden-xs col-md-4">
-                <a id="mensual" name="mensual" onclick="reporteMensual()" class="btn btn-default btn-lg btn-block"
-                    style="background-color: white;">
-                    <i class="fas fa-caret-down" style="padding-right: 5px"> Venta mensual</i>
-                </a>
-            </div>
-            <div class="hidden-sm hidden-xs col-md-4">
-                <a id="diario" name="diario" onclick="reporteDiario()" class="btn btn-default btn-lg btn-block"
-                    style="background-color: white;">
-                    <i class="fas fa-caret-down" style="padding-right: 5px"> Venta diario</i>
-                </a>
-            </div>
-
-            <div class="hidden-sm hidden-xs col-md-4">
-                <a id="listas" name="listas" onclick="lista()" class="btn btn-default btn-lg btn-block"
-                    style=" margin-top:10px; background-color: white;">
-                    <i class="fas fa-caret-down" style="padding-right: 5px"> Listas</i>
-                </a>
-            </div>
-
-            <div class="hidden-sm hidden-xs col-md-4">
-                <a id="eliminados" name="eliminados" onclick="eliminados()" class="btn btn-default btn-lg btn-block"
-                    style="margin-top:10px; background-color: white;">
-                    <i class="fas fa-caret-down" style="padding-right: 5px"> Productos eliminados al mes</i>
-                </a>
-            </div>
-
-            <div class="hidden-sm hidden-xs col-md-4">
-                <a id="eliminadosDiario" name="eliminadosDiario" onclick="eliminadosDiario()"
-                    class="btn btn-default btn-lg btn-block" style=" margin-top:10px; background-color: white;">
-                    <i class="fas fa-caret-down" style="padding-right: 5px"> Productos eliminados al día</i>
-                </a>
-            </div>
-
-        </div>
-    </div>
-</div>
-@elseif(Auth::check() && Auth::user()->role == 'administrador')
-<div class="panel panel panel-primary">
+@if(Auth::check() && Auth::user()->role == 'administrador')
+<div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">Reportes</h3>
     </div>
@@ -110,7 +57,7 @@
 
 
 @elseif(Auth::check() && Auth::user()->role == 'cajero')
-<div class="panel panel panel-primary">
+<div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">Reportes</h3>
     </div>
@@ -522,15 +469,15 @@
     <table class="table table-striped table-bordered">
         <tbody>
             <tr>
-                <th class="col-lg-1 hidden-xs text-center">ID</th>
+                <th class="text-center col-lg-1 hidden-xs">ID</th>
                 <th class="col-lg-9 col-md-9 col-sm-9 col-xs-9">Título</th>
                 <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">&nbsp;</th>
             </tr>
 
             <tr ng-repeat="report in getReportsForGroup(reportGroup.id)" class="ng-scope">
-                <td class="col-lg-1 hidden-xs text-center ng-binding">75</td>
+                <td class="text-center col-lg-1 hidden-xs ng-binding">75</td>
                 <td class="col-lg-9 col-md-9 col-sm-9 col-xs-9 ng-binding">Ingresos por día</td>
-                <td class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+                <td class="text-center col-lg-3 col-md-3 col-sm-3 col-xs-3">
                     <button data-toggle="modal" data-target="#myModal" class="btn btn-primary with-icon" title="Abrir">
                         <i class="fas fa-cloud-download-alt" aria-hidden="true"></i>
                     </button>

@@ -2,7 +2,7 @@
 <form method="POST" action="{{ route('usuarios.store') }}" autocomplete="off">
     @csrf
     <div class="form-group row">
-        <label for="name" class="col-md-2 col-md-offset-1 text-center">{{ __('Nombre') }}</label>
+        <label for="name" class="text-center col-md-2 col-md-offset-1">{{ __('Nombre') }}</label>
             <div class="col-md-8">
                 <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
             @if ($errors->has('name'))
@@ -13,7 +13,7 @@
             </div>
     </div>
     <div class="form-group row">
-        <label for="apellidos" class="col-md-2 col-md-offset-1 text-center">{{ __('Apellidos') }}</label>
+        <label for="apellidos" class="text-center col-md-2 col-md-offset-1">{{ __('Apellidos') }}</label>
             <div class="col-md-8">
                 <input id="apellidos" type="text" class="form-control{{ $errors->has('apellidos') ? ' is-invalid' : '' }}" name="apellidos" value="{{ old('apellidos') }}" required autofocus>
 
@@ -23,9 +23,9 @@
                 </span>
             @endif
             </div>
-    </div>    
+    </div>
     <div class="form-group row">
-        <label for="email" class="col-md-2 col-md-offset-1 text-center">{{ __('E-Mail') }}</label>
+        <label for="email" class="text-center col-md-2 col-md-offset-1">{{ __('E-Mail') }}</label>
             <div class="col-md-8">
                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
 
@@ -36,33 +36,21 @@
             @endif
             </div>
     </div>
-    @if (Auth::check() && Auth::user()->role == 'desarrollador')
-    <div class="form-group row">
-        <label for="role" class="col-md-2 col-md-offset-1 text-center">Permisos</label>
-         <div class="col-md-8">
-            <select name="role" class="form-control" >
-                <option value="administrador">Administrador</option>
-                <option value="desarrollador">Programador</option>
-                <option value="cajero">Cajero</option>
-            </select> 
-        </div>
-    </div>
-    @endif
     @if (Auth::check() && Auth::user()->role == 'administrador')
     <div class="form-group row">
-        <label for="role" class="col-md-2 col-md-offset-1 text-center">Permisos</label>
+        <label for="role" class="text-center col-md-2 col-md-offset-1">Permisos</label>
          <div class="col-md-8">
             <select name="role" class="form-control" >
                 <option value="administrador">Administrador</option>
                 <option value="cajero">Cajero</option>
-            </select> 
+            </select>
         </div>
     </div>
      <div class="form-group row">
-        <label for="turno" class="col-md-2 col-md-offset-1 text-center">Turno</label>
+        <label for="turno" class="text-center col-md-2 col-md-offset-1">Turno</label>
         <div class="col-md-8">
         <select id="turno"   name="turno" class="form-control"   required="turno" >
-          
+
           @foreach ($horario as $h)
           <option  value="{{$h->turno}}">{{$h->turno}}</option>
           @endforeach
@@ -70,9 +58,9 @@
         </div>
       </div>
     @endif
-  
+
     <div class="form-group row">
-        <label for="password" class="col-md-2 col-md-offset-1 text-center">{{ __('Contraseña') }}</label>
+        <label for="password" class="text-center col-md-2 col-md-offset-1">{{ __('Contraseña') }}</label>
         <div class="col-md-8">
             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
             @if ($errors->has('password'))
@@ -82,10 +70,10 @@
             @endif
         </div>
     </div>
-   
- 
+
+
     <div class="form-group row">
-        <div class="col-md-12 text-center">
+        <div class="text-center col-md-12">
             <button type="submit" class="btn btn-primary">
                 {{ __('Registrar') }}
             </button>

@@ -35,7 +35,7 @@
                         {{ method_field('PUT') }}
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-1 col-md-offset-1 text-center">{{ __('Nombre') }}</label>
+                            <label for="name" class="text-center col-md-1 col-md-offset-1">{{ __('Nombre') }}</label>
                             <div class="col-md-8">
                                 <input id="name" type="text"
                                     class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name"
@@ -53,7 +53,7 @@
 
                         <div class="form-group row">
                             <label for="apellidos"
-                                class="col-md-1 col-md-offset-1 text-center">{{ __('Apellidos') }}</label>
+                                class="text-center col-md-1 col-md-offset-1">{{ __('Apellidos') }}</label>
                             <div class="col-md-8">
                                 <input id="apellidos" type="text"
                                     class="form-control{{ $errors->has('apellidos') ? ' is-invalid' : '' }}"
@@ -66,31 +66,10 @@
                                 @endif
                             </div>
                         </div>
-                        @if (Auth::check() && Auth::user()->role == 'desarrollador')
-                            <div class="form-group row">
-                                <label for="role" class="col-md-1 col-md-offset-1 text-center">{{ __('Rol') }}</label>
-                                <div class="col-md-8">
-                                    <select id="role" type="text" class="form-control col-md-6 col-form-label text-md-right"
-                                        name="role" value="{{ $ad->role }}" required>
-
-                                        @foreach($user as $user)
-                                        <option value="{{ $user->role }}" disabled>{{ Str::ucfirst($user->role) }}</option>
-                                        <option value="administrador">Administrador</option>
-                                        <option value="cajero">Cajero</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('role'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('role') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
 
                         @if (Auth::check() && Auth::user()->role == 'administrador')
                             <div class="form-group row">
-                                <label for="role" class="col-md-1 col-md-offset-1 text-center">{{ __('Rol') }}</label>
+                                <label for="role" class="text-center col-md-1 col-md-offset-1">{{ __('Rol') }}</label>
                                 <div class="col-md-8">
                                     <select id="role" type="text" class="form-control col-md-6 col-form-label text-md-right"
                                         name="role" value="{{ $ad->role }}" required>
@@ -112,7 +91,7 @@
 
 
                         <div class="form-group row">
-                            <label for="turno" class="col-md-1 col-md-offset-1 text-center">Turno</label>
+                            <label for="turno" class="text-center col-md-1 col-md-offset-1">Turno</label>
                             <div class="col-md-8">
                                 <select id="turno" name="turno" class="form-control" required="turno">
                                     <option selected="" value="{{ $user->turno }}">{{ $user->turno }}</option>
@@ -124,7 +103,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-1 col-md-offset-1 text-center">{{ __('E-Mail') }}</label>
+                            <label for="email" class="text-center col-md-1 col-md-offset-1">{{ __('E-Mail') }}</label>
 
                             <div class="col-md-8">
                                 <input id="email" type="text"
@@ -141,7 +120,7 @@
 
 
                         <div class="form-group row ">
-                            <div class="col-md-12 text-center">
+                            <div class="text-center col-md-12">
                                 <button type="submit" class="btn btn-primary"
                                     onclick="return confirm('Seguro de guardar los cambios {{ $ad->name }} {{ $ad->apellidos }} ?')">
                                     {{ __('Guardar') }}
@@ -151,7 +130,7 @@
 
 
                         <div class="form-group row ">
-                            <div class="col-md-12 text-center">
+                            <div class="text-center col-md-12">
                                 <button class="btn btn-primary"
                                     action="{{ url()->previous() }}">Cancelar</button>
 

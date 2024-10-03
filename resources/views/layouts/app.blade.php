@@ -118,7 +118,7 @@
                                         height="25"></label>
                             </a>
 
-                            @if ((Auth::check() && Auth::user()->role == 'administrador') || Auth::check() && Auth::user()->role == 'desarrollador')
+                            @if ((Auth::check() && Auth::user()->role == 'administrador'))
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ url('/inicio') }}">
                                     <div class="row justify-content-center align-items-center ">
