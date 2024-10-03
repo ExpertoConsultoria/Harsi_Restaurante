@@ -22,10 +22,6 @@ class PanelController extends Controller
         $mesas = Mesa::all();
         $mesa = Mesa::all();
         $cta = CategoriaProducto::all();
-        $desarrollador = \DB::table('descuento_usuario')
-                    ->select('id','role', 'descuento')
-                    ->where('role','Desarrollador')
-                    ->first();
         $administrador= \DB::table('descuento_usuario')
                     ->select('id','role', 'descuento')
                     ->where('role','Administrador')
@@ -36,7 +32,7 @@ class PanelController extends Controller
                     ->first();
                     //dd($descuentoAdm);
 
-        return view('/home',compact('mesas','cta','mesa','desarrollador','administrador','cajero'));
+        return view('/home',compact('mesas','cta','mesa','administrador','cajero'));
     }
 
     public function create()

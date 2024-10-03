@@ -182,18 +182,6 @@ class HomeController extends Controller
 
     public function create($id)
     {
-        if (Auth::check() && Auth::user()->role == 'desarrollador') {
-            $mesas = Mesa::all();
-            $mesa = Mesa::all();
-            $mesaedit = Mesa::all();
-            $cta = CategoriaProducto::all();
-            $producto = Producto::all();
-            $pedido = Pedido::all();
-            $paymethod = PayMethod::all();
-
-            return view('home', compact('mesas', 'mesa', 'producto', 'precioP',
-                'cta', 'pedido', 'paymethod', 'mesaedit'));
-        }
         if (Auth::check() && Auth::user()->role == 'administrador') {
             $mesasupdate = Mesa::where('id', $id)->first();
             $mesasupdate->estado = 'Abierta';

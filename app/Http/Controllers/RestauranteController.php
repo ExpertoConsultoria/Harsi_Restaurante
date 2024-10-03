@@ -101,10 +101,6 @@ class RestauranteController extends Controller
     public function editDescuento()
     {
         if(request()->ajax()){
-            $data = \DB::table('descuento_usuario')
-                    ->select('id','role', 'descuento')
-                    ->where('role','Desarrollador')
-                    ->first();
             $data1 = \DB::table('descuento_usuario')
                     ->select('id','role', 'descuento')
                     ->where('role','Administrador')
@@ -113,18 +109,16 @@ class RestauranteController extends Controller
                     ->select('id','role', 'descuento')
                     ->where('role','Cajero')
                     ->first();
-            return response()->json(['data' => $data,'data1' => $data1,'data2' => $data2]);
+            return response()->json(['data1' => $data1,'data2' => $data2]);
         }
     }
 
      public function updateDescuento(Request $request)
     {
 
-       $desarrollador= $request->desarrollador;
        $administrador= $request->administrador;
        $cajero= $request->cajero;
 
-       DescuentoUsuario::where('role','Desarrollador')->update(['descuento'=>$desarrollador]);
        DescuentoUsuario::where('role','Administrador')->update(['descuento'=>$administrador]);
        DescuentoUsuario::where('role','Cajero')->update(['descuento'=>$cajero]);
 

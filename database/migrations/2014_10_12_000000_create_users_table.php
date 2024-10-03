@@ -20,11 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', [
-                'desarrollador',
                 'administrador',
                 'cajero',
-                'gerente',
-                'recepcionista'
             ]);
             $table->string('turno')->nullable();
             $table->date('expiracion')->nullable();

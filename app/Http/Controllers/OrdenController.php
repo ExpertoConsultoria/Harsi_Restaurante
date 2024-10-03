@@ -23,28 +23,6 @@ class OrdenController extends Controller
 {
     public function index(Request $request)
     {
-        if(Auth::check() && Auth::user()->role == 'desarrollador'){
-            $mesa = Mesa::all();
-            $cta = CategoriaProducto::all();
-            $producto  = Producto::all();
-            $paymethod = PayMethod::all();
-            $pedido = Pedido::all();
-            $orden = Orden::all();
-            $restaurante = Restaurante::all();
-            if(request()->ajax()){
-                return datatables()->of(Orden::latest()->get())
-                    ->addColumn('action', function($data){
-                        $button = '<a type="button" name="showTicket" id="'.$data->id.'" class="btn btn-success btn-sm" href="/Ordenes/'.$data->id.'">Ver Ticket</a>';
-                        $button .= '&nbsp;&nbsp;';
-                        $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Eliminar</button>';
-                        return $button;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-            }
-            return view('Ordenes.index', compact('orden','mesa','producto',
-                'cta','pedido','paymethod','orden','restaurante'));
-        }
         if (Auth::check() && Auth::user()->role == 'administrador')
         {
             $mesa = Mesa::all();
@@ -143,27 +121,6 @@ class OrdenController extends Controller
             'youTube'=> '',
             'linkedIn'=> ''
             );
-        }
-        if(Auth::check() && Auth::user()->role == 'desarrollador'){
-
-            $producto = Producto::all();
-            $orden = DB::table('orden as o')
-                ->join('comanda as c' , 'c.pedido_id', '=' , 'o.id')
-                ->select('o.id','o.fecha','o.mesa','o.cajero','o.forma_pago','o.cliente','o.direccion','o.conf_total','o.descuento','o.propina','o.total','o.total2','o.pago','o.cambio','o.created_at')
-                ->where('o.id' ,'=', $id)
-                ->first();
-
-            $pedido = DB::table('comanda as d')
-                    ->select('d.articulo','d.cantidad', 'd.precio_compra', 'd.subtotal')
-                    ->where('d.pedido_id', '=', $id)
-                    ->get();
-
-            $detalle = DB::table('comandaesp as x')
-                     ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                     ->where('x.pedido_id', '=', $id)
-                     ->get();
-
-            return view('Ordenes.show',['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
         }
         if (Auth::check() && Auth::user()->role == 'administrador')
         {
@@ -387,30 +344,6 @@ class OrdenController extends Controller
             'linkedIn'=> ''
             );
            $nombre='';
-        }
-        if(Auth::check() && Auth::user()->role == 'desarrollador'){
-
-            $producto = Producto::all();
-            $orden = DB::table('orden as o')
-                ->join('comanda as c' , 'c.pedido_id', '=' , 'o.id')
-                ->select('o.id','o.fecha','o.mesa','o.cajero','o.forma_pago','o.cliente','o.direccion','o.conf_total','o.descuento','o.propina','o.total','o.total2','o.pago','o.cambio','o.created_at')
-                ->where('o.id' ,'=', $id)
-                ->first();
-
-            $pedido = DB::table('comanda as d')
-                    ->select('d.articulo','d.cantidad', 'd.precio_compra', 'd.subtotal')
-                    ->where('d.pedido_id', '=', $id)
-                    ->get();
-
-            $detalle = DB::table('comandaesp as x')
-                    ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                    ->where('x.pedido_id', '=', $id)
-                    ->get();
-            $asunto="Su consumo en restaurante: ".$nombre;
-
-            $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
-            $email= $request->email;
-            Mail::to($request->email)->send(new SendMailTicket($restaurante,$asunto,$pdf));
         }
         if (Auth::check() && Auth::user()->role == 'administrador')
         {

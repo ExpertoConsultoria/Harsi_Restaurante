@@ -17,10 +17,6 @@ class UserController extends Controller
     public function index()
     {
 
-        if (Auth::check() && Auth::user()->role == 'desarrollador') {
-            $user = User::all()->except(Auth::id());
-            return view('usuarios.index', compact('user'));
-        }
         if (Auth::check() && Auth::user()->role == 'administrador') {
             $horario = Horario::all();
             //dd($horario);
@@ -147,11 +143,9 @@ class UserController extends Controller
       public function updateFecha(Request $request)
     {
 
-       $desarrollador= $request->desarrollador;
        $administrador= $request->administrador;
        $cajero= $request->cajero;
 
-       User::where('role','desarrollador')->update(['expiracion'=>$desarrollador]);
        User::where('role','administrador')->update(['expiracion'=>$administrador]);
        User::where('role','cajero')->update(['expiracion'=>$cajero]);
 
@@ -162,10 +156,6 @@ class UserController extends Controller
       public function editFecha()
     {
         if(request()->ajax()){
-            $exp1 = \DB::table('users')
-                    ->select('id','role', 'expiracion')
-                    ->where('role','desarrollador')
-                    ->first();
             $exp2 = \DB::table('users')
                     ->select('id','role', 'expiracion')
                     ->where('role','administrador')
@@ -174,7 +164,7 @@ class UserController extends Controller
                     ->select('id','role', 'expiracion')
                     ->where('role','cajero')
                     ->first();
-            return response()->json(['exp1' => $exp1,'exp2' => $exp2,'exp3' => $exp3]);
+            return response()->json(['exp2' => $exp2,'exp3' => $exp3]);
         }
     }
 }

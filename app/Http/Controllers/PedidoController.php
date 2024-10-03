@@ -21,28 +21,6 @@ class PedidoController extends Controller
 {
     public function index()
     {
-        if(Auth::check() && Auth::user()->role == 'desarrollador'){
-            $mesa = Mesa::all();
-            $cta = CategoriaProducto::all();
-            $ctaesp = CategoriaProducto::all();
-            $producto = Producto::all();
-            $pedido = Pedido::all();
-            $paymethod = PayMethod::all();
-            $estado = Estado::all();
-            if(request()->ajax()){
-                return datatables()->of(Pedido::latest()->get())
-                    ->addColumn('action', function($data){
-                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-ms">Editar</button>';
-                        $button .= '&nbsp;&nbsp;';
-                        $button .= '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm">Eliminar</button>';
-                        return $button;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-            }
-            return view('Pedido.index', compact('orden','mesa','producto',
-                'cta','pedido','paymethod','estado','ctaesp'));
-        }
         if (Auth::check() && Auth::user()->role == 'administrador')
         {
 			$orden = Orden::all();
@@ -98,28 +76,6 @@ class PedidoController extends Controller
     public function create($id)
     {
 
-        if(Auth::check() && Auth::user()->role == 'desarrollador'){
-            $mesa = Mesa::all();
-            $cta = CategoriaProducto::all();
-            $ctaesp = CategoriaProducto::all();
-            $producto = Producto::all();
-            $pedido = Pedido::all();
-            $paymethod = PayMethod::all();
-            $estado = Estado::all();
-            if(request()->ajax()){
-                return datatables()->of(Pedido::latest()->get())
-                    ->addColumn('action', function($data){
-                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-ms">Editar</button>';
-                        $button .= '&nbsp;&nbsp;';
-                        $button .= '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm">Eliminar</button>';
-                        return $button;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-            }
-            return view('Pedido.index', compact('orden','mesa','producto',
-                'cta','pedido','paymethod','estado','ctaesp'));
-        }
         if (Auth::check() && Auth::user()->role == 'administrador')
         {
             $mesasupdate = Mesa::where('id', $id)->first();
