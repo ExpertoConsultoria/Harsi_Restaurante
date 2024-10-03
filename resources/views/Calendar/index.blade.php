@@ -104,7 +104,7 @@
 
     <!-- Structure -->
 
-    <div class="row mt-4">
+    <div class="mt-4 row">
         <div class="col-md-5">
                 <div class="box box-primary">
                     <h3 class="mb-0">Tabla de Registros</h3>
@@ -250,14 +250,14 @@
                                     <div class="row justify-content-center align-items-center g-2">
                                         <div class="col-10">
 
-                                            <div class="input-group mb-3">
+                                            <div class="mb-3 input-group">
                                                 <div class="input-group-prepend">
                                                     <span style="width : 90px;" class="input-group-text">{{ __('Evento No.') }}</span>
                                                 </div>
                                                 <input readonly="readonly" class="form-control" value="${info.event.id}">
                                             </div>
 
-                                            <div class="input-group mb-3">
+                                            <div class="mb-3 input-group">
                                                 <div class="input-group-prepend">
                                                     <span style="width : 90px;" class="input-group-text">{{ __('Nombre') }}</span>
                                                 </div>
@@ -266,14 +266,14 @@
 
                                             <hr>
 
-                                            <div class="input-group mb-3">
+                                            <div class="mb-3 input-group">
                                                 <div class="input-group-prepend">
                                                     <span style="width : 90px;" class="input-group-text">{{ __('Fecha') }}</span>
                                                 </div>
                                                 <input readonly="readonly" class="form-control" value="${fecha}">
                                             </div>
 
-                                            <div class="input-group mb-3">
+                                            <div class="mb-3 input-group">
                                                 <div class="input-group-prepend">
                                                     <span style="width : 90px;" class="input-group-text">{{ __('Mesas') }}</span>
                                                 </div>
@@ -282,7 +282,7 @@
 
                                             <hr>
 
-                                            <div class="input-group mb-3">
+                                            <div class="mb-3 input-group">
                                                 <div class="input-group-prepend">
                                                     <span style="width : 120px;" class="input-group-text">{{ __('No. Personas') }}</span>
                                                 </div>
@@ -290,7 +290,7 @@
                                                 <input readonly="readonly" class="form-control" value="${info.event.classNames[1]}">
                                             </div>
 
-                                            <div class="input-group mb-3">
+                                            <div class="mb-3 input-group">
                                                 <div class="input-group-prepend">
                                                     <span style="width : 120px;" class="input-group-text">{{ __('Detalles') }}</span>
                                                 </div>
@@ -376,20 +376,6 @@
             $('#type').on('change', onWrite);
             $('#valueTypex').on('change', onSelectFilter);
         });
-
-        function onWrite() {
-            var typerooms_id = $(this).val();
-            if (!typerooms_id)
-                $('#valueTypex').html('<option value="" selected disabled>-- -- --</option>');
-
-            $.get('api/Room/' + typerooms_id + '/typeroom', function (data) {
-                console.log(data);
-                var html_select = '<option value="" selected disabled>- Seleccionar -</option>';
-                for (var i = 0; i < data.length; ++i)
-                    html_select += '<option value=" ' + data[i].id + '" >' + data[i].room_number + '</option>';
-                $('#valueTypex').html(html_select);
-            });
-        }
 
         function onSelectFilter() {
             var id = $(this).val();

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('forma_pago')->nullable();
 
             $table->string('consumo',10)->nullable();
-            $table->integer('num_room')->nullable();
             $table->string('cliente')->nullable();
             $table->string('direccion',500)->nullable();
             $table->string('articulo',500)->nullable();

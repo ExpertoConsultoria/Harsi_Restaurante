@@ -123,7 +123,6 @@ class ComandaHomeController extends Controller
         $pedido->turno = $request->turno;
         $pedido->forma_pago = $request->forma_pago;
         $pedido->consumo = 'Si';
-        $pedido->num_room = $request->habitacion;
         $pedido->cliente = $request->cliente;
         $pedido->direccion = $request->direccion;
         //$pedido->articulo =  $articulos;

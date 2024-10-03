@@ -3,7 +3,7 @@
 <head>
     <title>calendario</title>
 <link href="https://fullcalendar.io/releases/core/4.0.2/main.min.css" rel="stylesheet"/>
-    
+
 <link href="https://fullcalendar.io/releases/timeline/4.0.2/main.min.css" rel="stylesheet"/>
 
 <link href="https://fullcalendar.io/releases/resource-timeline/4.0.2/main.min.css"/>
@@ -19,7 +19,7 @@ html, body {
 #calendar {
   max-width: 900px;
   margin: 40px auto;
-}    
+}
 </style>
 </head>
 <body>
@@ -54,16 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     },
     editable: true,
-    resourceColumns: [
-      {
-        labelText: 'Room',
-        field: 'title'
-      },
-//      {
-//        labelText: 'Estado',
-//        field: 'occupancy'
-//      }
-    ],
     resourceLabelText: 'Habitaciones',
     resources: [{"id":"1","title":"Simple 101"},
                 {"id":"2","title":"Simple 102"},
@@ -79,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {"id":"12","title":"Matrimonial 304"}],
 //    events: 'https://fullcalendar.io/demo-events.json?single-day&for-resource-timeline'
     events: [{"resourceId":"1","title":"Pedro Suarez","start":"2019-04-03","end":"2019-04-04","eventColor":"orange"},
-             {"resourceId":"1","title":"Raul Romero","start":"2019-04-05","end":"2019-04-12", "eventColor":"green"}, 
+             {"resourceId":"1","title":"Raul Romero","start":"2019-04-05","end":"2019-04-12", "eventColor":"green"},
              {"resourceId":"3","title":"Curwen D.","start":"2019-04-04","end":"2019-04-12", "eventColor":"red"},
              {"resourceId":"4","title":"Fiuza Paloma","start":"2019-04-04","end":"2019-04-10", "eventColor":"green"},
              {"resourceId":"7","title":"Cesar Rodriguez","start":"2019-04-04","end":"2019-04-09", "eventColor":"green"},
@@ -87,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   calendar.render();
-});    
+});
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://fullcalendar.io/releases/core/4.0.2/main.min.js"></script>

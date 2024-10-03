@@ -11,7 +11,6 @@ use App\Models\PayMethod;
 use App\Models\Calendar;
 use App\Models\Producto;
 use App\Models\Mesa;
-use App\Models\Room;
 
 use App\Models\User;
 use App\Models\Orden;
@@ -22,10 +21,6 @@ class ApiController extends Controller
 {
     public function getPaymentMethods(){
         return PayMethod::all();
-    }
-
-    public function getRooms(){
-        return Room::select('room_number')->where('room_status', 'Ocupado')->get();
     }
 
     public function getTables(){

@@ -5127,10 +5127,8 @@
         window.onload = function () {
             localStorage.setItem("PaymentMethods", '');
             localStorage.setItem("Tables", '');
-            localStorage.setItem("Rooms", '');
             getPayMethods();
             getTables();
-            getRooms();
         }
 
 
@@ -5139,7 +5137,6 @@
             localStorage.removeItem("PaymentMethods");
             localStorage.removeItem("tableOrden");
             localStorage.removeItem("Tables");
-            localStorage.removeItem("Rooms");
         };
 
         function getPayMethods() {
@@ -5176,43 +5173,6 @@
         }
         $(document).ready(function () {
             setInterval(getPayMethods, 20000); //Cada 30 segundo (30 mil milisegundos)
-        });
-
-        function getRooms() {
-
-            var rooms = localStorage.getItem("Rooms");
-
-            $.get('api/rooms', function (data) {
-
-                if (rooms != '') {
-                    data = JSON.stringify(data);
-
-                    if (data != rooms) {
-
-                        data = JSON.parse(data);
-                        var html_select = '<option value="" disabled selected>-- Seleccionar --</option>';
-                        for (var i = 0; i < data.length; ++i)
-                            html_select += '<option value=" ' + data[i].room_number + '" >' + data[i].room_number +
-                            '</option>';
-                        $('#habitacion').html(html_select);
-                        data = JSON.stringify(data);
-                        localStorage.setItem("Rooms", data);
-                    }
-
-                } else {
-                    var html_select = '<option value="" disabled selected>-- Seleccionar --</option>';
-                    for (var i = 0; i < data.length; ++i)
-                        html_select += '<option value=" ' + data[i].room_number + '" >' + data[i].room_number +
-                        '</option>';
-                    $('#habitacion').html(html_select);
-                    data = JSON.stringify(data);
-                    localStorage.setItem("Rooms", data);
-                }
-
-            });
-        }
-        $(document).ready(function () {
-            setInterval(getRooms, 20000); //Cada 30 segundo (30 mil milisegundos)
         });
 
         function getTables(){

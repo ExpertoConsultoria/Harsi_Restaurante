@@ -33,7 +33,6 @@ Route::get('/reservations/{id}', [ApiController::class, 'getReservations']);
 // Real Time Data
 Route::get('Graficas/chart', [UserChartController::class, 'chart']);
 Route::get('/paymentMethods', [ApiController::class, 'getPaymentMethods']);
-Route::get('/rooms', [ApiController::class, 'getRooms']);
 Route::get('/tables', [ApiController::class, 'getTables']);
 Route::get('/resumeSales', [ApiController::class, 'getResumeSales']);
 

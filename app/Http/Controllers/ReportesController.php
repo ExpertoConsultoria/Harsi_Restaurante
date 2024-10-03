@@ -1065,18 +1065,4 @@ class ReportesController extends Controller
         }
 
     }
-
-    public function listaVentasDiarias()
-    {
-        $diario = DB::select('
-        SELECT id AS Folio,
-        fecha AS FECHA,
-        forma_pago AS PAGO,
-        mesa AS MESA,
-        SUM(total) AS TOTAL_VENTA
-        FROM orden
-        GROUP BY id
-        ORDER BY fecha ASC;');
-        return view('pdf.diario', compact('diario'));
-    }
 }

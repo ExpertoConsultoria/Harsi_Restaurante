@@ -15,7 +15,6 @@ class Orden extends Model
         'turno',
         'forma_pago',
         'consumo',
-        'num_room',
         'cliente',
         'direccion',
         'articulo',

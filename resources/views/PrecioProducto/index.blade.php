@@ -244,7 +244,6 @@
                 url:"/PrecioProducto/"+id+"/edit",
                 dataType:"json",
                 success:function(html){
-                    $('#roompay_id').val(html.data.product_id);
                     $('#precio').val(html.data.precio);
                     $('#hidden_id').val(html.data.id);
                     $('.modal-title').text("Editar precio");

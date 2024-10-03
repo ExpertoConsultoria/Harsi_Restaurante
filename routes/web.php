@@ -196,7 +196,6 @@ Route::middleware([
     Route::get('pdf/categoria', [ReportesController::class, 'listaCategorias'])->name('categoria.pdf');
     Route::get('pdf/producto', [ReportesController::class, 'listaProductos'])->name('producto.pdf');
     Route::get('/reporteAnual/{estado}', [ReportesController::class, 'listaVentas']);
-    Route::get('pdf/diario', [ReportesController::class, 'listaVentasDiarias'])->name('diario.pdf');
     Route::get('/reporteDiario/{estado}/{fecha}', [ReportesController::class, 'reporteDiario']);
     Route::get('/ventaDiarioPdf/{estado}/{fecha}', [ReportesController::class, 'reporteDiarioPdf']);
     Route::get('pdf/reporteMensual', [ReportesController::class, 'reporteMensual'])->name('reporteMensual.pdf');
