@@ -4,11 +4,11 @@
 
     @if(Auth::check())
 
-        <div class="container">
-            <div class="row">
+        <div class="container-fluid">
+            <div class="px-0 mx-0 mt-2 row">
 
                 <!-- Tabla de Mesas -->
-                <div class="pr-3 mt-2 col-sm-3">
+                <div class="col-sm-3">
                     <div class="row">
                         <table id="tableUserList" class="table">
                             <thead class="text-center table-primary">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <div class="mt-2 col-sm-9">
+                <div class="col-sm-9">
                     <form method="POST" action="/inicio" id="sample_venta" name="sample_venta" class="form-horizontal"
                         enctype="multipart/form-data">
                         <div class="card border-dark">
@@ -131,7 +131,7 @@
                                                                         size="4" class="form-control selectpicker"
                                                                         data-live-search="true">
                                                                         <option selected disabled>-- Selecciona --</option>
-                                                                        @foreach($cta as $cta)
+                                                                        @foreach($product_categories as $cta)
                                                                         <option value="{{ $cta->id }}">{{ $cta->titulo }}
                                                                         </option>
                                                                         @endforeach
@@ -224,7 +224,7 @@
                                                                 class="form-control selectpicker" data-live-search="true">
                                                                 <option selected disabled>-- Selecciona una Categoría --
                                                                 </option>
-                                                                @foreach($cta as $cta)
+                                                                @foreach($product_categories as $cta)
                                                                 <option value="{{ $cta->id }}">{{ $cta->titulo }}</option>
                                                                 @endforeach
                                                             </select>
@@ -354,15 +354,8 @@
                                             <!--  Sección 3 -->
                                             <div class="col-md-2">
                                                 <div class="form-group">
-
-                                                    @if (Auth::user()->role == 'cajero')
-                                                        <input type="hidden" id="userDescuento" name="userDescuento"
-                                                        value="{{$cajero->descuento}}" class="form-control">
-                                                    @elseif (Auth::user()->role == 'administrador')
-                                                        <input type="hidden" id="userDescuento" name="userDescuento"
-                                                            value="{{$administrador->descuento}}" class="form-control">
-                                                    @endif
-
+                                                    <input type="hidden" id="userDescuento" name="userDescuento"
+                                                        value="{{$descuento}}" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">

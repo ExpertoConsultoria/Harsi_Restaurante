@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CategoriaProducto;
 use App\Models\ComandaCancelado;
 use App\Models\ComandaTemporal;
+use App\Models\DescuentoUsuario;
 use App\Models\Mesa;
 use App\Models\OrdenCancelado;
 use App\Models\PayMethod;
@@ -63,24 +64,23 @@ class HomeController extends Controller
 
     public function index()
     {
-        if (Auth::check() && Auth::user()->role == 'administrador') {
 
+        if (Auth::check()) {
+            $role = Auth::user()->role;
             $mesas = Mesa::all();
-            $mesa = Mesa::all();
-            $mesaedit = Mesa::all();
-            $cta = CategoriaProducto::all();
+            $product_categories = CategoriaProducto::all();
             $producto = Producto::all();
-            $pedido = Pedido::all();
-            $administrador = \DB::table('descuento_usuario')
-                ->select('id', 'role', 'descuento')
-                ->where('role', 'Administrador')
-                ->first();
 
+            // Obtener el descuento basado en el rol
+            $descuento = DescuentoUsuario::where('role', $role)
+                                            ->select('id', 'role', 'descuento')
+                                            ->first();
+
+            // Obtener los datos del restaurante
             $dato = Restaurante::min('id');
 
             if ($dato != null) {
-                $restaurante = \DB::table('restaurante')
-                    ->select('subcategoria', 'reducir', )
+                $restaurante = Restaurante::select('subcategoria', 'reducir')
                     ->first();
 
                 if ($restaurante->subcategoria != null) {
@@ -89,7 +89,6 @@ class HomeController extends Controller
                         'reducir' => $restaurante->reducir,
                     );
                 }
-
             } else {
                 $restaurante = array(
                     'subcategoria' => 'No',
@@ -97,117 +96,72 @@ class HomeController extends Controller
                 );
             }
 
-            return view('/home', compact('mesas', 'mesa', 'producto',
-                'cta', 'pedido',  'mesaedit', 'administrador', 'restaurante'));
+            return view('/home', compact('mesas', 'producto', 'product_categories', 'descuento', 'restaurante'));
         }
-        if (Auth::check() && Auth::user()->role == 'cajero') {
-            $mesas = Mesa::all();
-            $mesa = Mesa::all();
-            $mesaedit = Mesa::all();
-            $cta = CategoriaProducto::all();
-            $producto = Producto::all();
-            $pedido = Pedido::all();
-            $cajero = \DB::table('descuento_usuario')
-                ->select('id', 'role', 'descuento')
-                ->where('role', 'Cajero')
-                ->first();
-            $dato = Restaurante::min('id');
-            if ($dato != null) {
-                $restaurante = \DB::table('restaurante')
-                    ->select('subcategoria', 'reducir')
-                    ->first();
-                if ($restaurante->subcategoria != null) {
-                    $restaurante = array(
-                        'subcategoria' => $restaurante->subcategoria,
-                        'reducir' => $restaurante->reducir,
-                    );
-                }
 
-            } else {
-                $restaurante = array(
-                    'subcategoria' => 'No',
-                    'reducir' => 'No',
-                );
-            }
-
-            return view('/home', compact('mesas', 'mesa', 'producto',
-                'cta', 'pedido',  'mesaedit', 'cajero', 'restaurante'));
-        } else {
-            return view('welcome');
+        else {
+            return view('inicio');
         }
     }
+
     public function productos(Request $request, $id_categoria)
     {
-        $restaurante = \DB::table('restaurante')
-            ->select('subcategoria')
-            ->first();
+        $restaurante = Restaurante::select('subcategoria')->first();
+
         if ($restaurante->subcategoria != 'Si') {
+
             if ($request->ajax()) {
-                $productos = \DB::table('productos')
-                    ->select('id', 'titulo')
-                    ->where('category_id', $id_categoria)
-                    ->get();
+                $productos = Producto::select('id', 'titulo')
+                                        ->where('category_id', $id_categoria)
+                                        ->get();
+
                 return Response()->json($productos);
             }
+
         } else {
+
             if ($request->ajax()) {
-                $productos = \DB::table('productos')
-                    ->select('id', 'titulo')
-                    ->where('subcategory_id', $id_categoria)
-                    ->get();
+                $productos = Producto::select('id', 'titulo')
+                                ->where('subcategory_id', $id_categoria)
+                                ->get();
+
                 return Response()->json($productos);
             }
+
         }
     }
 
     public function precio(Request $request, $id_producto)
     {
         if ($request->ajax()) {
-            $precio = \DB::table('productos')
-                ->select('titulo', 'precio')
-                ->where('id', $id_producto)
-                ->first();
+            $precio = Producto::select('titulo', 'precio')
+                                ->where('id', $id_producto)
+                                ->first();
             return Response()->json($precio);
         }
     }
 
     public function create($id)
     {
-        if (Auth::check() && Auth::user()->role == 'administrador') {
-            $mesasupdate = Mesa::where('id', $id)->first();
-            $mesasupdate->estado = 'Abierta';
-            $mesasupdate->color = '#ce0018';
-            $mesasupdate->save();
-
-            $comanda = Mesa::where('id', $id)->first();
-
+        if (Auth::check()) {
+            $comanda = Mesa::find($id);
             $mesas = Mesa::all();
-            $mesa = Mesa::all();
-            $mesaedit = Mesa::all();
+            $mesaedit = $mesas;  // Reutilizamos la misma consulta para 'mesas' y 'mesaedit'
             $cta = CategoriaProducto::all();
             $producto = Producto::all();
             $pedido = Pedido::all();
             $paymethod = PayMethod::all();
 
-            return view('home', compact('mesas', 'mesa', 'producto',
-                'cta', 'pedido', 'paymethod', 'mesaedit', 'comanda'));
-        }
-        if (Auth::check() && Auth::user()->role == 'cajero') {
+            if (Auth::user()->role == 'administrador') {
+                $comanda->estado = 'Abierta';
+                $comanda->color = '#ce0018';
+                $comanda->save();
+            }
 
-            $comanda = Mesa::where('id', $id)->first();
-            $mesas = Mesa::all();
-            $mesa = Mesa::all();
-            $mesaedit = Mesa::all();
-            $cta = CategoriaProducto::all();
-            $producto = Producto::all();
-            $pedido = Pedido::all();
-            $paymethod = PayMethod::all();
-
-            return view('home', compact('mesas', 'mesa', 'producto',
-                'cta', 'pedido', 'paymethod', 'mesaedit', 'comanda'));
-        } else {
-            return view('welcome');
+            return view('home', compact('mesas', 'mesaedit', 'producto', 'cta', 'pedido', 'paymethod', 'comanda'));
         }
+
+        return view('inicio');
     }
 
     public function editMesa($id)
@@ -244,7 +198,6 @@ class HomeController extends Controller
 
             $temporal = ComandaTemporal::where('mesa', $request->tituloMesa)->update(['estado' => 'Cerrada']);
             $update = Mesa::where('titulo', $request->tituloMesa)->update($form_data);
-            //$update= Mesa::whereId($request->tituloMesa)->update($form_data);
             return response()->json($update);
         }
     }
@@ -265,8 +218,6 @@ class HomeController extends Controller
                 ->update(['estado' => 'Cerrada', 'status' => 'Cancelado', 'motivo' => $motivo]);
             $update = Mesa::whereId($request->idt)->update($form_data);
 
-            //$update= Mesa::whereId($request->tituloMesa)->update($form_data);
-            //'status'=>'Eliminado','estado'=>'Cerrada'
             return response()->json($update);
         }
     }
