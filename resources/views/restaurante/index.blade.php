@@ -628,7 +628,6 @@
                 success: function (html) {
                     $('#administrador').val(html.data1.descuento);
                     $('#cajero').val(html.data2.descuento);
-                    $('#hidden_id').val(html.data.id);
                     $('.modal-title1').text("Descuento permitido por usuario");
                     $('#action_button1').val("Modificar");
                     $('#action1').val("Add1");
