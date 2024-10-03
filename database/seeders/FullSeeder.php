@@ -114,10 +114,6 @@ class FullSeeder extends Seeder
 
         /* Descuentos de Usuario */
             DescuentoUsuario::create([
-                'role' => 'Desarrollador',
-                'descuento' => 0,
-            ]);
-            DescuentoUsuario::create([
                 'role' => 'Administrador',
                 'descuento' => 50,
             ]);
@@ -227,19 +223,19 @@ class FullSeeder extends Seeder
 
         /* Restaurante */
             Restaurante::create([
-                'nombre' => 'RAME COCINA TRADICIONAL',
-                'rfc' => 'PAEF891108L41',
-                'direccion' => 'CALLE CAMINO NACIONAL 106 SAN SEBASTIAN TUTLA',
-                'telefono' => '9511969373',
-                'email' => 'ramecocina@gmail.com',
+                'nombre' => 'Don Agave',
+                'rfc' => 'Desconocido',
+                'direccion' => 'Desconocido',
+                'telefono' => 'Desconocido',
+                'email' => 'Desconocido',
                 'subcategoria' => 'No',
                 'reducir' => 'No',
                 'hotel' => 'No',
-                'facebook' => null,
-                'instagram' => null,
-                'twitter' => null,
-                'youTube' => null,
-                'linkedIn' => null,
+                'facebook' => 'Ninguno',
+                'instagram' => 'Ninguno',
+                'twitter' => 'Ninguno',
+                'youTube' => 'Ninguno',
+                'linkedIn' => 'Ninguno',
             ]);
 
     }
