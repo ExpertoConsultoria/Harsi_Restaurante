@@ -524,46 +524,64 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-    {{-- Redondear Decimales --}}
-    <script>
-        function redondearDecimales(inputId) {
+    {{-- Funciones Generales --}}
+    <script type="text/javascript">
 
-            var result = 0;
-            var numero = $('#'+inputId).val();
-            numero = parseFloat(numero);
+        // Reiniciar Mesa
+        function reiniciar() {
+            var k = $("#tableUserList tr").length; // Obtener la cantidad de filas
+            var elementos = $("input[name='estado_mesa2']"); // Seleccionar los elementos por nombre
 
-            numeroRegexp = new RegExp('\\d\\.(\\d){' + 2 + ',}');   // Expresion regular para numeros con un cierto numero de decimales o mas
-            if (numeroRegexp.test(numero)) {         // Ya que el numero tiene el numero de decimales requeridos o mas, se realiza el redondeo
-                result = Number(numero.toFixed(2));
-                $("#"+inputId).val(result);
-            } else {
-                result = Number(numero.toFixed(2)) === 0 ? 0 : numero;  // En valores muy bajos, se comprueba si el numero es 0 (con el redondeo deseado), si no lo es se devuelve el numero otra vez.
-                $("#"+inputId).val(result);
-            }
+            elementos.each(function(index) {
+                var estado = $(this).val(); // Obtener el valor del elemento
+                var button = $("button").eq(index + 1); // Seleccionar el botón correspondiente
+
+                if (estado === "Abierta") {
+                    button.css("background-color", "#6cb2eb")
+                        .prop("disabled", false)
+                        .text("Ver mesa");
+                } else if (estado === "Cerrada") {
+                    button.css("background-color", "#6cb2eb")
+                        .prop("disabled", false)
+                        .text("Abrir mesa");
+                }
+            });
         }
+
+        // Redondear Decimal
+        function redondearDecimales(inputId) {
+            var numero = parseFloat($('#' + inputId).val()) || 0;
+
+            if (numero < 0)
+                numero = Math.abs(numero);
+
+            var result = numero.toFixed(2);
+            $('#' + inputId).val(result);
+
+            return;
+        }
+
     </script>
 
-    {{-- Guardar Comentarios y Reiniciar Mesa --}}
+    {{-- Guardar Comentarios --}}
     <script type="text/javascript">
 
         $(document).ready(function () {
             $("#guardarComentario").click(function () {
                 guardarComentario();
-
             });
         });
 
         function guardarComentario() {
-            var fecha = document.getElementById('fecha').value;
-            var mesa = document.getElementById('id_proveedor').value;
-            var estado = document.getElementById('mesa_estado').value;
-            var cajero = document.getElementById('cajero').value;
-            var cliente = document.getElementById('cliente').value;
-            var direccion = document.getElementById('direccion').value;
-            var comentario = document.getElementById('comentario').value;
+            var fecha = $('#fecha').val();
+            var mesa = $('#id_proveedor').val();
+            var estado = $('#mesa_estado').val();
+            var cajero = $('#cajero').val();
+            var cliente = $('#cliente').val();
+            var direccion = $('#direccion').val();
+            var comentario = $('#comentario').val();
 
-            if (comentario != "" && mesa != "") {
-
+            if (comentario !== "" && mesa !== "") {
                 var data = {
                     "fecha": fecha,
                     "mesa": mesa,
@@ -578,8 +596,15 @@
                     url: "/guardarComentario",
                     type: "POST",
                     data: data,
-                    success: function (data) {
-                        console.log(data);
+                    success: function (response) {
+                        reiniciar();
+                        $('#lbcomentario').html('');
+
+                        Swal.fire(
+                            'Guardado!',
+                            'El comentario ha sido guardado exitosamente.',
+                            'success'
+                        );
                     },
                     error: function (error) {
                         console.log(error);
@@ -587,58 +612,28 @@
                             icon: 'error',
                             title: 'Error!',
                             text: 'No se ha podido guardar 1!',
-
-                        })
+                        });
                     }
                 });
-                reiniciar();
-                var lbcomentario = document.getElementById('lbcomentario');
-                lbcomentario.innerHTML = '';
-
-                Swal.fire(
-                    'Guardado!',
-                    'El comentario ha sido guardado exitosamente.',
-                    'success'
-                )
-
             } else {
-
-                if (mesa.trim() == '') {
+                if (mesa.trim() === '') {
                     $('#lbmesa').html("<span style='color:red;'>Seleccione la mesa</span>");
                     $('#id_proveedor').focus();
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Error el campo mesa es obligatorio, seleccione la mesa!',
-                    })
+                        text: 'Error: el campo mesa es obligatorio, seleccione la mesa!',
+                    });
                     return false;
-                } else if (comentario == '') {
+                } else if (comentario === '') {
                     $('#lbcomentario').html("<span style='color:red;'>Ingrese el comentario</span>");
                     $('#comentario').focus();
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Error el campo comentario es obligario, ingrese el comentario!',
-                    })
+                        text: 'Error: el campo comentario es obligatorio, ingrese el comentario!',
+                    });
                     return false;
-                }
-            }
-
-        }
-
-        function reiniciar() {
-            var k = document.getElementById("tableUserList").rows.length;
-            var elementos = document.getElementsByName("estado_mesa2");
-            for (y = 0; y < elementos.length; y++) {
-                j = y + 1;
-                if (elementos[y].value == "Abierta") {
-                    document.getElementsByTagName("button")[j].setAttribute("style", "background-color:#6cb2eb;");
-                    document.getElementsByTagName("button")[j].disabled = false;
-                    document.getElementsByTagName("button")[j].innerHTML = "Ver mesa";
-                } else if (elementos[y].value == "Cerrada") {
-                    document.getElementsByTagName("button")[j].setAttribute("style", "background-color:#6cb2eb;;");
-                    document.getElementsByTagName("button")[j].disabled = false;
-                    document.getElementsByTagName("button")[j].innerHTML = "Abrir mesa";
                 }
             }
         }
@@ -646,10 +641,11 @@
     </script>
 
     {{-- Cambiar el Estado de la Mesa --}}
-    <script>
+    {{-- <script>
         setTimeout(function(){
+            console.log('SASAS');
 
-            function syncWIthApis1(){
+            function updateTableStatus(){
                 $('#estado_mesa').on('submit', function (event) {
                     event.preventDefault();
                     $.ajax({
@@ -657,7 +653,6 @@
                         type: "POST",
                         data: $('#estado_mesa').serialize(),
                         success: function (data) {
-                            console.log(data);
                             swal('Exito!', 'Actualizado', 'success');
                         },
                         error: function (error) {
@@ -670,7 +665,1488 @@
             }
 
             $(document).ready(function () {
-                setTimeout(syncWIthApis1, 950);
+                setTimeout(updateTableStatus, 950);
+            });
+        }, 1500);
+
+    </script> --}}
+
+    {{-- Mesa 2 - Abrir Mesa --}}
+    <script>
+        setTimeout(function(){
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('.mesabtn').click(function (e) {
+                e.preventDefault();
+
+                localStorage.setItem("tableOrden", '');
+
+                var $tr = $(this).closest("tr");
+                var tituloMesa = $tr.find('.titulo_mesa').val();
+                var idt = $tr.find('.id_mesa').val();
+                var i = idt;
+                var k = idt - 1;
+
+                // Limpiamos las Etiquetas Superiores
+                $('#lbmesa').html('');
+                $('#lbprecio_compra').html('');
+                $('#lbcantidad').html('');
+                $('#lbpespecial').html('');
+                $('#lbpesprecio').html('');
+                $('#lbpespcant').html('');
+                $('#lbcliente').html('');
+                $('#lbdireccion').html('');
+
+                // Limpiar Valores del Resumen
+                $('#detalle1').html('');    // Tabla de Productos
+                $('#total').html('');       // Total Visual
+
+                // Limpiamos las Etiquetas del Formulario de Pago
+                if ($('#reducir').val() != 'Si') {
+                    $('#lbconf_total').html('');
+                    $('#lbcupon').html('');
+                    $('#lbdesc').html('');
+                    $('#lbres').html('');
+                    $('#lbpropina').html('');
+                    $('#lbtotal2').html('');
+                    $('#lbdos').html('');
+                    $('#lbtres').html('');
+                    $('#lbmotivoDescuento').html('');
+                    $('#lbcomentario').html('');
+                } else {
+                    $('#lbtotal2').html('');
+                    $('#lbcupon').html('');
+                    $('#lbdos').html('');
+                    $('#lbtres').html('');
+                }
+
+                // Reseteamos Valores del Formulario de Pago
+                $('#total1').val("");
+                $("#total").html(" ");
+                $("#total").html("$" + "0.00");
+                $('#valor').val("0");
+                $('#incrementa').val("0");
+                $("#comentario").val("");
+                $('#conftotal').val("");
+                $('#desc').val("");
+                $('#res').val("");
+                $('#propina').val("");
+                $('#total2').val("");
+                $('#dos').val("");
+                $('#tres').val("");
+                $('#motivoDescuento').val("");
+
+                // Colocamos los Valores de la Mesa en la Pantalla
+                $('#id_proveedor').val(tituloMesa);
+                $('#mesa_estado').val('Abierta');
+                var mesa = $('#id_proveedor').val();
+
+                if (mesa.trim() == 'Para llevar') {
+                    $("#cliente").show();
+                    $("#direccion").show();
+                    $("#clientelb").show();
+                    $("#direccionlb").show();
+                } else {
+                    $("#cliente").hide();
+                    $("#direccion").hide();
+                    $("#clientelb").hide();
+                    $("#direccionlb").hide();
+                    $("#cliente").val("");
+                    $("#direccion").val("");
+                }
+
+                // Cambiamos el Boton Principal de la Mesa
+                $('button').eq(i).html("Atendiendo")
+                    .css("background-color", "#C0C0C0")
+                    .prop("disabled", true);
+                $('tr').eq(i).find('td').eq(1).css("background-color", "#ce0018");
+                $('button').eq(i).on("click", cambiar);
+                $('figure').eq(k).css("display", 'block');
+
+                function cambiar() {
+                    var $tr = $(this).closest("tr");
+                    var tituloMesa = $tr.find('.titulo_mesa').val();
+                    var estadoMesa = $tr.find('.estado_mesa2').val();
+                    var idt = $tr.find('.id_mesa').val();
+
+                    var contador = 0;
+                    var evaluar = 0;
+                    var total = 0;
+                    var suma = 0;
+                    var base = 0;
+                    var dato = 0;
+                    var k = idt - 1;
+                    var f = 0;
+
+                    $('#lbmesa').html('');
+                    $('#lbprecio_compra').html('');
+                    $('#lbcantidad').html('');
+                    $('#lbpespecial').html('');
+                    $('#lbpesprecio').html('');
+                    $('#lbpespcant').html('');
+                    $('#lbcliente').html('');
+                    $('#lbdireccion').html('');
+
+
+                    if ($('#reducir').val() != 'Si') {
+                        $('#lbconf_total').html('');
+                        $('#lbcupon').html('');
+                        $('#lbdesc').html('');
+                        $('#lbres').html('');
+                        $('#lbpropina').html('');
+                        $('#lbtotal2').html('');
+                        $('#lbdos').html('');
+                        $('#lbtres').html('');
+                        $('#lbmotivoDescuento').html('');
+                        $('#lbcomentario').html('');
+                    } else {
+                        $('#lbtotal2').html('');
+                        $('#lbcupon').html('');
+                        $('#lbdos').html('');
+                        $('#lbtres').html('');
+                    }
+
+
+                    $('#conftotal').val("");
+                    $('#desc').val("");
+                    $('#res').val("");
+                    $('#propina').val("");
+                    $('#total2').val("");
+                    $('#dos').val("");
+                    $('#tres').val("");
+                    $('#motivoDescuento').val("");
+
+                    $('#id_proveedor').val(tituloMesa);
+                    $('#mesa_estado').val(estadoMesa);
+
+                    var mesa = $('#id_proveedor').val();
+                    $('figure').eq(k).css('display', 'block');
+
+                    if (mesa.trim() == 'Para llevar') {
+                        $("#cliente").show();
+                        $("#direccion").show();
+                        $("#clientelb").show();
+                        $("#direccionlb").show();
+                    } else {
+                        $("#cliente").hide();
+                        $("#direccion").hide();
+                        $("#clientelb").hide();
+                        $("#direccionlb").hide();
+                        $("#cliente").val("");
+                        $("#direccion").val("");
+                    }
+
+                    $.ajax({
+                        url: "/obtenerComanda/" + mesa,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            let total = 0;
+                            let base = "0.00";
+
+                            data.forEach(function (element) {
+                                const articulo = element.articulo;
+
+                                if (articulo != null) {
+                                    // Añadir fila a la tabla
+                                    $('#detalles').append(createRow(element));
+
+                                    // Calcular total
+                                    total += parseFloat(element.subtotal);
+                                    base = total.toFixed(2);
+
+                                    // Actualizar cliente y dirección
+                                    $('#cliente').val(element.cliente);
+                                    $('#direccion').val(element.direccion);
+                                } else {
+                                    total = 0;
+                                    base = total.toFixed(2);
+                                }
+
+                                // Actualizar comentario
+                                $('#comentario').val(element.comentario != null ? element.comentario : "");
+                            });
+
+                            updateTotal(base, total, data.length);
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'No se ha podido obtener la comanda!',
+                            });
+                        }
+                    });
+
+                    // Función para crear la fila de la tabla
+                    function createRow(element) {
+                        return `<tr class="selected" id="fila${element.fila}">
+                            <td>
+                                <button type="button" class="btn btn-warning" onclick="eliminar(${element.fila}, ${element.subtotal})">Eliminar</button>
+                            </td>
+                            <td>
+                                <input type="hidden" name="articulo[]" value="${element.articulo}">${element.articulo}
+                            </td>
+                            <td>
+                                <input type="hidden" name="cantidad[]" value="${element.cantidad}">${element.cantidad}
+                            </td>
+                            <td>
+                                <input type="hidden" name="precio_compra[]" value="${element.precio_compra}">${element.precio_compra}
+                            </td>
+                            <td>
+                                <input type="hidden" name="subtotal[]" value="${element.subtotal}">${element.subtotal}
+                            </td>
+                            <td style="visibility:hidden;">
+                                <input type="hidden" id="indice" name="indice" class="indice" value="${element.fila}">
+                            </td>
+                        </tr>`;
+                    }
+
+                    // Función para actualizar el total y mostrar/ocultar elementos
+                    function updateTotal(base, total, dataLength) {
+                        const evaluar = parseInt(total);
+
+                        if (evaluar !== 0) {
+                            $("#total").html("$" + base);
+                            $('#valor').val(base);
+                            $('#total1').val(base);
+                            $('#total2').val(base);
+                            $("#guardar").show();
+                            $("#consumo").show();
+
+                            const contador = parseInt(dataLength > 0 ? data[dataLength - 1].fila : 0) + 1;
+                            $('#incrementa').val(contador);
+                        } else {
+                            resetFields();
+                        }
+                    }
+
+                    // Función para reiniciar campos
+                    function resetFields() {
+                        $('#total1').val("");
+                        $("#total").html("$0.00");
+                        $('#valor').val("0");
+                        $('#incrementa').val("0");
+                        $("#guardar").hide();
+                        $("#consumo").hide();
+                    }
+
+                    $('#detalle1').html('');
+                    $('#total').html('');
+
+                }
+
+                var j = $('#tableUserList tr').length;
+                for (var x = 0; x < j; x++) {
+                    $('button').eq(x).css("background-color", "#C0C0C0").prop("disabled", true);
+                }
+
+                var elementos = $("input[name='titulo_mesa2']");
+                var estados = $("input[name='estado_mesa2']");
+                for (var y = 0; y < elementos.length; y++) {
+                    if (elementos.eq(y).val() == mesa) {
+                        estados.eq(y).val("Abierta");
+                    }
+                }
+
+                var data = {
+                    "_token": $("meta[name='csrf-token']").attr("content"),
+                    "idt": idt,
+                    "tituloMesa": tituloMesa
+                };
+
+                $.ajax({
+                    url: "/datosHome",
+                    type: "POST",
+                    data: data,
+                    success: function (msg) {},
+                    error: function (error) {}
+                });
+
+            });
+
+        }, 1500);
+    </script>
+
+    {{-- Mesa Proceso al Cerrar --}}
+    <script type="text/javascript">
+        setTimeout(function(){
+            function syncWIthApis3(){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $('.cerrar').click(function (e) {
+                    e.preventDefault();
+
+                    var tituloMesa = $(this).closest("tr").find('.titulo_mesa').val();
+                    var idt = $(this).closest("tr").find('.id_mesa').val();
+                    var k = idt - 1;
+
+                    var fecha = document.getElementById('fecha').value;
+                    var mesa = document.getElementById('id_proveedor').value;
+                    var estado = document.getElementById('mesa_estado').value;
+                    var cajero = document.getElementById('cajero').value;
+                    var cliente = document.getElementById('cliente').value;
+                    var direccion = document.getElementById('direccion').value;
+                    var comentario = document.getElementById('comentario').value;
+
+                    var lbmesa = document.getElementById('lbmesa');
+                    lbmesa.innerHTML = '';
+                    var lbprecio_compra = document.getElementById('lbprecio_compra');
+                    lbprecio_compra.innerHTML = '';
+                    var lbcantidad = document.getElementById('lbcantidad');
+                    lbcantidad.innerHTML = '';
+                    var lbpespecial = document.getElementById('lbpespecial');
+                    lbpespecial.innerHTML = '';
+                    var lbpesprecio = document.getElementById('lbpesprecio');
+                    lbpesprecio.innerHTML = '';
+                    var lbpespcant = document.getElementById('lbpespcant');
+                    lbpespcant.innerHTML = '';
+                    var lbcliente = document.getElementById('lbcliente');
+                    lbcliente.innerHTML = '';
+                    var lbdireccion = document.getElementById('lbdireccion');
+                    lbdireccion.innerHTML = '';
+
+                    Swal.fire({
+                        title: 'Está seguro que desea cerrar la mesa?',
+                        text: "¡No podrás revertir esto!",
+                        icon: 'warning',
+                        html: '<label for="motivo">Motivo de cancelación</label>' +
+                            '<input id="swal-input1" class="swal2-input">',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonText: 'Sí!',
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            const motivo = Swal.getPopup().querySelector('#swal-input1').value
+                            if (!motivo) {
+                                Swal.showValidationMessage('Ingresa el motivo')
+                            }
+                            return {
+                                motivo: motivo
+                            }
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            if ($('#reducir').val() != 'Si') {
+                                var lbcupon = document.getElementById('lbcupon');
+                                lbcupon.innerHTML = '';
+                                var lbconf_total = document.getElementById('lbconf_total');
+                                lbconf_total.innerHTML = '';
+                                var lbdesc = document.getElementById('lbdesc');
+                                lbdesc.innerHTML = '';
+                                var lbres = document.getElementById('lbres');
+                                lbres.innerHTML = '';
+                                var lbpropina = document.getElementById('lbpropina');
+                                lbpropina.innerHTML = '';
+                                var lbtotal2 = document.getElementById('lbtotal2');
+                                lbtotal2.innerHTML = '';
+                                var lbdos = document.getElementById('lbdos');
+                                lbdos.innerHTML = '';
+                                var lbtres = document.getElementById('lbtres');
+                                lbtres.innerHTML = '';
+                                var lbmotivoDescuento = document.getElementById('lbmotivoDescuento');
+                                lbmotivoDescuento.innerHTML = '';
+                                var lbcomentario = document.getElementById('lbcomentario');
+                                lbcomentario.innerHTML = '';
+                            } else {
+                                var lbtotal2 = document.getElementById('lbtotal2');
+                                lbtotal2.innerHTML = '';
+                                var lbcupon = document.getElementById('lbcupon');
+                                lbcupon.innerHTML = '';
+                                var lbdos = document.getElementById('lbdos');
+                                lbdos.innerHTML = '';
+                                var lbtres = document.getElementById('lbtres');
+                                lbtres.innerHTML = '';
+                            }
+
+                            // $('#cupon').val("");
+                            $('#conftotal').val("");
+                            $('#desc').val("");
+                            $('#res').val("");
+                            $('#propina').val("");
+                            $('#total2').val("");
+                            $('#dos').val("");
+                            $('#tres').val("");
+                            $('#motivoDescuento').val("");
+
+                            var estadoMesa = $(this).closest("tr").find('.estado_mesa2').val();
+                            var motivo = document.getElementById('swal-input1').value;
+                            $('#motivo').val(motivo);
+
+                            var data = {
+                                "_token": $("meta[name='csrf-token']").attr("content"),
+                                "idt": idt,
+                                "tituloMesa": tituloMesa,
+                                "motivo": motivo,
+                                "estadoMesa": estadoMesa
+                            };
+                            $.ajax({
+                                url: "/cerrarMesa",
+                                type: "POST",
+                                data: data,
+                                sucess: function (msg) {
+                                    console.log(msg);
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+
+                            if ($('#id_proveedor').val() == tituloMesa) {
+                                $.ajax({
+                                    url: "/ordenCancelada",
+                                    type: "POST",
+                                    data: $('#sample_venta').serialize(),
+                                    success: function (data) {
+                                        console.log(data);
+                                    },
+                                    error: function (error) {
+                                        console.log(error);
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error!',
+                                            text: 'No se ha podido guardar X!',
+                                        })
+                                    }
+                                });
+                            }
+
+                            var mesa = $('#id_proveedor').val();
+                            document.getElementsByTagName("figure")[k].style.display = 'none';
+
+                            document.getElementsByTagName('tr')[idt].getElementsByTagName('td')[1]
+                                .setAttribute("style", "background-color:#008000;");
+                            document.getElementsByTagName("button")[idt].setAttribute("style",
+                                "background-color:#FFFFFF;");
+                            document.getElementsByTagName("button")[idt].disabled = false;
+                            document.getElementsByTagName("button")[idt].innerHTML = "Abrir mesa";
+                            document.getElementsByTagName("button")[idt].addEventListener("click",
+                                cambiar);
+
+                            var j = document.getElementById("tableUserList").rows.length;
+                            for (var x = 0; x < j; x++) {
+                                document.getElementsByTagName("button")[x].setAttribute("style",
+                                    "background-color:#FFFFFF;");
+                                document.getElementsByTagName("button")[x].disabled = false;
+                            }
+
+                            var elementos = document.getElementsByName("titulo_mesa2");
+                            var estados = document.getElementsByName("estado_mesa2");
+                            for (y = 0; y < elementos.length; y++) {
+                                if (elementos[y].value == tituloMesa) {
+                                    estados[y].value = "Cerrada";
+                                    document.getElementsByName("estado_mesa2")[y].value = "Cerrada";
+                                } else if (elementos[k].value == tituloMesa) {
+                                    estados[k].value = "Cerrada";
+                                    document.getElementsByName("estado_mesa2")[k].value = "Cerrada";
+                                    //document.getElementsByTagName("label")[k].style.display = 'none';
+                                }
+                            }
+
+
+                            if (tituloMesa == mesa) {
+                                var resultados = document.getElementById('detalle1');
+                                resultados.innerHTML = '';
+                                var detalleTotal = document.getElementById('total');
+                                detalleTotal.innerHTML = '';
+
+                                if ($('#reducir').val() != 'Si') {
+                                    var lbconf_total = document.getElementById('lbconf_total');
+                                    lbconf_total.innerHTML = '';
+                                    var lbcupon = document.getElementById('lbcupon');
+                                    lbcupon.innerHTML = '';
+                                    var lbdesc = document.getElementById('lbdesc');
+                                    lbdesc.innerHTML = '';
+                                    var lbres = document.getElementById('lbres');
+                                    lbres.innerHTML = '';
+                                    var lbpropina = document.getElementById('lbpropina');
+                                    lbpropina.innerHTML = '';
+                                    var lbtotal2 = document.getElementById('lbtotal2');
+                                    lbtotal2.innerHTML = '';
+                                    var lbdos = document.getElementById('lbdos');
+                                    lbdos.innerHTML = '';
+                                    var lbtres = document.getElementById('lbtres');
+                                    lbtres.innerHTML = '';
+                                    var lbmotivoDescuento = document.getElementById(
+                                        'lbmotivoDescuento');
+                                    lbmotivoDescuento.innerHTML = '';
+                                    var lbcomentario = document.getElementById('lbcomentario');
+                                    lbcomentario.innerHTML = '';
+                                } else {
+                                    var lbtotal2 = document.getElementById('lbtotal2');
+                                    lbtotal2.innerHTML = '';
+                                    var lbcupon = document.getElementById('lbcupon');
+                                    lbcupon.innerHTML = '';
+                                    var lbdos = document.getElementById('lbdos');
+                                    lbdos.innerHTML = '';
+                                    var lbtres = document.getElementById('lbtres');
+                                    lbtres.innerHTML = '';
+                                }
+
+                                // $('#cupon').val("");
+                                $('#conftotal').val("");
+                                $('#desc').val("");
+                                $('#res').val("");
+                                $('#propina').val("");
+                                $('#total2').val("");
+                                $('#dos').val("");
+                                $('#tres').val("");
+                                $('#motivoDescuento').val("");
+
+                                $('#total1').val("");
+                                $("#total").html("$" + "0.00");
+                                $('#id_proveedor').val("");
+                                $('#incrementa').val("0");
+                                $("#direccion").val("");
+                                $("#cliente").val("");
+                                $('#valor').val("0");
+                                $("#comentario").val("");
+
+                                $("#consumo").hide();
+                                $("#guardar").hide();
+                                $("#cliente").hide();
+                                $("#direccion").hide();
+                                $("#clientelb").hide();
+                                $("#direccionlb").hide();
+                            }
+
+                            function cambiar() {
+                                var tituloMesa = $(this).closest("tr").find('.titulo_mesa').val();
+                                var idt = $(this).closest("tr").find('.id_mesa').val();
+                                var total = 0;
+                                var suma = 0;
+                                var i = idt;
+                                var k = idt - 1;
+
+                                var lbmesa = document.getElementById('lbmesa');
+                                lbmesa.innerHTML = '';
+                                var lbprecio_compra = document.getElementById('lbprecio_compra');
+                                lbprecio_compra.innerHTML = '';
+                                var lbcantidad = document.getElementById('lbcantidad');
+                                lbcantidad.innerHTML = '';
+                                var lbpespecial = document.getElementById('lbpespecial');
+                                lbpespecial.innerHTML = '';
+                                var lbpesprecio = document.getElementById('lbpesprecio');
+                                lbpesprecio.innerHTML = '';
+                                var lbpespcant = document.getElementById('lbpespcant');
+                                lbpespcant.innerHTML = '';
+                                var lbcliente = document.getElementById('lbcliente');
+                                lbcliente.innerHTML = '';
+                                var lbdireccion = document.getElementById('lbdireccion');
+                                lbdireccion.innerHTML = '';
+
+                                // Swal.fire({
+                                //     title: 'Está seguro que desea abrir la mesa?',
+                                //     text: "¡No podrás revertir esto!",
+                                //     icon: 'warning',
+                                //     showCancelButton: true,
+                                //     confirmButtonColor: '#3085d6',
+                                //     cancelButtonColor: '#d33',
+                                //     cancelButtonText: 'Cancelar',
+                                //     confirmButtonText: 'Sí!'
+                                // }).then((result) => {
+                                //     if (result.isConfirmed) {
+
+                                        if ($('#reducir').val() != 'Si') {
+                                            var lbcupon = document.getElementById('lbcupon');
+                                            lbcupon.innerHTML = '';
+                                            var lbconf_total = document.getElementById(
+                                                'lbconf_total');
+                                            lbconf_total.innerHTML = '';
+                                            var lbdesc = document.getElementById('lbdesc');
+                                            lbdesc.innerHTML = '';
+                                            var lbres = document.getElementById('lbres');
+                                            lbres.innerHTML = '';
+                                            var lbpropina = document.getElementById(
+                                                'lbpropina');
+                                            lbpropina.innerHTML = '';
+                                            var lbtotal2 = document.getElementById('lbtotal2');
+                                            lbtotal2.innerHTML = '';
+                                            var lbdos = document.getElementById('lbdos');
+                                            lbdos.innerHTML = '';
+                                            var lbtres = document.getElementById('lbtres');
+                                            lbtres.innerHTML = '';
+                                            var lbmotivoDescuento = document.getElementById(
+                                                'lbmotivoDescuento');
+                                            lbmotivoDescuento.innerHTML = '';
+                                            var lbcomentario = document.getElementById(
+                                                'lbcomentario');
+                                            lbcomentario.innerHTML = '';
+                                        } else {
+                                            var lbtotal2 = document.getElementById('lbtotal2');
+                                            lbtotal2.innerHTML = '';
+                                            var lbcupon = document.getElementById('lbcupon');
+                                            lbcupon.innerHTML = '';
+                                            var lbdos = document.getElementById('lbdos');
+                                            lbdos.innerHTML = '';
+                                            var lbtres = document.getElementById('lbtres');
+                                            lbtres.innerHTML = '';
+                                        }
+                                        // $('#cupon').val("");
+                                        $('#conftotal').val("");
+                                        $('#desc').val("");
+                                        $('#res').val("");
+                                        $('#propina').val("");
+                                        $('#total2').val("");
+                                        $('#dos').val("");
+                                        $('#tres').val("");
+                                        $('#motivoDescuento').val("");
+
+                                        var resultados = document.getElementById('detalle1');
+                                        resultados.innerHTML = '';
+                                        var detalleTotal = document.getElementById('total');
+                                        detalleTotal.innerHTML = '';
+                                        $('#total1').val("");
+                                        $("#total").html(" ");
+                                        $("#total").html("$" + "0.00");
+                                        $('#valor').val("0");
+                                        $('#incrementa').val("0");
+                                        $("#comentario").val("");
+
+                                        $('#id_proveedor').val(tituloMesa);
+                                        $('#mesa_estado').val('Abierta');
+                                        var mesa = $('#id_proveedor').val();
+
+                                        if (mesa.trim() == 'Para llevar') {
+                                            $("#cliente").show();
+                                            $("#direccion").show();
+                                            $("#clientelb").show();
+                                            $("#direccionlb").show();
+                                        } else {
+                                            $("#direccion").val("");
+                                            $("#cliente").val("");
+                                            $("#cliente").hide();
+                                            $("#direccion").hide();
+                                            $("#clientelb").hide();
+                                            $("#direccionlb").hide();
+                                        }
+
+                                        document.getElementsByTagName("button")[i].innerHTML =
+                                            "Atendiendo";
+                                        document.getElementsByTagName("button")[i].setAttribute(
+                                            "style", "background-color:#C0C0C0;");
+                                        document.getElementsByTagName("button")[i].disabled =
+                                            true;
+                                        document.getElementsByTagName('tr')[i]
+                                            .getElementsByTagName('td')[1].setAttribute("style",
+                                                "background-color:#ce0018;");
+                                        document.getElementsByTagName("button")[i]
+                                            .addEventListener("click", cambiar);
+                                        document.getElementsByTagName("figure")[k].style
+                                            .display = 'block';
+
+                                        function cambiar() {
+                                            var estadoMesa = $(this).closest("tr").find(
+                                                '.estado_mesa2').val();
+                                            var tituloMesa = $(this).closest("tr").find(
+                                                '.titulo_mesa').val();
+                                            var idt = $(this).closest("tr").find('.id_mesa')
+                                                .val();
+                                            var sumatotal = 0;
+                                            var contador = 0;
+                                            var evaluar = 0;
+                                            var total = 0;
+                                            var dato = 0;
+                                            var k = idt - 1;
+                                            var f = 0;
+
+                                            var lbmesa = document.getElementById('lbmesa');
+                                            lbmesa.innerHTML = '';
+                                            var lbprecio_compra = document.getElementById(
+                                                'lbprecio_compra');
+                                            lbprecio_compra.innerHTML = '';
+                                            var lbcantidad = document.getElementById(
+                                                'lbcantidad');
+                                            lbcantidad.innerHTML = '';
+                                            var lbpespecial = document.getElementById(
+                                                'lbpespecial');
+                                            lbpespecial.innerHTML = '';
+                                            var lbpesprecio = document.getElementById(
+                                                'lbpesprecio');
+                                            lbpesprecio.innerHTML = '';
+                                            var lbpespcant = document.getElementById(
+                                                'lbpespcant');
+                                            lbpespcant.innerHTML = '';
+                                            var lbcliente = document.getElementById(
+                                                'lbcliente');
+                                            lbcliente.innerHTML = '';
+                                            var lbdireccion = document.getElementById(
+                                                'lbdireccion');
+                                            lbdireccion.innerHTML = '';
+
+                                            // Swal.fire({
+                                            //     title: 'Está seguro que desea ver la mesa?',
+                                            //     text: "¡No podrás revertir esto!",
+                                            //     icon: 'warning',
+                                            //     showCancelButton: true,
+                                            //     confirmButtonColor: '#3085d6',
+                                            //     cancelButtonColor: '#d33',
+                                            //     cancelButtonText: 'Cancelar',
+                                            //     confirmButtonText: 'Sí!'
+                                            // }).then((result) => {
+                                            //     if (result.isConfirmed) {
+
+                                                    if ($('#reducir').val() != 'Si') {
+                                                        var lbcupon = document
+                                                            .getElementById('lbcupon');
+                                                        lbcupon.innerHTML = '';
+                                                        var lbconf_total = document
+                                                            .getElementById(
+                                                                'lbconf_total');
+                                                        lbconf_total.innerHTML = '';
+                                                        var lbdesc = document
+                                                            .getElementById('lbdesc');
+                                                        lbdesc.innerHTML = '';
+                                                        var lbres = document
+                                                            .getElementById('lbres');
+                                                        lbres.innerHTML = '';
+                                                        var lbpropina = document
+                                                            .getElementById(
+                                                                'lbpropina');
+                                                        lbpropina.innerHTML = '';
+                                                        var lbtotal2 = document
+                                                            .getElementById('lbtotal2');
+                                                        lbtotal2.innerHTML = '';
+                                                        var lbdos = document
+                                                            .getElementById('lbdos');
+                                                        lbdos.innerHTML = '';
+                                                        var lbtres = document
+                                                            .getElementById('lbtres');
+                                                        lbtres.innerHTML = '';
+                                                        var lbmotivoDescuento = document
+                                                            .getElementById(
+                                                                'lbmotivoDescuento');
+                                                        lbmotivoDescuento.innerHTML =
+                                                            '';
+                                                        var lbcomentario = document
+                                                            .getElementById(
+                                                                'lbcomentario');
+                                                        lbcomentario.innerHTML = '';
+                                                    } else {
+                                                        var lbtotal2 = document
+                                                            .getElementById('lbtotal2');
+                                                        lbtotal2.innerHTML = '';
+                                                        var lbcupon = document
+                                                            .getElementById('lbcupon');
+                                                        lbcupon.innerHTML = '';
+                                                        var lbdos = document
+                                                            .getElementById('lbdos');
+                                                        lbdos.innerHTML = '';
+                                                        var lbtres = document
+                                                            .getElementById('lbtres');
+                                                        lbtres.innerHTML = '';
+                                                    }
+
+                                                    // $('#cupon').val("");
+                                                    $('#conftotal').val("");
+                                                    $('#desc').val("");
+                                                    $('#res').val("");
+                                                    $('#propina').val("");
+                                                    $('#total2').val("");
+                                                    $('#dos').val("");
+                                                    $('#tres').val("");
+                                                    $('#motivoDescuento').val("");
+
+                                                    document.getElementsByTagName(
+                                                            "figure")[k].style.display =
+                                                        'block';
+                                                    $('#id_proveedor').val(tituloMesa);
+                                                    $('#mesa_estado').val(estadoMesa);
+                                                    var mesa = $('#id_proveedor').val();
+
+                                                    if (mesa.trim() == 'Para llevar') {
+                                                        $("#cliente").show();
+                                                        $("#direccion").show();
+                                                        $("#clientelb").show();
+                                                        $("#direccionlb").show();
+                                                    } else {
+                                                        $("#direccion").val("");
+                                                        $("#consumo").hide();
+                                                        $("#cliente").val("");
+                                                        $("#guardar").hide();
+                                                        $("#cliente").hide();
+                                                        $("#direccion").hide();
+                                                        $("#clientelb").hide();
+                                                        $("#direccionlb").hide();
+                                                    }
+
+
+                                                    $.ajax({
+                                                        url: "/obtenerComanda/" + mesa,
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        success: function (
+                                                            data) {
+
+                                                            data.forEach(
+                                                                function (
+                                                                    element,
+                                                                    indice,
+                                                                    array
+                                                                ) {
+
+                                                                    var articulo =
+                                                                        element
+                                                                        .articulo;
+                                                                    if (articulo !=
+                                                                        null
+                                                                    ) {
+                                                                        $('#detalles')
+                                                                            .append(
+                                                                                '<tr class="selected" id="fila' +
+                                                                                element
+                                                                                .fila +
+                                                                                '">' +
+                                                                                '<td><button type="button"  class="btn btn-warning" onclick="eliminar(' +
+                                                                                element
+                                                                                .fila +
+                                                                                ',' +
+                                                                                element
+                                                                                .subtotal +
+                                                                                ')">Eliminar</button></td>' +
+                                                                                '<td><input type="hidden" name="articulo[]" value="' +
+                                                                                element
+                                                                                .articulo +
+                                                                                '">' +
+                                                                                element
+                                                                                .articulo +
+                                                                                '</td>' +
+                                                                                '<td><input type="hidden" name="cantidad[]" value="' +
+                                                                                element
+                                                                                .cantidad +
+                                                                                '">' +
+                                                                                element
+                                                                                .cantidad +
+                                                                                '</td>' +
+                                                                                '<td><input type="hidden" name="precio_compra[]" value="' +
+                                                                                element
+                                                                                .precio_compra +
+                                                                                '">' +
+                                                                                element
+                                                                                .precio_compra +
+                                                                                '</td>' +
+                                                                                '<td><input type="hidden" name="subtotal[]" value="' +
+                                                                                element
+                                                                                .subtotal +
+                                                                                '">' +
+                                                                                element
+                                                                                .subtotal +
+                                                                                '</td>' +
+                                                                                '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
+                                                                                element
+                                                                                .fila +
+                                                                                '"></td></tr>'
+                                                                            )
+
+                                                                        total
+                                                                            +=
+                                                                            parseFloat(
+                                                                                element
+                                                                                .subtotal
+                                                                            );
+                                                                        base =
+                                                                            total
+                                                                            .toFixed(
+                                                                                2
+                                                                            );
+
+                                                                        var cliente =
+                                                                            element
+                                                                            .cliente;
+                                                                        var direccion =
+                                                                            element
+                                                                            .direccion;
+                                                                        $('#cliente')
+                                                                            .val(
+                                                                                cliente
+                                                                            );
+                                                                        $('#direccion')
+                                                                            .val(
+                                                                                direccion
+                                                                            );
+
+                                                                    } else {
+
+                                                                        total
+                                                                            =
+                                                                            0;
+                                                                        base =
+                                                                            total
+                                                                            .toFixed(
+                                                                                2
+                                                                            );
+                                                                    }
+
+                                                                    var comentario =
+                                                                        element
+                                                                        .comentario;
+                                                                    if (comentario !=
+                                                                        null
+                                                                    ) {
+                                                                        $('#comentario')
+                                                                            .val(
+                                                                                comentario
+                                                                            );
+                                                                    } else {
+                                                                        $("#comentario")
+                                                                            .val(
+                                                                                ""
+                                                                            );
+                                                                    }
+                                                                });
+                                                            evaluar =
+                                                                parseInt(
+                                                                    total);
+                                                            if (evaluar !=
+                                                                0) {
+                                                                $("#total")
+                                                                    .html(
+                                                                        "$" +
+                                                                        base
+                                                                    );
+                                                                $('#valor')
+                                                                    .val(
+                                                                        base
+                                                                    );
+                                                                $('#total1').val(base);
+                                                                $('#total2').val(base);
+                                                                $("#guardar")
+                                                                    .show();
+                                                                $("#consumo")
+                                                                    .show();
+
+                                                                var f = data
+                                                                    .length -
+                                                                    1;
+                                                                var dato =
+                                                                    data[f]
+                                                                    .fila;
+                                                                contador =
+                                                                    parseInt(
+                                                                        dato
+                                                                    ) +
+                                                                    1;
+                                                                $('#incrementa')
+                                                                    .val(
+                                                                        contador
+                                                                    );
+
+                                                                function evaluar() {
+                                                                    if (base >
+                                                                        0) {
+                                                                        $("#guardar")
+                                                                            .show();
+                                                                        $("#consumo")
+                                                                            .show();
+                                                                    } else {
+                                                                        $("#consumo")
+                                                                            .hide();
+                                                                        $("#guardar")
+                                                                            .hide();
+                                                                        $("#total")
+                                                                            .html(
+                                                                                "$" +
+                                                                                "0.00"
+                                                                            );
+                                                                        $('#total1')
+                                                                            .val(
+                                                                                ""
+                                                                            );
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                $('#total1')
+                                                                    .val(
+                                                                        "");
+                                                                $("#total")
+                                                                    .html(
+                                                                        "$" +
+                                                                        "0.00"
+                                                                    );
+                                                                $('#valor')
+                                                                    .val(
+                                                                        "0"
+                                                                    );
+                                                                $('#incrementa')
+                                                                    .val(
+                                                                        "0"
+                                                                    );
+                                                                $("#guardar")
+                                                                    .hide();
+                                                                $("#consumo")
+                                                                    .hide();
+                                                                if (data ==
+                                                                    '') {
+                                                                    $("#comentario")
+                                                                        .val(
+                                                                            ""
+                                                                        );
+                                                                }
+                                                            }
+
+                                                        },
+                                                        error: function (
+                                                            error) {
+                                                            console.log(
+                                                                error);
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Error!',
+                                                                text: 'No se ha podido obtener la comanda!',
+                                                            })
+                                                        }
+                                                    });
+
+                                                    // Swal.fire(
+                                                    //     'consultada!',
+                                                    //     'La mesa ha sido consultada.',
+                                                    //     'success'
+                                                    // )
+                                                    var resultados = document
+                                                        .getElementById('detalle1');
+                                                    resultados.innerHTML = '';
+                                                    var detalleTotal = document
+                                                        .getElementById('total');
+                                                    detalleTotal.innerHTML = '';
+
+                                            //     } else {
+                                            //         Swal.fire(
+                                            //             'La mesa no ha sido consultada',
+                                            //             '', 'info')
+                                            //     }
+                                            // })
+                                        }
+
+                                        var j = document.getElementById("tableUserList").rows
+                                            .length;
+                                        for (var x = 0; x < j; x++) {
+                                            document.getElementsByTagName("button")[x]
+                                                .setAttribute("style",
+                                                    "background-color:#C0C0C0;");
+                                            document.getElementsByTagName("button")[x]
+                                                .disabled = true;
+                                        }
+                                        var elementos = document.getElementsByName(
+                                            "titulo_mesa2");
+                                        var estados = document.getElementsByName(
+                                            "estado_mesa2");
+                                        for (y = 0; y < elementos.length; y++) {
+                                            if (elementos[y].value == mesa) {
+                                                estados[y].value = "Abierta";
+                                                document.getElementsByName("estado_mesa2")[y]
+                                                    .value = "Abierta";
+                                            }
+                                        }
+
+                                        var data = {
+                                            "_token": $("meta[name='csrf-token']").attr(
+                                                "content"),
+                                            "idt": idt,
+                                            "tituloMesa": tituloMesa
+                                        };
+                                        $.ajax({
+                                            url: "/datosHome",
+                                            type: "POST",
+                                            data: data,
+                                            sucess: function (msg) {
+                                                console.log(msg);
+                                                location.reload();
+                                            },
+                                            error: function (error) {
+                                                console.log(error);
+                                            }
+
+                                        });
+                                //     } else {
+                                //         Swal.fire('La mesa no se ha abierto', '', 'info')
+                                //     }
+                                // })
+                            }
+
+                            Swal.fire(
+                                'Cerrada!',
+                                'La mesa ha sido cerrada.',
+                                'success'
+                            )
+                        } else {
+                            Swal.fire('La mesa sigue abierta', '', 'info')
+                        }
+
+                    })
+                });
+            }
+
+            $(document).ready(function () {
+                setInterval(syncWIthApis3, 950); //Cada 30 segundo (30 mil milisegundos)
+            });
+
+        }, 1500);
+
+    </script>
+
+    {{-- Mesa 4 - Ver Mesa --}}
+    <script type="text/javascript">
+        setTimeout(function(){
+            function syncWIthApis4(){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                var total = 0;
+                var suma = 0;
+
+                $('.vermesabtn').click(function (e) {
+                    e.preventDefault();
+                    localStorage.setItem("tableOrden", '');
+                    var estadoMesa = $(this).closest("tr").find('.estado_mesa2').val();
+                    var tituloMesa = $(this).closest("tr").find('.titulo_mesa').val();
+                    var idt = $(this).closest("tr").find('.id_mesa').val();
+                    var contador = 0;
+                    var evaluar = 0;
+                    var total = 0;
+                    var dato = 0;
+                    var k = idt - 1;
+                    var f = 0;
+
+                    var lbmesa = document.getElementById('lbmesa');
+                    lbmesa.innerHTML = '';
+                    var lbprecio_compra = document.getElementById('lbprecio_compra');
+                    lbprecio_compra.innerHTML = '';
+                    var lbcantidad = document.getElementById('lbcantidad');
+                    lbcantidad.innerHTML = '';
+                    var lbpespecial = document.getElementById('lbpespecial');
+                    lbpespecial.innerHTML = '';
+                    var lbpesprecio = document.getElementById('lbpesprecio');
+                    lbpesprecio.innerHTML = '';
+                    var lbpespcant = document.getElementById('lbpespcant');
+                    lbpespcant.innerHTML = '';
+                    var lbcliente = document.getElementById('lbcliente');
+                    lbcliente.innerHTML = '';
+                    var lbdireccion = document.getElementById('lbdireccion');
+                    lbdireccion.innerHTML = '';
+
+                    // Swal.fire({
+                    //     title: 'Está seguro que desea ver la mesa?',
+                    //     text: "¡No podrás revertir esto!",
+                    //     icon: 'warning',
+                    //     showCancelButton: true,
+                    //     confirmButtonColor: '#3085d6',
+                    //     cancelButtonColor: '#d33',
+                    //     cancelButtonText: 'Cancelar',
+                    //     confirmButtonText: 'Sí!'
+                    // }).then((result) => {
+                    //     if (result.isConfirmed) {
+
+                            if ($('#reducir').val() != 'Si') {
+                                var lbcupon = document.getElementById('lbcupon');
+                                lbcupon.innerHTML = '';
+                                var lbconf_total = document.getElementById('lbconf_total');
+                                lbconf_total.innerHTML = '';
+                                var lbdesc = document.getElementById('lbdesc');
+                                lbdesc.innerHTML = '';
+                                var lbres = document.getElementById('lbres');
+                                lbres.innerHTML = '';
+                                var lbpropina = document.getElementById('lbpropina');
+                                lbpropina.innerHTML = '';
+                                var lbtotal2 = document.getElementById('lbtotal2');
+                                lbtotal2.innerHTML = '';
+                                var lbdos = document.getElementById('lbdos');
+                                lbdos.innerHTML = '';
+                                var lbtres = document.getElementById('lbtres');
+                                lbtres.innerHTML = '';
+                                var lbmotivoDescuento = document.getElementById('lbmotivoDescuento');
+                                lbmotivoDescuento.innerHTML = '';
+                                var lbcomentario = document.getElementById('lbcomentario');
+                                lbcomentario.innerHTML = '';
+                            } else {
+                                var lbtotal2 = document.getElementById('lbtotal2');
+                                lbtotal2.innerHTML = '';
+                                var lbcupon = document.getElementById('lbcupon');
+                                lbcupon.innerHTML = '';
+                                var lbdos = document.getElementById('lbdos');
+                                lbdos.innerHTML = '';
+                                var lbtres = document.getElementById('lbtres');
+                                lbtres.innerHTML = '';
+                            }
+
+                            // $('#cupon').val("");
+                            $('#conftotal').val("");
+                            $('#desc').val("");
+                            $('#res').val("");
+                            $('#propina').val("");
+                            $('#total2').val("");
+                            $('#dos').val("");
+                            $('#tres').val("");
+                            $('#motivoDescuento').val("");
+
+                            $('#id_proveedor').val(tituloMesa);
+                            $('#mesa_estado').val(estadoMesa);
+                            var mesa = $('#id_proveedor').val();
+                            document.getElementsByTagName("figure")[k].style.display = 'block';
+
+                            if (mesa.trim() == 'Para llevar') {
+                                $("#cliente").show();
+                                $("#direccion").show();
+                                $("#clientelb").show();
+                                $("#direccionlb").show();
+                            } else {
+                                // $("#consumo").hide();
+                                // $("#guardar").hide();
+                                $("#cliente").hide();
+                                $("#direccion").hide();
+                                $("#clientelb").hide();
+                                $("#direccionlb").hide();
+                            }
+
+                            $.ajax({
+                                url: "/obtenerComanda/" + mesa,
+                                type: "GET",
+                                dataType: "json",
+                                success: function (data) {
+
+                                    var tableOrden = localStorage.getItem("tableOrden");
+
+                                    if(tableOrden != ''){
+                                        data = JSON.stringify(data);
+
+                                        if(data != tableOrden){
+                                            data = JSON.parse(data);
+                                            data.forEach(function (element, indice, array) {
+                                                var articulo = element.articulo;
+
+                                                if (articulo != null) {
+                                                    $('#detalles').append(
+                                                        '<tr class="selected" id="fila' +
+                                                        element.fila + '">' +
+                                                        '<td><button type="button"  class="btn btn-warning" onclick="eliminar(' +
+                                                        element.fila + ',' + element
+                                                        .subtotal +
+                                                        ')">Eliminar</button></td>' +
+                                                        '<td><input type="hidden" name="articulo[]" value="' +
+                                                        element.articulo + '">' +
+                                                        element.articulo + '</td>' +
+                                                        '<td><input type="hidden" name="cantidad[]" value="' +
+                                                        element.cantidad + '">' +
+                                                        element.cantidad + '</td>' +
+                                                        '<td><input type="hidden" name="precio_compra[]" value="' +
+                                                        element.precio_compra + '">' +
+                                                        element.precio_compra +
+                                                        '</td>' +
+                                                        '<td><input type="hidden" name="subtotal[]" value="' +
+                                                        element.subtotal + '">' +
+                                                        element.subtotal + '</td>' +
+                                                        '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
+                                                        element.fila + '"></td></tr>')
+
+                                                    total += parseFloat(element.subtotal);
+                                                    base = total.toFixed(2);
+
+                                                    var cliente = element.cliente;
+                                                    var direccion = element.direccion;
+                                                    $('#cliente').val(cliente);
+                                                    $('#direccion').val(direccion);
+
+                                                } else {
+
+                                                    total = 0;
+                                                    base = total.toFixed(2);
+                                                }
+
+                                                var comentario = element.comentario;
+                                                if (comentario != null) {
+                                                    $('#comentario').val(comentario);
+                                                } else {
+                                                    $("#comentario").val("");
+                                                }
+
+
+                                            });
+                                            evaluar = parseInt(total);
+                                            if (evaluar != 0) {
+                                                $("#total").html("$" + base);
+                                                $('#valor').val(base);
+                                                $('#total1').val(base);
+                                                $('#total2').val(base);
+                                                $('#res').val(base);
+                                                $('#conftotal').val(base);
+                                                $("#guardar").show();
+                                                $("#consumo").show();
+                                                var f = data.length - 1;
+                                                var dato = data[f].fila;
+                                                contador = parseInt(dato) + 1;
+                                                $('#incrementa').val(contador);
+                                                // calcular();
+
+                                                function evaluar() {
+                                                    if (base > 0) {
+                                                        $("#guardar").show();
+                                                        $("#consumo").show();
+                                                    } else {
+                                                        $("#consumo").hide();
+                                                        $("#guardar").hide();
+                                                        $("#total").html("$" + "0.00");
+                                                        $('#total1').val("");
+                                                        // calcular();
+                                                    }
+                                                }
+                                            } else {
+                                                $('#total1').val("");
+                                                $('#conftotal').val("");
+                                                $("#total").html("$" + "0.00");
+                                                $('#valor').val("0");
+                                                $('#incrementa').val("0");
+                                                $("#guardar").hide();
+                                                $("#consumo").hide();
+                                                // calcular();
+                                                if (data == '') {
+                                                    $("#comentario").val("");
+                                                }
+                                            }
+                                            data = JSON.stringify(data);
+                                            localStorage.setItem("tableOrden",data);
+
+                                        }
+
+                                    } else {
+
+                                        data.forEach(function (element, indice, array) {
+                                            var articulo = element.articulo;
+
+                                            if (articulo != null) {
+                                                $('#detalles').append(
+                                                    '<tr class="selected" id="fila' +
+                                                    element.fila + '">' +
+                                                    '<td><button type="button"  class="btn btn-warning" onclick="eliminar(' +
+                                                    element.fila + ',' + element
+                                                    .subtotal +
+                                                    ')">Eliminar</button></td>' +
+                                                    '<td><input type="hidden" name="articulo[]" value="' +
+                                                    element.articulo + '">' +
+                                                    element.articulo + '</td>' +
+                                                    '<td><input type="hidden" name="cantidad[]" value="' +
+                                                    element.cantidad + '">' +
+                                                    element.cantidad + '</td>' +
+                                                    '<td><input type="hidden" name="precio_compra[]" value="' +
+                                                    element.precio_compra + '">' +
+                                                    element.precio_compra +
+                                                    '</td>' +
+                                                    '<td><input type="hidden" name="subtotal[]" value="' +
+                                                    element.subtotal + '">' +
+                                                    element.subtotal + '</td>' +
+                                                    '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
+                                                    element.fila + '"></td></tr>')
+
+                                                total += parseFloat(element.subtotal);
+                                                base = total.toFixed(2);
+
+                                                var cliente = element.cliente;
+                                                var direccion = element.direccion;
+                                                $('#cliente').val(cliente);
+                                                $('#direccion').val(direccion);
+
+                                            } else {
+
+                                                total = 0;
+                                                base = total.toFixed(2);
+                                            }
+
+                                            var comentario = element.comentario;
+                                            if (comentario != null) {
+                                                $('#comentario').val(comentario);
+                                            } else {
+                                                $("#comentario").val("");
+                                            }
+
+
+                                        });
+                                        evaluar = parseInt(total);
+                                        if (evaluar != 0) {
+                                            $("#total").html("$" + base);
+                                            $('#valor').val(base);
+                                            $('#total1').val(base);
+                                            $('#total2').val(base);
+                                            $('#res').val(base);
+                                            $('#conftotal').val(base);
+                                            $("#guardar").show();
+                                            $("#consumo").show();
+                                            var f = data.length - 1;
+                                            var dato = data[f].fila;
+                                            contador = parseInt(dato) + 1;
+                                            $('#incrementa').val(contador);
+                                            // calcular();
+
+                                            function evaluar() {
+                                                if (base > 0) {
+                                                    $("#guardar").show();
+                                                    $("#consumo").show();
+                                                } else {
+                                                    $("#consumo").hide();
+                                                    $("#guardar").hide();
+                                                    $("#total").html("$" + "0.00");
+                                                    $('#total1').val("");
+                                                    // calcular();
+                                                }
+                                            }
+                                        } else {
+                                            $('#total1').val("");
+                                            $('#conftotal').val("");
+                                            $("#total").html("$" + "0.00");
+                                            $('#valor').val("0");
+                                            $('#incrementa').val("0");
+                                            $("#guardar").hide();
+                                            $("#consumo").hide();
+                                            // calcular();
+                                            if (data == '') {
+                                                $("#comentario").val("");
+                                            }
+                                        }
+                                        data = JSON.stringify(data);
+                                        localStorage.setItem("tableOrden",data);
+                                    }
+
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '¡Error!',
+                                        text: '¡No se ha podido obtener la Comanda!',
+                                    })
+                                }
+                            });
+
+                            // Swal.fire(
+                            //     'consultada!',
+                            //     'La mesa ha sido consultada.',
+                            //     'success'
+                            // )
+                            var resultados = document.getElementById('detalle1');
+                            resultados.innerHTML = '';
+                            var detalleTotal = document.getElementById('total');
+                            detalleTotal.innerHTML = '';
+                    //     } else {
+                    //         Swal.fire('La mesa no ha sido consultada', '', 'info')
+                    //     }
+                    // })
+                });
+            }
+
+            $(document).ready(function () {
+                setInterval(syncWIthApis4, 950); //Cada 30 segundo (30 mil milisegundos)
             });
         }, 1500);
 
@@ -2775,1637 +4251,6 @@
             });
             //console.log(rsubcategoria);
         });
-    </script>
-
-    {{-- Mesa 2 - Abrir Mesa --}}
-    <script>
-        setTimeout(function(){
-            function syncWIthApis2(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $('.mesabtn').click(function (e) {
-                    e.preventDefault();
-                    localStorage.setItem("tableOrden", '');
-                    var tituloMesa = $(this).closest("tr").find('.titulo_mesa').val();
-                    var idt = $(this).closest("tr").find('.id_mesa').val();
-                    var i = idt;
-                    var k = idt - 1;
-
-                    var lbmesa = document.getElementById('lbmesa');
-                    lbmesa.innerHTML = '';
-                    var lbprecio_compra = document.getElementById('lbprecio_compra');
-                    lbprecio_compra.innerHTML = '';
-                    var lbcantidad = document.getElementById('lbcantidad');
-                    lbcantidad.innerHTML = '';
-                    var lbpespecial = document.getElementById('lbpespecial');
-                    lbpespecial.innerHTML = '';
-                    var lbpesprecio = document.getElementById('lbpesprecio');
-                    lbpesprecio.innerHTML = '';
-                    var lbpespcant = document.getElementById('lbpespcant');
-                    lbpespcant.innerHTML = '';
-                    var lbcliente = document.getElementById('lbcliente');
-                    lbcliente.innerHTML = '';
-                    var lbdireccion = document.getElementById('lbdireccion');
-                    lbdireccion.innerHTML = '';
-
-                    // Swal.fire({
-                    //     title: 'Está seguro que desea abrir la mesa?',
-                    //     text: "¡No podrás revertir esto!",
-                    //     icon: 'warning',
-                    //     showCancelButton: true,
-                    //     confirmButtonColor: '#3085d6',
-                    //     cancelButtonColor: '#d33',
-                    //     cancelButtonText: 'Cancelar',
-                    //     confirmButtonText: 'Sí!'
-                    // }).then((result) => {
-                    //     if (result.isConfirmed) {
-
-                            var resultados = document.getElementById('detalle1');
-                            resultados.innerHTML = '';
-                            var detalleTotal = document.getElementById('total');
-                            detalleTotal.innerHTML = '';
-
-                            if ($('#reducir').val() != 'Si') {
-
-                                var lbconf_total = document.getElementById('lbconf_total');
-                                lbconf_total.innerHTML = '';
-                                var lbcupon = document.getElementById('lbcupon');
-                                lbcupon.innerHTML = '';
-                                var lbdesc = document.getElementById('lbdesc');
-                                lbdesc.innerHTML = '';
-                                var lbres = document.getElementById('lbres');
-                                lbres.innerHTML = '';
-                                var lbpropina = document.getElementById('lbpropina');
-                                lbpropina.innerHTML = '';
-                                var lbtotal2 = document.getElementById('lbtotal2');
-                                lbtotal2.innerHTML = '';
-                                var lbdos = document.getElementById('lbdos');
-                                lbdos.innerHTML = '';
-                                var lbtres = document.getElementById('lbtres');
-                                lbtres.innerHTML = '';
-                                var lbmotivoDescuento = document.getElementById('lbmotivoDescuento');
-                                lbmotivoDescuento.innerHTML = '';
-                                var lbcomentario = document.getElementById('lbcomentario');
-                                lbcomentario.innerHTML = '';
-                            } else {
-                                var lbtotal2 = document.getElementById('lbtotal2');
-                                lbtotal2.innerHTML = '';
-                                var lbcupon = document.getElementById('lbcupon');
-                                lbcupon.innerHTML = '';
-                                var lbdos = document.getElementById('lbdos');
-                                lbdos.innerHTML = '';
-                                var lbtres = document.getElementById('lbtres');
-                                lbtres.innerHTML = '';
-                            }
-
-                            $('#total1').val("");
-                            $("#total").html(" ");
-                            $("#total").html("$" + "0.00");
-                            $('#valor').val("0");
-                            $('#incrementa').val("0");
-                            $("#comentario").val("");
-
-                            // $('#cupon').val("");
-                            $('#conftotal').val("");
-                            $('#desc').val("");
-                            $('#res').val("");
-                            $('#propina').val("");
-                            $('#total2').val("");
-                            $('#dos').val("");
-                            $('#tres').val("");
-                            $('#motivoDescuento').val("");
-
-                            $('#id_proveedor').val(tituloMesa);
-                            $('#mesa_estado').val('Abierta');
-                            var mesa = $('#id_proveedor').val();
-
-                            if (mesa.trim() == 'Para llevar') {
-                                $("#cliente").show();
-                                $("#direccion").show();
-                                $("#clientelb").show();
-                                $("#direccionlb").show();
-                            } else {
-                                $("#cliente").hide();
-                                $("#direccion").hide();
-                                $("#clientelb").hide();
-                                $("#direccionlb").hide();
-                                $("#cliente").val("");
-                                $("#direccion").val("");
-                            }
-
-
-                            document.getElementsByTagName("button")[i].innerHTML = "Atendiendo";
-                            document.getElementsByTagName("button")[i].setAttribute("style",
-                                "background-color:#C0C0C0;");
-                            document.getElementsByTagName("button")[i].disabled = true;
-                            document.getElementsByTagName('tr')[i].getElementsByTagName('td')[1]
-                                .setAttribute("style", "background-color:#ce0018;");
-
-                            //Console.log(i+"hola prueba");
-                            document.getElementsByTagName("button")[i].addEventListener("click",
-                                cambiar);
-                            document.getElementsByTagName("figure")[k].style.display = 'block';
-
-
-
-
-                            function cambiar() {
-                                var tituloMesa = $(this).closest("tr").find('.titulo_mesa').val();
-                                var estadoMesa = $(this).closest("tr").find('.estado_mesa2').val();
-                                var idt = $(this).closest("tr").find('.id_mesa').val();
-
-                                var contador = 0;
-                                var evaluar = 0;
-                                var total = 0;
-                                var suma = 0;
-                                var base = 0;
-                                var dato = 0;
-                                var k = idt - 1;
-                                var f = 0;
-
-                                var lbmesa = document.getElementById('lbmesa');
-                                lbmesa.innerHTML = '';
-                                var lbprecio_compra = document.getElementById('lbprecio_compra');
-                                lbprecio_compra.innerHTML = '';
-                                var lbcantidad = document.getElementById('lbcantidad');
-                                lbcantidad.innerHTML = '';
-                                var lbpespecial = document.getElementById('lbpespecial');
-                                lbpespecial.innerHTML = '';
-                                var lbpesprecio = document.getElementById('lbpesprecio');
-                                lbpesprecio.innerHTML = '';
-                                var lbpespcant = document.getElementById('lbpespcant');
-                                lbpespcant.innerHTML = '';
-                                var lbcliente = document.getElementById('lbcliente');
-                                lbcliente.innerHTML = '';
-                                var lbdireccion = document.getElementById('lbdireccion');
-                                lbdireccion.innerHTML = '';
-
-                                // Swal.fire({
-                                //     title: 'Está seguro que desea ver la mesa?',
-                                //     text: "¡No podrás revertir esto!",
-                                //     icon: 'warning',
-                                //     showCancelButton: true,
-                                //     confirmButtonColor: '#3085d6',
-                                //     cancelButtonColor: '#d33',
-                                //     cancelButtonText: 'Cancelar',
-                                //     confirmButtonText: 'Sí!'
-                                // }).then((result) => {
-                                    // if (result.isConfirmed) {
-
-                                        if ($('#reducir').val() != 'Si') {
-                                            var lbconf_total = document.getElementById(
-                                                'lbconf_total');
-                                            lbconf_total.innerHTML = '';
-                                            var lbcupon = document.getElementById('lbcupon');
-                                            lbcupon.innerHTML = '';
-                                            var lbdesc = document.getElementById('lbdesc');
-                                            lbdesc.innerHTML = '';
-                                            var lbres = document.getElementById('lbres');
-                                            lbres.innerHTML = '';
-                                            var lbpropina = document.getElementById(
-                                                'lbpropina');
-                                            lbpropina.innerHTML = '';
-                                            var lbtotal2 = document.getElementById('lbtotal2');
-                                            lbtotal2.innerHTML = '';
-                                            var lbdos = document.getElementById('lbdos');
-                                            lbdos.innerHTML = '';
-                                            var lbtres = document.getElementById('lbtres');
-                                            lbtres.innerHTML = '';
-                                            var lbmotivoDescuento = document.getElementById(
-                                                'lbmotivoDescuento');
-                                            lbmotivoDescuento.innerHTML = '';
-                                            var lbcomentario = document.getElementById(
-                                                'lbcomentario');
-                                            lbcomentario.innerHTML = '';
-                                        } else {
-                                            var lbtotal2 = document.getElementById('lbtotal2');
-                                            lbtotal2.innerHTML = '';
-                                            var lbcupon = document.getElementById('lbcupon');
-                                            lbcupon.innerHTML = '';
-                                            var lbdos = document.getElementById('lbdos');
-                                            lbdos.innerHTML = '';
-                                            var lbtres = document.getElementById('lbtres');
-                                            lbtres.innerHTML = '';
-                                        }
-
-                                        // $('#cupon').val("");
-                                        $('#conftotal').val("");
-                                        $('#desc').val("");
-                                        $('#res').val("");
-                                        $('#propina').val("");
-                                        $('#total2').val("");
-                                        $('#dos').val("");
-                                        $('#tres').val("");
-                                        $('#motivoDescuento').val("");
-
-                                        $('#id_proveedor').val(tituloMesa);
-                                        $('#mesa_estado').val(estadoMesa);
-                                        var mesa = $('#id_proveedor').val();
-                                        document.getElementsByTagName("figure")[k].style
-                                            .display = 'block';
-
-                                        if (mesa.trim() == 'Para llevar') {
-                                            $("#cliente").show();
-                                            $("#direccion").show();
-                                            $("#clientelb").show();
-                                            $("#direccionlb").show();
-                                        } else {
-                                            $("#cliente").hide();
-                                            $("#direccion").hide();
-                                            $("#clientelb").hide();
-                                            $("#direccionlb").hide();
-                                            $("#cliente").val("");
-                                            $("#direccion").val("");
-                                        }
-
-                                        $.ajax({
-                                            url: "/obtenerComanda/" + mesa,
-                                            type: "GET",
-                                            dataType: "json",
-                                            success: function (data) {
-
-                                                data.forEach(function (element,
-                                                    indice, array) {
-                                                    var articulo = element
-                                                        .articulo;
-
-                                                    if (articulo != null) {
-                                                        $('#detalles')
-                                                            .append(
-                                                                '<tr class="selected" id="fila' +
-                                                                element
-                                                                .fila +
-                                                                '">' +
-                                                                '<td><button type="button"  class="btn btn-warning" onclick="eliminar(' +
-                                                                element
-                                                                .fila +
-                                                                ',' +
-                                                                element
-                                                                .subtotal +
-                                                                ')">Eliminar</button></td>' +
-                                                                '<td><input type="hidden" name="articulo[]" value="' +
-                                                                element
-                                                                .articulo +
-                                                                '">' +
-                                                                element
-                                                                .articulo +
-                                                                '</td>' +
-                                                                '<td><input type="hidden" name="cantidad[]" value="' +
-                                                                element
-                                                                .cantidad +
-                                                                '">' +
-                                                                element
-                                                                .cantidad +
-                                                                '</td>' +
-                                                                '<td><input type="hidden" name="precio_compra[]" value="' +
-                                                                element
-                                                                .precio_compra +
-                                                                '">' +
-                                                                element
-                                                                .precio_compra +
-                                                                '</td>' +
-                                                                '<td><input type="hidden" name="subtotal[]" value="' +
-                                                                element
-                                                                .subtotal +
-                                                                '">' +
-                                                                element
-                                                                .subtotal +
-                                                                '</td>' +
-                                                                '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
-                                                                element
-                                                                .fila +
-                                                                '"></td></tr>'
-                                                            )
-
-                                                        total += parseFloat(
-                                                            element
-                                                            .subtotal);
-                                                        base = total
-                                                            .toFixed(2);
-
-                                                        var cliente =
-                                                            element.cliente;
-                                                        var direccion =
-                                                            element
-                                                            .direccion;
-                                                        $('#cliente').val(
-                                                            cliente);
-                                                        $('#direccion').val(
-                                                            direccion);
-
-                                                    } else {
-
-                                                        total = 0;
-                                                        base = total
-                                                            .toFixed(2);
-                                                    }
-
-                                                    var comentario = element
-                                                        .comentario;
-                                                    if (comentario !=
-                                                        null) {
-                                                        $('#comentario')
-                                                            .val(
-                                                                comentario);
-                                                    } else {
-                                                        $("#comentario")
-                                                            .val("");
-                                                    }
-
-                                                });
-
-                                                evaluar = parseInt(total);
-                                                if (evaluar != 0) {
-                                                    $("#total").html("$" + base);
-                                                    $('#valor').val(base);
-                                                    $('#total1').val(base);
-                                                    $('#total2').val(base);
-                                                    $("#guardar").show();
-                                                    $("#consumo").show();
-
-                                                    var f = data.length - 1;
-                                                    var dato = data[f].fila;
-                                                    contador = parseInt(dato) + 1;
-                                                    $('#incrementa').val(contador);
-
-                                                    function evaluar() {
-                                                        if (base > 0) {
-                                                            $("#guardar").show();
-                                                            $("#consumo").show();
-                                                        } else {
-                                                            $("#consumo").hide();
-                                                            $("#guardar").hide();
-                                                            $("#total").html("$" +
-                                                                "0.00");
-                                                            $('#total1').val("");
-                                                        }
-                                                    }
-                                                } else {
-                                                    $('#total1').val("");
-                                                    $("#total").html("$" + "0.00");
-                                                    $('#valor').val("0");
-                                                    $('#incrementa').val("0");
-                                                    $("#guardar").hide();
-                                                    $("#consumo").hide();
-                                                    if (data == '') {
-                                                        $("#comentario").val("");
-                                                    }
-                                                }
-                                            },
-                                            error: function (error) {
-                                                console.log(error);
-                                                Swal.fire({
-                                                    icon: 'error',
-                                                    title: 'Error!',
-                                                    text: 'No se ha podido obtener la comanda!',
-                                                })
-                                            }
-                                        });
-
-                                        // Swal.fire(
-                                        //     'consultada!',
-                                        //     'La mesa ha sido consultada.',
-                                        //     'success'
-                                        // )
-                                        var resultados = document.getElementById('detalle1');
-                                        resultados.innerHTML = '';
-                                        var detalleTotal = document.getElementById('total');
-                                        detalleTotal.innerHTML = '';
-                                    // } else {
-                                    //     Swal.fire('La mesa no ha sido consultada', '', 'info')
-                                    // }
-
-                                // })
-                            }
-                            var j = document.getElementById("tableUserList").rows.length;
-                            for (var x = 0; x < j; x++) {
-                                document.getElementsByTagName("button")[x].setAttribute("style",
-                                    "background-color:#C0C0C0;");
-                                document.getElementsByTagName("button")[x].disabled = true;
-                            }
-                            var elementos = document.getElementsByName("titulo_mesa2");
-                            var estados = document.getElementsByName("estado_mesa2");
-                            for (y = 0; y < elementos.length; y++) {
-                                if (elementos[y].value == mesa) {
-                                    estados[y].value = "Abierta";
-                                    document.getElementsByName("estado_mesa2")[y].value = "Abierta";
-                                }
-                            }
-
-                            var data = {
-                                "_token": $("meta[name='csrf-token']").attr("content"),
-                                "idt": idt,
-                                "tituloMesa": tituloMesa
-                            };
-                            $.ajax({
-                                url: "/datosHome",
-                                type: "POST",
-                                data: data,
-                                sucess: function (msg) {
-                                    console.log(msg);
-                                    location.reload();
-                                },
-                                error: function (error) {
-                                    console.log(error);
-                                }
-
-                            });
-                    //     } else {
-                    //         Swal.fire('La mesa no se ha abierto', '', 'info')
-                    //     }
-
-                    // })
-                });
-            }
-
-            $(document).ready(function () {
-                setInterval(syncWIthApis2, 950); //Cada 30 segundo (30 mil milisegundos)
-            });
-
-        }, 1500);
-
-    </script>
-
-    {{-- Mesa Proceso al Cerrar --}}
-    <script type="text/javascript">
-        setTimeout(function(){
-            function syncWIthApis3(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $('.cerrar').click(function (e) {
-                    e.preventDefault();
-
-                    var tituloMesa = $(this).closest("tr").find('.titulo_mesa').val();
-                    var idt = $(this).closest("tr").find('.id_mesa').val();
-                    var k = idt - 1;
-
-                    var fecha = document.getElementById('fecha').value;
-                    var mesa = document.getElementById('id_proveedor').value;
-                    var estado = document.getElementById('mesa_estado').value;
-                    var cajero = document.getElementById('cajero').value;
-                    var cliente = document.getElementById('cliente').value;
-                    var direccion = document.getElementById('direccion').value;
-                    var comentario = document.getElementById('comentario').value;
-
-                    var lbmesa = document.getElementById('lbmesa');
-                    lbmesa.innerHTML = '';
-                    var lbprecio_compra = document.getElementById('lbprecio_compra');
-                    lbprecio_compra.innerHTML = '';
-                    var lbcantidad = document.getElementById('lbcantidad');
-                    lbcantidad.innerHTML = '';
-                    var lbpespecial = document.getElementById('lbpespecial');
-                    lbpespecial.innerHTML = '';
-                    var lbpesprecio = document.getElementById('lbpesprecio');
-                    lbpesprecio.innerHTML = '';
-                    var lbpespcant = document.getElementById('lbpespcant');
-                    lbpespcant.innerHTML = '';
-                    var lbcliente = document.getElementById('lbcliente');
-                    lbcliente.innerHTML = '';
-                    var lbdireccion = document.getElementById('lbdireccion');
-                    lbdireccion.innerHTML = '';
-
-                    Swal.fire({
-                        title: 'Está seguro que desea cerrar la mesa?',
-                        text: "¡No podrás revertir esto!",
-                        icon: 'warning',
-                        html: '<label for="motivo">Motivo de cancelación</label>' +
-                            '<input id="swal-input1" class="swal2-input">',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonText: 'Sí!',
-                        focusConfirm: false,
-                        preConfirm: () => {
-                            const motivo = Swal.getPopup().querySelector('#swal-input1').value
-                            if (!motivo) {
-                                Swal.showValidationMessage('Ingresa el motivo')
-                            }
-                            return {
-                                motivo: motivo
-                            }
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-
-                            if ($('#reducir').val() != 'Si') {
-                                var lbcupon = document.getElementById('lbcupon');
-                                lbcupon.innerHTML = '';
-                                var lbconf_total = document.getElementById('lbconf_total');
-                                lbconf_total.innerHTML = '';
-                                var lbdesc = document.getElementById('lbdesc');
-                                lbdesc.innerHTML = '';
-                                var lbres = document.getElementById('lbres');
-                                lbres.innerHTML = '';
-                                var lbpropina = document.getElementById('lbpropina');
-                                lbpropina.innerHTML = '';
-                                var lbtotal2 = document.getElementById('lbtotal2');
-                                lbtotal2.innerHTML = '';
-                                var lbdos = document.getElementById('lbdos');
-                                lbdos.innerHTML = '';
-                                var lbtres = document.getElementById('lbtres');
-                                lbtres.innerHTML = '';
-                                var lbmotivoDescuento = document.getElementById('lbmotivoDescuento');
-                                lbmotivoDescuento.innerHTML = '';
-                                var lbcomentario = document.getElementById('lbcomentario');
-                                lbcomentario.innerHTML = '';
-                            } else {
-                                var lbtotal2 = document.getElementById('lbtotal2');
-                                lbtotal2.innerHTML = '';
-                                var lbcupon = document.getElementById('lbcupon');
-                                lbcupon.innerHTML = '';
-                                var lbdos = document.getElementById('lbdos');
-                                lbdos.innerHTML = '';
-                                var lbtres = document.getElementById('lbtres');
-                                lbtres.innerHTML = '';
-                            }
-
-                            // $('#cupon').val("");
-                            $('#conftotal').val("");
-                            $('#desc').val("");
-                            $('#res').val("");
-                            $('#propina').val("");
-                            $('#total2').val("");
-                            $('#dos').val("");
-                            $('#tres').val("");
-                            $('#motivoDescuento').val("");
-
-                            var estadoMesa = $(this).closest("tr").find('.estado_mesa2').val();
-                            var motivo = document.getElementById('swal-input1').value;
-                            $('#motivo').val(motivo);
-
-                            var data = {
-                                "_token": $("meta[name='csrf-token']").attr("content"),
-                                "idt": idt,
-                                "tituloMesa": tituloMesa,
-                                "motivo": motivo,
-                                "estadoMesa": estadoMesa
-                            };
-                            $.ajax({
-                                url: "/cerrarMesa",
-                                type: "POST",
-                                data: data,
-                                sucess: function (msg) {
-                                    console.log(msg);
-                                },
-                                error: function (error) {
-                                    console.log(error);
-                                }
-                            });
-
-                            if ($('#id_proveedor').val() == tituloMesa) {
-                                $.ajax({
-                                    url: "/ordenCancelada",
-                                    type: "POST",
-                                    data: $('#sample_venta').serialize(),
-                                    success: function (data) {
-                                        console.log(data);
-                                    },
-                                    error: function (error) {
-                                        console.log(error);
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error!',
-                                            text: 'No se ha podido guardar X!',
-                                        })
-                                    }
-                                });
-                            }
-
-                            var mesa = $('#id_proveedor').val();
-                            document.getElementsByTagName("figure")[k].style.display = 'none';
-
-                            document.getElementsByTagName('tr')[idt].getElementsByTagName('td')[1]
-                                .setAttribute("style", "background-color:#008000;");
-                            document.getElementsByTagName("button")[idt].setAttribute("style",
-                                "background-color:#FFFFFF;");
-                            document.getElementsByTagName("button")[idt].disabled = false;
-                            document.getElementsByTagName("button")[idt].innerHTML = "Abrir mesa";
-                            document.getElementsByTagName("button")[idt].addEventListener("click",
-                                cambiar);
-
-                            var j = document.getElementById("tableUserList").rows.length;
-                            for (var x = 0; x < j; x++) {
-                                document.getElementsByTagName("button")[x].setAttribute("style",
-                                    "background-color:#FFFFFF;");
-                                document.getElementsByTagName("button")[x].disabled = false;
-                            }
-
-                            var elementos = document.getElementsByName("titulo_mesa2");
-                            var estados = document.getElementsByName("estado_mesa2");
-                            for (y = 0; y < elementos.length; y++) {
-                                if (elementos[y].value == tituloMesa) {
-                                    estados[y].value = "Cerrada";
-                                    document.getElementsByName("estado_mesa2")[y].value = "Cerrada";
-                                } else if (elementos[k].value == tituloMesa) {
-                                    estados[k].value = "Cerrada";
-                                    document.getElementsByName("estado_mesa2")[k].value = "Cerrada";
-                                    //document.getElementsByTagName("label")[k].style.display = 'none';
-                                }
-                            }
-
-
-                            if (tituloMesa == mesa) {
-                                var resultados = document.getElementById('detalle1');
-                                resultados.innerHTML = '';
-                                var detalleTotal = document.getElementById('total');
-                                detalleTotal.innerHTML = '';
-
-                                if ($('#reducir').val() != 'Si') {
-                                    var lbconf_total = document.getElementById('lbconf_total');
-                                    lbconf_total.innerHTML = '';
-                                    var lbcupon = document.getElementById('lbcupon');
-                                    lbcupon.innerHTML = '';
-                                    var lbdesc = document.getElementById('lbdesc');
-                                    lbdesc.innerHTML = '';
-                                    var lbres = document.getElementById('lbres');
-                                    lbres.innerHTML = '';
-                                    var lbpropina = document.getElementById('lbpropina');
-                                    lbpropina.innerHTML = '';
-                                    var lbtotal2 = document.getElementById('lbtotal2');
-                                    lbtotal2.innerHTML = '';
-                                    var lbdos = document.getElementById('lbdos');
-                                    lbdos.innerHTML = '';
-                                    var lbtres = document.getElementById('lbtres');
-                                    lbtres.innerHTML = '';
-                                    var lbmotivoDescuento = document.getElementById(
-                                        'lbmotivoDescuento');
-                                    lbmotivoDescuento.innerHTML = '';
-                                    var lbcomentario = document.getElementById('lbcomentario');
-                                    lbcomentario.innerHTML = '';
-                                } else {
-                                    var lbtotal2 = document.getElementById('lbtotal2');
-                                    lbtotal2.innerHTML = '';
-                                    var lbcupon = document.getElementById('lbcupon');
-                                    lbcupon.innerHTML = '';
-                                    var lbdos = document.getElementById('lbdos');
-                                    lbdos.innerHTML = '';
-                                    var lbtres = document.getElementById('lbtres');
-                                    lbtres.innerHTML = '';
-                                }
-
-                                // $('#cupon').val("");
-                                $('#conftotal').val("");
-                                $('#desc').val("");
-                                $('#res').val("");
-                                $('#propina').val("");
-                                $('#total2').val("");
-                                $('#dos').val("");
-                                $('#tres').val("");
-                                $('#motivoDescuento').val("");
-
-                                $('#total1').val("");
-                                $("#total").html("$" + "0.00");
-                                $('#id_proveedor').val("");
-                                $('#incrementa').val("0");
-                                $("#direccion").val("");
-                                $("#cliente").val("");
-                                $('#valor').val("0");
-                                $("#comentario").val("");
-
-                                $("#consumo").hide();
-                                $("#guardar").hide();
-                                $("#cliente").hide();
-                                $("#direccion").hide();
-                                $("#clientelb").hide();
-                                $("#direccionlb").hide();
-                            }
-
-                            function cambiar() {
-                                var tituloMesa = $(this).closest("tr").find('.titulo_mesa').val();
-                                var idt = $(this).closest("tr").find('.id_mesa').val();
-                                var total = 0;
-                                var suma = 0;
-                                var i = idt;
-                                var k = idt - 1;
-
-                                var lbmesa = document.getElementById('lbmesa');
-                                lbmesa.innerHTML = '';
-                                var lbprecio_compra = document.getElementById('lbprecio_compra');
-                                lbprecio_compra.innerHTML = '';
-                                var lbcantidad = document.getElementById('lbcantidad');
-                                lbcantidad.innerHTML = '';
-                                var lbpespecial = document.getElementById('lbpespecial');
-                                lbpespecial.innerHTML = '';
-                                var lbpesprecio = document.getElementById('lbpesprecio');
-                                lbpesprecio.innerHTML = '';
-                                var lbpespcant = document.getElementById('lbpespcant');
-                                lbpespcant.innerHTML = '';
-                                var lbcliente = document.getElementById('lbcliente');
-                                lbcliente.innerHTML = '';
-                                var lbdireccion = document.getElementById('lbdireccion');
-                                lbdireccion.innerHTML = '';
-
-                                // Swal.fire({
-                                //     title: 'Está seguro que desea abrir la mesa?',
-                                //     text: "¡No podrás revertir esto!",
-                                //     icon: 'warning',
-                                //     showCancelButton: true,
-                                //     confirmButtonColor: '#3085d6',
-                                //     cancelButtonColor: '#d33',
-                                //     cancelButtonText: 'Cancelar',
-                                //     confirmButtonText: 'Sí!'
-                                // }).then((result) => {
-                                //     if (result.isConfirmed) {
-
-                                        if ($('#reducir').val() != 'Si') {
-                                            var lbcupon = document.getElementById('lbcupon');
-                                            lbcupon.innerHTML = '';
-                                            var lbconf_total = document.getElementById(
-                                                'lbconf_total');
-                                            lbconf_total.innerHTML = '';
-                                            var lbdesc = document.getElementById('lbdesc');
-                                            lbdesc.innerHTML = '';
-                                            var lbres = document.getElementById('lbres');
-                                            lbres.innerHTML = '';
-                                            var lbpropina = document.getElementById(
-                                                'lbpropina');
-                                            lbpropina.innerHTML = '';
-                                            var lbtotal2 = document.getElementById('lbtotal2');
-                                            lbtotal2.innerHTML = '';
-                                            var lbdos = document.getElementById('lbdos');
-                                            lbdos.innerHTML = '';
-                                            var lbtres = document.getElementById('lbtres');
-                                            lbtres.innerHTML = '';
-                                            var lbmotivoDescuento = document.getElementById(
-                                                'lbmotivoDescuento');
-                                            lbmotivoDescuento.innerHTML = '';
-                                            var lbcomentario = document.getElementById(
-                                                'lbcomentario');
-                                            lbcomentario.innerHTML = '';
-                                        } else {
-                                            var lbtotal2 = document.getElementById('lbtotal2');
-                                            lbtotal2.innerHTML = '';
-                                            var lbcupon = document.getElementById('lbcupon');
-                                            lbcupon.innerHTML = '';
-                                            var lbdos = document.getElementById('lbdos');
-                                            lbdos.innerHTML = '';
-                                            var lbtres = document.getElementById('lbtres');
-                                            lbtres.innerHTML = '';
-                                        }
-                                        // $('#cupon').val("");
-                                        $('#conftotal').val("");
-                                        $('#desc').val("");
-                                        $('#res').val("");
-                                        $('#propina').val("");
-                                        $('#total2').val("");
-                                        $('#dos').val("");
-                                        $('#tres').val("");
-                                        $('#motivoDescuento').val("");
-
-                                        var resultados = document.getElementById('detalle1');
-                                        resultados.innerHTML = '';
-                                        var detalleTotal = document.getElementById('total');
-                                        detalleTotal.innerHTML = '';
-                                        $('#total1').val("");
-                                        $("#total").html(" ");
-                                        $("#total").html("$" + "0.00");
-                                        $('#valor').val("0");
-                                        $('#incrementa').val("0");
-                                        $("#comentario").val("");
-
-                                        $('#id_proveedor').val(tituloMesa);
-                                        $('#mesa_estado').val('Abierta');
-                                        var mesa = $('#id_proveedor').val();
-
-                                        if (mesa.trim() == 'Para llevar') {
-                                            $("#cliente").show();
-                                            $("#direccion").show();
-                                            $("#clientelb").show();
-                                            $("#direccionlb").show();
-                                        } else {
-                                            $("#direccion").val("");
-                                            $("#cliente").val("");
-                                            $("#cliente").hide();
-                                            $("#direccion").hide();
-                                            $("#clientelb").hide();
-                                            $("#direccionlb").hide();
-                                        }
-
-                                        document.getElementsByTagName("button")[i].innerHTML =
-                                            "Atendiendo";
-                                        document.getElementsByTagName("button")[i].setAttribute(
-                                            "style", "background-color:#C0C0C0;");
-                                        document.getElementsByTagName("button")[i].disabled =
-                                            true;
-                                        document.getElementsByTagName('tr')[i]
-                                            .getElementsByTagName('td')[1].setAttribute("style",
-                                                "background-color:#ce0018;");
-                                        document.getElementsByTagName("button")[i]
-                                            .addEventListener("click", cambiar);
-                                        document.getElementsByTagName("figure")[k].style
-                                            .display = 'block';
-
-                                        function cambiar() {
-                                            var estadoMesa = $(this).closest("tr").find(
-                                                '.estado_mesa2').val();
-                                            var tituloMesa = $(this).closest("tr").find(
-                                                '.titulo_mesa').val();
-                                            var idt = $(this).closest("tr").find('.id_mesa')
-                                                .val();
-                                            var sumatotal = 0;
-                                            var contador = 0;
-                                            var evaluar = 0;
-                                            var total = 0;
-                                            var dato = 0;
-                                            var k = idt - 1;
-                                            var f = 0;
-
-                                            var lbmesa = document.getElementById('lbmesa');
-                                            lbmesa.innerHTML = '';
-                                            var lbprecio_compra = document.getElementById(
-                                                'lbprecio_compra');
-                                            lbprecio_compra.innerHTML = '';
-                                            var lbcantidad = document.getElementById(
-                                                'lbcantidad');
-                                            lbcantidad.innerHTML = '';
-                                            var lbpespecial = document.getElementById(
-                                                'lbpespecial');
-                                            lbpespecial.innerHTML = '';
-                                            var lbpesprecio = document.getElementById(
-                                                'lbpesprecio');
-                                            lbpesprecio.innerHTML = '';
-                                            var lbpespcant = document.getElementById(
-                                                'lbpespcant');
-                                            lbpespcant.innerHTML = '';
-                                            var lbcliente = document.getElementById(
-                                                'lbcliente');
-                                            lbcliente.innerHTML = '';
-                                            var lbdireccion = document.getElementById(
-                                                'lbdireccion');
-                                            lbdireccion.innerHTML = '';
-
-                                            // Swal.fire({
-                                            //     title: 'Está seguro que desea ver la mesa?',
-                                            //     text: "¡No podrás revertir esto!",
-                                            //     icon: 'warning',
-                                            //     showCancelButton: true,
-                                            //     confirmButtonColor: '#3085d6',
-                                            //     cancelButtonColor: '#d33',
-                                            //     cancelButtonText: 'Cancelar',
-                                            //     confirmButtonText: 'Sí!'
-                                            // }).then((result) => {
-                                            //     if (result.isConfirmed) {
-
-                                                    if ($('#reducir').val() != 'Si') {
-                                                        var lbcupon = document
-                                                            .getElementById('lbcupon');
-                                                        lbcupon.innerHTML = '';
-                                                        var lbconf_total = document
-                                                            .getElementById(
-                                                                'lbconf_total');
-                                                        lbconf_total.innerHTML = '';
-                                                        var lbdesc = document
-                                                            .getElementById('lbdesc');
-                                                        lbdesc.innerHTML = '';
-                                                        var lbres = document
-                                                            .getElementById('lbres');
-                                                        lbres.innerHTML = '';
-                                                        var lbpropina = document
-                                                            .getElementById(
-                                                                'lbpropina');
-                                                        lbpropina.innerHTML = '';
-                                                        var lbtotal2 = document
-                                                            .getElementById('lbtotal2');
-                                                        lbtotal2.innerHTML = '';
-                                                        var lbdos = document
-                                                            .getElementById('lbdos');
-                                                        lbdos.innerHTML = '';
-                                                        var lbtres = document
-                                                            .getElementById('lbtres');
-                                                        lbtres.innerHTML = '';
-                                                        var lbmotivoDescuento = document
-                                                            .getElementById(
-                                                                'lbmotivoDescuento');
-                                                        lbmotivoDescuento.innerHTML =
-                                                            '';
-                                                        var lbcomentario = document
-                                                            .getElementById(
-                                                                'lbcomentario');
-                                                        lbcomentario.innerHTML = '';
-                                                    } else {
-                                                        var lbtotal2 = document
-                                                            .getElementById('lbtotal2');
-                                                        lbtotal2.innerHTML = '';
-                                                        var lbcupon = document
-                                                            .getElementById('lbcupon');
-                                                        lbcupon.innerHTML = '';
-                                                        var lbdos = document
-                                                            .getElementById('lbdos');
-                                                        lbdos.innerHTML = '';
-                                                        var lbtres = document
-                                                            .getElementById('lbtres');
-                                                        lbtres.innerHTML = '';
-                                                    }
-
-                                                    // $('#cupon').val("");
-                                                    $('#conftotal').val("");
-                                                    $('#desc').val("");
-                                                    $('#res').val("");
-                                                    $('#propina').val("");
-                                                    $('#total2').val("");
-                                                    $('#dos').val("");
-                                                    $('#tres').val("");
-                                                    $('#motivoDescuento').val("");
-
-                                                    document.getElementsByTagName(
-                                                            "figure")[k].style.display =
-                                                        'block';
-                                                    $('#id_proveedor').val(tituloMesa);
-                                                    $('#mesa_estado').val(estadoMesa);
-                                                    var mesa = $('#id_proveedor').val();
-
-                                                    if (mesa.trim() == 'Para llevar') {
-                                                        $("#cliente").show();
-                                                        $("#direccion").show();
-                                                        $("#clientelb").show();
-                                                        $("#direccionlb").show();
-                                                    } else {
-                                                        $("#direccion").val("");
-                                                        $("#consumo").hide();
-                                                        $("#cliente").val("");
-                                                        $("#guardar").hide();
-                                                        $("#cliente").hide();
-                                                        $("#direccion").hide();
-                                                        $("#clientelb").hide();
-                                                        $("#direccionlb").hide();
-                                                    }
-
-
-                                                    $.ajax({
-                                                        url: "/obtenerComanda/" + mesa,
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        success: function (
-                                                            data) {
-
-                                                            data.forEach(
-                                                                function (
-                                                                    element,
-                                                                    indice,
-                                                                    array
-                                                                ) {
-
-                                                                    var articulo =
-                                                                        element
-                                                                        .articulo;
-                                                                    if (articulo !=
-                                                                        null
-                                                                    ) {
-                                                                        $('#detalles')
-                                                                            .append(
-                                                                                '<tr class="selected" id="fila' +
-                                                                                element
-                                                                                .fila +
-                                                                                '">' +
-                                                                                '<td><button type="button"  class="btn btn-warning" onclick="eliminar(' +
-                                                                                element
-                                                                                .fila +
-                                                                                ',' +
-                                                                                element
-                                                                                .subtotal +
-                                                                                ')">Eliminar</button></td>' +
-                                                                                '<td><input type="hidden" name="articulo[]" value="' +
-                                                                                element
-                                                                                .articulo +
-                                                                                '">' +
-                                                                                element
-                                                                                .articulo +
-                                                                                '</td>' +
-                                                                                '<td><input type="hidden" name="cantidad[]" value="' +
-                                                                                element
-                                                                                .cantidad +
-                                                                                '">' +
-                                                                                element
-                                                                                .cantidad +
-                                                                                '</td>' +
-                                                                                '<td><input type="hidden" name="precio_compra[]" value="' +
-                                                                                element
-                                                                                .precio_compra +
-                                                                                '">' +
-                                                                                element
-                                                                                .precio_compra +
-                                                                                '</td>' +
-                                                                                '<td><input type="hidden" name="subtotal[]" value="' +
-                                                                                element
-                                                                                .subtotal +
-                                                                                '">' +
-                                                                                element
-                                                                                .subtotal +
-                                                                                '</td>' +
-                                                                                '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
-                                                                                element
-                                                                                .fila +
-                                                                                '"></td></tr>'
-                                                                            )
-
-                                                                        total
-                                                                            +=
-                                                                            parseFloat(
-                                                                                element
-                                                                                .subtotal
-                                                                            );
-                                                                        base =
-                                                                            total
-                                                                            .toFixed(
-                                                                                2
-                                                                            );
-
-                                                                        var cliente =
-                                                                            element
-                                                                            .cliente;
-                                                                        var direccion =
-                                                                            element
-                                                                            .direccion;
-                                                                        $('#cliente')
-                                                                            .val(
-                                                                                cliente
-                                                                            );
-                                                                        $('#direccion')
-                                                                            .val(
-                                                                                direccion
-                                                                            );
-
-                                                                    } else {
-
-                                                                        total
-                                                                            =
-                                                                            0;
-                                                                        base =
-                                                                            total
-                                                                            .toFixed(
-                                                                                2
-                                                                            );
-                                                                    }
-
-                                                                    var comentario =
-                                                                        element
-                                                                        .comentario;
-                                                                    if (comentario !=
-                                                                        null
-                                                                    ) {
-                                                                        $('#comentario')
-                                                                            .val(
-                                                                                comentario
-                                                                            );
-                                                                    } else {
-                                                                        $("#comentario")
-                                                                            .val(
-                                                                                ""
-                                                                            );
-                                                                    }
-                                                                });
-                                                            evaluar =
-                                                                parseInt(
-                                                                    total);
-                                                            if (evaluar !=
-                                                                0) {
-                                                                $("#total")
-                                                                    .html(
-                                                                        "$" +
-                                                                        base
-                                                                    );
-                                                                $('#valor')
-                                                                    .val(
-                                                                        base
-                                                                    );
-                                                                $('#total1').val(base);
-                                                                $('#total2').val(base);
-                                                                $("#guardar")
-                                                                    .show();
-                                                                $("#consumo")
-                                                                    .show();
-
-                                                                var f = data
-                                                                    .length -
-                                                                    1;
-                                                                var dato =
-                                                                    data[f]
-                                                                    .fila;
-                                                                contador =
-                                                                    parseInt(
-                                                                        dato
-                                                                    ) +
-                                                                    1;
-                                                                $('#incrementa')
-                                                                    .val(
-                                                                        contador
-                                                                    );
-
-                                                                function evaluar() {
-                                                                    if (base >
-                                                                        0) {
-                                                                        $("#guardar")
-                                                                            .show();
-                                                                        $("#consumo")
-                                                                            .show();
-                                                                    } else {
-                                                                        $("#consumo")
-                                                                            .hide();
-                                                                        $("#guardar")
-                                                                            .hide();
-                                                                        $("#total")
-                                                                            .html(
-                                                                                "$" +
-                                                                                "0.00"
-                                                                            );
-                                                                        $('#total1')
-                                                                            .val(
-                                                                                ""
-                                                                            );
-                                                                    }
-                                                                }
-                                                            } else {
-                                                                $('#total1')
-                                                                    .val(
-                                                                        "");
-                                                                $("#total")
-                                                                    .html(
-                                                                        "$" +
-                                                                        "0.00"
-                                                                    );
-                                                                $('#valor')
-                                                                    .val(
-                                                                        "0"
-                                                                    );
-                                                                $('#incrementa')
-                                                                    .val(
-                                                                        "0"
-                                                                    );
-                                                                $("#guardar")
-                                                                    .hide();
-                                                                $("#consumo")
-                                                                    .hide();
-                                                                if (data ==
-                                                                    '') {
-                                                                    $("#comentario")
-                                                                        .val(
-                                                                            ""
-                                                                        );
-                                                                }
-                                                            }
-
-                                                        },
-                                                        error: function (
-                                                            error) {
-                                                            console.log(
-                                                                error);
-                                                            Swal.fire({
-                                                                icon: 'error',
-                                                                title: 'Error!',
-                                                                text: 'No se ha podido obtener la comanda!',
-                                                            })
-                                                        }
-                                                    });
-
-                                                    // Swal.fire(
-                                                    //     'consultada!',
-                                                    //     'La mesa ha sido consultada.',
-                                                    //     'success'
-                                                    // )
-                                                    var resultados = document
-                                                        .getElementById('detalle1');
-                                                    resultados.innerHTML = '';
-                                                    var detalleTotal = document
-                                                        .getElementById('total');
-                                                    detalleTotal.innerHTML = '';
-
-                                            //     } else {
-                                            //         Swal.fire(
-                                            //             'La mesa no ha sido consultada',
-                                            //             '', 'info')
-                                            //     }
-                                            // })
-                                        }
-
-                                        var j = document.getElementById("tableUserList").rows
-                                            .length;
-                                        for (var x = 0; x < j; x++) {
-                                            document.getElementsByTagName("button")[x]
-                                                .setAttribute("style",
-                                                    "background-color:#C0C0C0;");
-                                            document.getElementsByTagName("button")[x]
-                                                .disabled = true;
-                                        }
-                                        var elementos = document.getElementsByName(
-                                            "titulo_mesa2");
-                                        var estados = document.getElementsByName(
-                                            "estado_mesa2");
-                                        for (y = 0; y < elementos.length; y++) {
-                                            if (elementos[y].value == mesa) {
-                                                estados[y].value = "Abierta";
-                                                document.getElementsByName("estado_mesa2")[y]
-                                                    .value = "Abierta";
-                                            }
-                                        }
-
-                                        var data = {
-                                            "_token": $("meta[name='csrf-token']").attr(
-                                                "content"),
-                                            "idt": idt,
-                                            "tituloMesa": tituloMesa
-                                        };
-                                        $.ajax({
-                                            url: "/datosHome",
-                                            type: "POST",
-                                            data: data,
-                                            sucess: function (msg) {
-                                                console.log(msg);
-                                                location.reload();
-                                            },
-                                            error: function (error) {
-                                                console.log(error);
-                                            }
-
-                                        });
-                                //     } else {
-                                //         Swal.fire('La mesa no se ha abierto', '', 'info')
-                                //     }
-                                // })
-                            }
-
-                            Swal.fire(
-                                'Cerrada!',
-                                'La mesa ha sido cerrada.',
-                                'success'
-                            )
-                        } else {
-                            Swal.fire('La mesa sigue abierta', '', 'info')
-                        }
-
-                    })
-                });
-            }
-
-            $(document).ready(function () {
-                setInterval(syncWIthApis3, 950); //Cada 30 segundo (30 mil milisegundos)
-            });
-
-        }, 1500);
-
-    </script>
-
-    {{-- Mesa 4 - Ver Mesa --}}
-    <script type="text/javascript">
-        setTimeout(function(){
-            function syncWIthApis4(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var total = 0;
-                var suma = 0;
-
-                $('.vermesabtn').click(function (e) {
-                    e.preventDefault();
-                    localStorage.setItem("tableOrden", '');
-                    var estadoMesa = $(this).closest("tr").find('.estado_mesa2').val();
-                    var tituloMesa = $(this).closest("tr").find('.titulo_mesa').val();
-                    var idt = $(this).closest("tr").find('.id_mesa').val();
-                    var contador = 0;
-                    var evaluar = 0;
-                    var total = 0;
-                    var dato = 0;
-                    var k = idt - 1;
-                    var f = 0;
-
-                    var lbmesa = document.getElementById('lbmesa');
-                    lbmesa.innerHTML = '';
-                    var lbprecio_compra = document.getElementById('lbprecio_compra');
-                    lbprecio_compra.innerHTML = '';
-                    var lbcantidad = document.getElementById('lbcantidad');
-                    lbcantidad.innerHTML = '';
-                    var lbpespecial = document.getElementById('lbpespecial');
-                    lbpespecial.innerHTML = '';
-                    var lbpesprecio = document.getElementById('lbpesprecio');
-                    lbpesprecio.innerHTML = '';
-                    var lbpespcant = document.getElementById('lbpespcant');
-                    lbpespcant.innerHTML = '';
-                    var lbcliente = document.getElementById('lbcliente');
-                    lbcliente.innerHTML = '';
-                    var lbdireccion = document.getElementById('lbdireccion');
-                    lbdireccion.innerHTML = '';
-
-                    // Swal.fire({
-                    //     title: 'Está seguro que desea ver la mesa?',
-                    //     text: "¡No podrás revertir esto!",
-                    //     icon: 'warning',
-                    //     showCancelButton: true,
-                    //     confirmButtonColor: '#3085d6',
-                    //     cancelButtonColor: '#d33',
-                    //     cancelButtonText: 'Cancelar',
-                    //     confirmButtonText: 'Sí!'
-                    // }).then((result) => {
-                    //     if (result.isConfirmed) {
-
-                            if ($('#reducir').val() != 'Si') {
-                                var lbcupon = document.getElementById('lbcupon');
-                                lbcupon.innerHTML = '';
-                                var lbconf_total = document.getElementById('lbconf_total');
-                                lbconf_total.innerHTML = '';
-                                var lbdesc = document.getElementById('lbdesc');
-                                lbdesc.innerHTML = '';
-                                var lbres = document.getElementById('lbres');
-                                lbres.innerHTML = '';
-                                var lbpropina = document.getElementById('lbpropina');
-                                lbpropina.innerHTML = '';
-                                var lbtotal2 = document.getElementById('lbtotal2');
-                                lbtotal2.innerHTML = '';
-                                var lbdos = document.getElementById('lbdos');
-                                lbdos.innerHTML = '';
-                                var lbtres = document.getElementById('lbtres');
-                                lbtres.innerHTML = '';
-                                var lbmotivoDescuento = document.getElementById('lbmotivoDescuento');
-                                lbmotivoDescuento.innerHTML = '';
-                                var lbcomentario = document.getElementById('lbcomentario');
-                                lbcomentario.innerHTML = '';
-                            } else {
-                                var lbtotal2 = document.getElementById('lbtotal2');
-                                lbtotal2.innerHTML = '';
-                                var lbcupon = document.getElementById('lbcupon');
-                                lbcupon.innerHTML = '';
-                                var lbdos = document.getElementById('lbdos');
-                                lbdos.innerHTML = '';
-                                var lbtres = document.getElementById('lbtres');
-                                lbtres.innerHTML = '';
-                            }
-
-                            // $('#cupon').val("");
-                            $('#conftotal').val("");
-                            $('#desc').val("");
-                            $('#res').val("");
-                            $('#propina').val("");
-                            $('#total2').val("");
-                            $('#dos').val("");
-                            $('#tres').val("");
-                            $('#motivoDescuento').val("");
-
-                            $('#id_proveedor').val(tituloMesa);
-                            $('#mesa_estado').val(estadoMesa);
-                            var mesa = $('#id_proveedor').val();
-                            document.getElementsByTagName("figure")[k].style.display = 'block';
-
-                            if (mesa.trim() == 'Para llevar') {
-                                $("#cliente").show();
-                                $("#direccion").show();
-                                $("#clientelb").show();
-                                $("#direccionlb").show();
-                            } else {
-                                // $("#consumo").hide();
-                                // $("#guardar").hide();
-                                $("#cliente").hide();
-                                $("#direccion").hide();
-                                $("#clientelb").hide();
-                                $("#direccionlb").hide();
-                            }
-
-                            $.ajax({
-                                url: "/obtenerComanda/" + mesa,
-                                type: "GET",
-                                dataType: "json",
-                                success: function (data) {
-
-                                    var tableOrden = localStorage.getItem("tableOrden");
-
-                                    if(tableOrden != ''){
-                                        data = JSON.stringify(data);
-
-                                        if(data != tableOrden){
-                                            data = JSON.parse(data);
-                                            data.forEach(function (element, indice, array) {
-                                                var articulo = element.articulo;
-
-                                                if (articulo != null) {
-                                                    $('#detalles').append(
-                                                        '<tr class="selected" id="fila' +
-                                                        element.fila + '">' +
-                                                        '<td><button type="button"  class="btn btn-warning" onclick="eliminar(' +
-                                                        element.fila + ',' + element
-                                                        .subtotal +
-                                                        ')">Eliminar</button></td>' +
-                                                        '<td><input type="hidden" name="articulo[]" value="' +
-                                                        element.articulo + '">' +
-                                                        element.articulo + '</td>' +
-                                                        '<td><input type="hidden" name="cantidad[]" value="' +
-                                                        element.cantidad + '">' +
-                                                        element.cantidad + '</td>' +
-                                                        '<td><input type="hidden" name="precio_compra[]" value="' +
-                                                        element.precio_compra + '">' +
-                                                        element.precio_compra +
-                                                        '</td>' +
-                                                        '<td><input type="hidden" name="subtotal[]" value="' +
-                                                        element.subtotal + '">' +
-                                                        element.subtotal + '</td>' +
-                                                        '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
-                                                        element.fila + '"></td></tr>')
-
-                                                    total += parseFloat(element.subtotal);
-                                                    base = total.toFixed(2);
-
-                                                    var cliente = element.cliente;
-                                                    var direccion = element.direccion;
-                                                    $('#cliente').val(cliente);
-                                                    $('#direccion').val(direccion);
-
-                                                } else {
-
-                                                    total = 0;
-                                                    base = total.toFixed(2);
-                                                }
-
-                                                var comentario = element.comentario;
-                                                if (comentario != null) {
-                                                    $('#comentario').val(comentario);
-                                                } else {
-                                                    $("#comentario").val("");
-                                                }
-
-
-                                            });
-                                            evaluar = parseInt(total);
-                                            if (evaluar != 0) {
-                                                $("#total").html("$" + base);
-                                                $('#valor').val(base);
-                                                $('#total1').val(base);
-                                                $('#total2').val(base);
-                                                $('#res').val(base);
-                                                $('#conftotal').val(base);
-                                                $("#guardar").show();
-                                                $("#consumo").show();
-                                                var f = data.length - 1;
-                                                var dato = data[f].fila;
-                                                contador = parseInt(dato) + 1;
-                                                $('#incrementa').val(contador);
-                                                // calcular();
-
-                                                function evaluar() {
-                                                    if (base > 0) {
-                                                        $("#guardar").show();
-                                                        $("#consumo").show();
-                                                    } else {
-                                                        $("#consumo").hide();
-                                                        $("#guardar").hide();
-                                                        $("#total").html("$" + "0.00");
-                                                        $('#total1').val("");
-                                                        // calcular();
-                                                    }
-                                                }
-                                            } else {
-                                                $('#total1').val("");
-                                                $('#conftotal').val("");
-                                                $("#total").html("$" + "0.00");
-                                                $('#valor').val("0");
-                                                $('#incrementa').val("0");
-                                                $("#guardar").hide();
-                                                $("#consumo").hide();
-                                                // calcular();
-                                                if (data == '') {
-                                                    $("#comentario").val("");
-                                                }
-                                            }
-                                            data = JSON.stringify(data);
-                                            localStorage.setItem("tableOrden",data);
-
-                                        }
-
-                                    } else {
-
-                                        data.forEach(function (element, indice, array) {
-                                            var articulo = element.articulo;
-
-                                            if (articulo != null) {
-                                                $('#detalles').append(
-                                                    '<tr class="selected" id="fila' +
-                                                    element.fila + '">' +
-                                                    '<td><button type="button"  class="btn btn-warning" onclick="eliminar(' +
-                                                    element.fila + ',' + element
-                                                    .subtotal +
-                                                    ')">Eliminar</button></td>' +
-                                                    '<td><input type="hidden" name="articulo[]" value="' +
-                                                    element.articulo + '">' +
-                                                    element.articulo + '</td>' +
-                                                    '<td><input type="hidden" name="cantidad[]" value="' +
-                                                    element.cantidad + '">' +
-                                                    element.cantidad + '</td>' +
-                                                    '<td><input type="hidden" name="precio_compra[]" value="' +
-                                                    element.precio_compra + '">' +
-                                                    element.precio_compra +
-                                                    '</td>' +
-                                                    '<td><input type="hidden" name="subtotal[]" value="' +
-                                                    element.subtotal + '">' +
-                                                    element.subtotal + '</td>' +
-                                                    '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
-                                                    element.fila + '"></td></tr>')
-
-                                                total += parseFloat(element.subtotal);
-                                                base = total.toFixed(2);
-
-                                                var cliente = element.cliente;
-                                                var direccion = element.direccion;
-                                                $('#cliente').val(cliente);
-                                                $('#direccion').val(direccion);
-
-                                            } else {
-
-                                                total = 0;
-                                                base = total.toFixed(2);
-                                            }
-
-                                            var comentario = element.comentario;
-                                            if (comentario != null) {
-                                                $('#comentario').val(comentario);
-                                            } else {
-                                                $("#comentario").val("");
-                                            }
-
-
-                                        });
-                                        evaluar = parseInt(total);
-                                        if (evaluar != 0) {
-                                            $("#total").html("$" + base);
-                                            $('#valor').val(base);
-                                            $('#total1').val(base);
-                                            $('#total2').val(base);
-                                            $('#res').val(base);
-                                            $('#conftotal').val(base);
-                                            $("#guardar").show();
-                                            $("#consumo").show();
-                                            var f = data.length - 1;
-                                            var dato = data[f].fila;
-                                            contador = parseInt(dato) + 1;
-                                            $('#incrementa').val(contador);
-                                            // calcular();
-
-                                            function evaluar() {
-                                                if (base > 0) {
-                                                    $("#guardar").show();
-                                                    $("#consumo").show();
-                                                } else {
-                                                    $("#consumo").hide();
-                                                    $("#guardar").hide();
-                                                    $("#total").html("$" + "0.00");
-                                                    $('#total1').val("");
-                                                    // calcular();
-                                                }
-                                            }
-                                        } else {
-                                            $('#total1').val("");
-                                            $('#conftotal').val("");
-                                            $("#total").html("$" + "0.00");
-                                            $('#valor').val("0");
-                                            $('#incrementa').val("0");
-                                            $("#guardar").hide();
-                                            $("#consumo").hide();
-                                            // calcular();
-                                            if (data == '') {
-                                                $("#comentario").val("");
-                                            }
-                                        }
-                                        data = JSON.stringify(data);
-                                        localStorage.setItem("tableOrden",data);
-                                    }
-
-                                },
-                                error: function (error) {
-                                    console.log(error);
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: '¡Error!',
-                                        text: '¡No se ha podido obtener la Comanda!',
-                                    })
-                                }
-                            });
-
-                            // Swal.fire(
-                            //     'consultada!',
-                            //     'La mesa ha sido consultada.',
-                            //     'success'
-                            // )
-                            var resultados = document.getElementById('detalle1');
-                            resultados.innerHTML = '';
-                            var detalleTotal = document.getElementById('total');
-                            detalleTotal.innerHTML = '';
-                    //     } else {
-                    //         Swal.fire('La mesa no ha sido consultada', '', 'info')
-                    //     }
-                    // })
-                });
-            }
-
-            $(document).ready(function () {
-                setInterval(syncWIthApis4, 950); //Cada 30 segundo (30 mil milisegundos)
-            });
-        }, 1500);
-
     </script>
 
     {{-- Eliminar Producto Registrado en Orden --}}
