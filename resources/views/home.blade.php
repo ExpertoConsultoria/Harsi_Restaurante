@@ -2719,7 +2719,7 @@
                             text: 'Error el motivo es obligatorio, ingrese el motivo del descuento!',
                         })
                         return false;
-                    } else if (res1 == 0 || res1 == null || isNaN(res1)) {
+                    } else if (res == 0 || res == null || isNaN(res)) {
                         $('#lbres').html(
                             "<span style='color:red;'>El subtotal no puede ser menor al importe</span>");
                         $('#res').focus();
