@@ -2859,16 +2859,16 @@
             var rsubcategoria = $('#rsubcategoria').val();
 
             if (rsubcategoria != 'Si') {
-                console.log($('#select_categoria').val());
+
                 $('#select_categoria').on('input', function () {
                     var id_categoria = $('#select_categoria').val();
-                    console.log(id_categoria);
+
                     $.ajax({
                         url: "/productos/" + id_categoria,
                         type: "GET",
                         dataType: "json",
-                        error: function (element) {
-                            //console.log(element);
+                        error: function (error) {
+                            console.log(error);
                         },
                         success: function (respuesta) {
                             $("#producto").html(
@@ -2881,6 +2881,7 @@
                         }
                     });
                 });
+
             } else {
 
                 $('#select_categoria').on('input', function () {
@@ -2890,8 +2891,8 @@
                         url: "/subcategory/" + id_categoria,
                         type: "GET",
                         dataType: "json",
-                        error: function (element) {
-                            //console.log(element);
+                        error: function (error) {
+                            console.log(error);
                         },
                         success: function (respuesta) {
                             $("#select_subcategoria").html(
@@ -2913,8 +2914,8 @@
                         url: "/productos/" + id_categoria,
                         type: "GET",
                         dataType: "json",
-                        error: function (element) {
-                            //console.log(element);
+                        error: function (error) {
+                            console.log(error);
                         },
                         success: function (respuesta) {
                             $("#producto").html(
@@ -2927,6 +2928,7 @@
                         }
                     });
                 });
+
             }
 
             $('#producto').on('input', function () {
@@ -2942,20 +2944,19 @@
                     }
                 });
             });
-            //console.log(rsubcategoria);
+
         });
     </script>
 
     {{-- Eliminar Producto Registrado en Orden --}}
     <script type="text/javascript">
+    
         function evaluar() {
             base = $('#valor').val();
             if (base > 0) {
-                $("#guardar").show();
-                $("#consumo").show();
+                $("#guardar, #consumo").show();
             } else {
-                $("#consumo").hide();
-                $("#guardar").hide();
+                $("#consumo, #guardar").hide();
                 $("#total").html("$" + "0.00");
                 $('#total1').val("");
             }
@@ -2985,31 +2986,23 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-
-                    base = $('#valor').val();
-                    base = base - subtotal1;
-                    $('#valor').val(base);
-                    $("#total").html("$" + base);
-                    $('#total1').val(base);
-                    $('#total2').val(base);
-                    $('#conftotal').val(base);
-                    $("#fila" + index).remove();
+                    let base = $('#valor').val() - subtotal1;
+                    $('#valor, #total1, #total2, #conftotal').val(base);
+                    $("#total").text(`$${base}`);
+                    $(`#fila${index}`).remove();
                     evaluar();
-                    var motivo = document.getElementById('swal-input1').value;
+
+                    const motivo = $('#swal-input1').val();
                     eliminarFila(index, motivo);
-                    Swal.fire(
-                        'Eliminado!',
-                        'El producto ha sido eliminado.',
-                        'success'
-                    )
+
+                    Swal.fire('Eliminado!', 'El producto ha sido eliminado.', 'success');
                 }
             })
-
         }
 
         function eliminarFila(index, motivo) {
-            var mesa = document.getElementById('id_proveedor').value;
-            var estado = document.getElementById('mesa_estado').value;
+            const mesa = $('#id_proveedor').val();
+            const estado = $('#mesa_estado').val();
 
             var data = {
                 "indice": index,
