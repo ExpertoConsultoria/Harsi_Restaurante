@@ -5,7 +5,7 @@
         <title>Inicio</title>
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="icon" href="../imagenes-05.ico" type="image/x-icon  ">
+        <link rel="icon" type="image/x-icon" href="{{ asset('img/fav1.png') }}">
 
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
