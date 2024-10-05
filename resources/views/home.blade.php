@@ -2950,7 +2950,7 @@
 
     {{-- Eliminar Producto Registrado en Orden --}}
     <script type="text/javascript">
-    
+
         function evaluar() {
             base = $('#valor').val();
             if (base > 0) {
@@ -3034,58 +3034,39 @@
     {{-- Buscador de Productos --}}
     <script type="text/javascript">
 
-        // showProducts
-
         $(function () {
-            const input = document.getElementById("product_name");
-            input.addEventListener("input", onSelectChange);
-            // $('#product_name').on('input', onSelectChange);
+            $('#product_name').on('input', onSelectChange);
         });
 
         function onSelectChange() {
+            const product_name = $(this).val();
 
-            var product_name = $(this).val();
             if (product_name.length >= 1) {
-                $('#showProducts')
-                    .empty()
-                ;
+                $('#showProducts').empty();
             }
             if (product_name.length > 1) {
-                $.get('api/producto/' + product_name + '/titulo', function (data) {
-                    var html_select = ``;
-                    for (var i = 0; i < data.length; ++i){
-                        html_select += `
-                            <button type="button" id="productResult" class="pt-0 pb-0 list-group-item list-group-item-action pe-0" onclick="onSelectProducto(${data[i].id})">
-                                ${data[i].titulo}
-                            </button>`;
-                    }
+                $.get(`api/producto/${product_name}/titulo`, function (data) {
+                    const html_select = data.map(product => `
+                        <button type="button" id="productResult" class="pt-0 pb-0 list-group-item list-group-item-action pe-0" onclick="onSelectProducto(${product.id})">
+                            ${product.titulo}
+                        </button>
+                    `).join('');
                     $('#showProducts').html(html_select);
                 });
             }
         }
 
         function onSelectProducto(id) {
+            $('#showProducts').empty();
 
-            $('#showProducts')
-                .empty()
-            ;
+            $.get(`api/producto/${id}/producto`, function (data) {
+                const { precio, id: id_prod, titulo: name_prod } = data[0];
 
-            // document.getElementById('product_name').value = "";
-            $.get('api/producto/' + id + '/producto', function (data) {
-                // console.log(data[0].id);
-                var html_select = data[0].precio;
-                var id_prod = data[0].id;
-                var name_prod = data[0].titulo;
-
-                var producto = '<option option selected="selected" value=" ' + data[0].id + '" >' + data[0].titulo + '</option>';
-                $('#producto')
-                    .empty()
-                    .append(producto)
-                ;
+                const producto = `<option selected="selected" value="${id_prod}">${name_prod}</option>`;
+                $('#producto').empty().append(producto);
 
                 $('#pid_articulo').val(name_prod);
-                $('#pprecio_compra').val(html_select);
-
+                $('#pprecio_compra').val(precio);
             });
         }
 
