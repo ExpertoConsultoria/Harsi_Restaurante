@@ -43,7 +43,7 @@ class ReportesController extends Controller
             }
 
         } else {
-            $variable[] = 'No hay registros';
+            $variable[] = date('Y');
         }
 
         if ($orden1 != null) {
@@ -434,7 +434,7 @@ class ReportesController extends Controller
                 'telefono' => '',
             );
         }
-        return view('pdf.ventas', compact('orden', 'total', 'propina', 'descuento', 'restaurante'));
+        return view('pdf.ventas', compact('orden', 'total', 'propina', 'descuento', 'restaurante', 'estado'));
     }
 
     public function reporteDiario($estado, $fecha)
@@ -671,7 +671,10 @@ class ReportesController extends Controller
             );
         }
 
-        return view('pdf.reporteMensual', compact('orden', 'total', 'propina', 'descuento', 'restaurante'));
+        $month = Carbon::create(2000, $meses, 1)->locale('es')->monthName;
+        $month= ucfirst($month);
+
+        return view('pdf.reporteMensual', compact('orden', 'total', 'propina', 'descuento', 'restaurante', 'month'));
     }
     public function reporteEliminados($estado, $meses)
     {
@@ -901,25 +904,25 @@ class ReportesController extends Controller
                 $mesas = OrdenCancelado::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->get();
                 $total = OrdenCancelado::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('total');
 
-                return view('pdf.reporteMesasEliminadosDiario', compact('mesas', 'total', 'restaurante'));
+                return view('pdf.reporteMesasEliminadosDiario', compact('mesas', 'total', 'restaurante', 'fecha'));
 
             } elseif ($estado == 2) {
 
                 $mesas = OrdenCancelado::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->get();
                 $total = OrdenCancelado::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('total');
 
-                return view('pdf.reporteMesasEliminadosDiario', compact('mesas', 'total', 'restaurante'));
+                return view('pdf.reporteMesasEliminadosDiario', compact('mesas', 'total', 'restaurante', 'fecha'));
 
             } elseif ($estado == 3) {
                 $mesas = OrdenCancelado::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->get();
                 $total = OrdenCancelado::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('total');
 
-                return view('pdf.reporteMesasEliminadosDiario', compact('mesas', 'total', 'restaurante'));
+                return view('pdf.reporteMesasEliminadosDiario', compact('mesas', 'total', 'restaurante', 'fecha'));
             } elseif ($estado == 4) {
                 $mesas = OrdenCancelado::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->get();
                 $total = OrdenCancelado::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('total');
 
-                return view('pdf.reporteMesasEliminadosDiario', compact('mesas', 'total', 'restaurante'));
+                return view('pdf.reporteMesasEliminadosDiario', compact('mesas', 'total', 'restaurante', 'fecha'));
             }
 
         } else {
@@ -930,7 +933,7 @@ class ReportesController extends Controller
                 $precio_compra = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('status', 'Eliminado')->sum('precio_compra');
                 $subtotal = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('status', 'Eliminado')->sum('subtotal');
 
-                return view('pdf.reporteEliminadosDiario', compact('temporal', 'cantidad', 'precio_compra', 'subtotal', 'restaurante'));
+                return view('pdf.reporteEliminadosDiario', compact('temporal', 'cantidad', 'precio_compra', 'subtotal', 'restaurante', 'fecha'));
 
             } elseif ($estado == 2) {
 
@@ -939,7 +942,7 @@ class ReportesController extends Controller
                 $precio_compra = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('status', 'Eliminado')->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('precio_compra');
                 $subtotal = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('status', 'Eliminado')->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('subtotal');
 
-                return view('pdf.reporteEliminadosDiario', compact('temporal', 'cantidad', 'precio_compra', 'subtotal', 'restaurante'));
+                return view('pdf.reporteEliminadosDiario', compact('temporal', 'cantidad', 'precio_compra', 'subtotal', 'restaurante', 'fecha'));
 
             } elseif ($estado == 3) {
                 $temporal = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('status', 'Eliminado')->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->get();
@@ -947,7 +950,7 @@ class ReportesController extends Controller
                 $precio_compra = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('status', 'Eliminado')->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('precio_compra');
                 $subtotal = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('status', 'Eliminado')->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('subtotal');
 
-                return view('pdf.reporteEliminadosDiario', compact('temporal', 'cantidad', 'precio_compra', 'subtotal', 'restaurante'));
+                return view('pdf.reporteEliminadosDiario', compact('temporal', 'cantidad', 'precio_compra', 'subtotal', 'restaurante', 'fecha'));
             } elseif ($estado == 4) {
                 $temporal = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('status', 'Eliminado')->get();
                 //dd($temporal);
@@ -955,7 +958,7 @@ class ReportesController extends Controller
                 $precio_compra = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('status', 'Eliminado')->sum('precio_compra');
                 $subtotal = ComandaTemporal::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('status', 'Eliminado')->sum('subtotal');
 
-                return view('pdf.reporteEliminadosDiario', compact('temporal', 'cantidad', 'precio_compra', 'subtotal', 'restaurante'));
+                return view('pdf.reporteEliminadosDiario', compact('temporal', 'cantidad', 'precio_compra', 'subtotal', 'restaurante', 'fecha'));
             }
         }
 
@@ -965,6 +968,9 @@ class ReportesController extends Controller
     {
 
         $dato = Restaurante::min('id');
+        $month = Carbon::create(2000, $meses, 1)->locale('es')->monthName;
+        $month= ucfirst($month);
+
         if ($dato != null) {
             $restaurante = DB::table('restaurante')
                 ->select('id', 'nombre', 'rfc', 'direccion', 'telefono')
@@ -1001,7 +1007,7 @@ class ReportesController extends Controller
             $total = OrdenCancelado::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->sum('total');
             $eliminado = OrdenCancelado::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->count();
 
-            return view('pdf.reporteMesasEliminadas', compact('orden', 'total', 'eliminado', 'restaurante'));
+            return view('pdf.reporteMesasEliminadas', compact('orden', 'total', 'eliminado', 'restaurante', 'month'));
 
         } else {
 
@@ -1018,7 +1024,7 @@ class ReportesController extends Controller
             $total = ComandaTemporal::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->where('status', 'Eliminado')->sum('subtotal');
             $eliminado = ComandaTemporal::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->where('status', 'Eliminado')->count();
 
-            return view('pdf.reporteEliminados', compact('orden', 'total', 'eliminado', 'restaurante'));
+            return view('pdf.reporteEliminados', compact('orden', 'total', 'eliminado', 'restaurante', 'month'));
 
         }
 

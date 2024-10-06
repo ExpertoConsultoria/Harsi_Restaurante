@@ -25,7 +25,7 @@
                     <div class="panel-body">
                         <div class="row">
 
-                            <div class="my-1 col-md-4">
+                            <div class="my-2 col-md-4">
                                 <a
                                     id="anual"
                                     onclick="reporteAnual()"
@@ -35,7 +35,7 @@
                                 </a>
                             </div>
 
-                            <div class="my-1 col-md-4">
+                            <div class="my-2 col-md-4">
                                 <a
                                     id="mensual"
                                     onclick="reporteMensual()"
@@ -45,17 +45,17 @@
                                 </a>
                             </div>
 
-                            <div class="my-1 col-md-4">
+                            <div class="my-2 col-md-4">
                                 <a
                                     id="diario"
                                     onclick="reporteDiario()"
                                     class="rounded shadow-sm btn btn-lg btn-block general-reports"
                                 >
-                                    <i class="fas fa-caret-down"><span class="pl-2">Venta diario</span></i>
+                                    <i class="fas fa-caret-down"><span class="pl-2">Venta diaria</span></i>
                                 </a>
                             </div>
 
-                            <div class="my-1 col-md-4">
+                            <div class="my-2 col-md-4">
                                 <a
                                     id="listas"
                                     onclick="lista()"
@@ -65,23 +65,23 @@
                                 </a>
                             </div>
 
-                            <div class="my-1 col-md-4">
+                            <div class="my-2 col-md-4">
                                 <a
                                     id="incidenciasDiarias"
                                     onclick="incidenciasDiarias()"
                                     class="rounded shadow-sm btn btn-lg btn-block general-reports"
                                 >
-                                    <i class="fas fa-caret-down"><span class="pl-2">Incidencias al día</span></i>
+                                    <i class="fas fa-caret-down"><span class="pl-2">Incidencias por día</span></i>
                                 </a>
                             </div>
 
-                            <div class="my-1 col-md-4">
+                            <div class="my-2 col-md-4">
                                 <a
                                     id="incidenciasMensuales"
                                     onclick="incidenciasMensuales()"
                                     class="rounded shadow-sm btn btn-lg btn-block general-reports"
                                 >
-                                    <i class="fas fa-caret-down"><span class="pl-2">Incidencias al mes</span></i>
+                                    <i class="fas fa-caret-down"><span class="pl-2">Incidencias por mes</span></i>
                                 </a>
                             </div>
 
@@ -230,104 +230,6 @@
                 </div>
             </div>
 
-            <div id="modalProductosEliminados" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title3">Reporte Mensual</h4>
-                        </div>
-                        <div class="modal-body">
-                            <span id="form_result"></span>
-                            <form method="post" id="sample_form3" class="form-horizontal" enctype="multipart/form-data"
-                                autocomplete="off">
-                                <meta name="csrf-token" content="{{ csrf_token() }}">
-                                <div class="form-group">
-                                    <label class="control-label col-md-2">Año</label>
-                                    <div class="col-md-8">
-
-                                        <select id="estado3" type="text" class="form-control" name="estado3"
-                                            value="{{ old('estado3') }}" required>
-                                            <option id="0" selected="" disabled="" value="{{ old('estado3') }}">Seleccione el año
-                                            </option>
-                                            @foreach ($variable2 as $g)
-                                            <option value="{{$g}}">{{$g}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-2" id="lbmeses">Meses</label>
-                                    <div class="col-md-8">
-                                        <select id="meses3" type="text" class="form-control" name="meses3"
-                                            value="{{ old('meses3') }}" required>
-                                            <option id="0" selected="" disabled="" value="{{ old('meses3') }}">Seleccione el mes
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group" align="center">
-                                    <input type="hidden" name="action3" id="action3" />
-                                    <input type="hidden" name="hidden_id" id="hidden_id" />
-                                    <input type="submit" name="action_button3" id="action_button3" class="btn btn-warning"
-                                        value="Add3" />
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="modalMesasCanceladas" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title5">Reporte Mensual</h4>
-                        </div>
-                        <div class="modal-body">
-                            <span id="form_result5"></span>
-                            <form method="post" id="sample_form5" class="form-horizontal" enctype="multipart/form-data"
-                                autocomplete="off">
-                                <meta name="csrf-token" content="{{ csrf_token() }}">
-                                <div class="form-group">
-                                    <label class="control-label col-md-2">Año</label>
-                                    <div class="col-md-8">
-
-                                        <select id="estado5" type="text" class="form-control" name="estado5"
-                                            value="{{ old('estado5') }}" required>
-                                            <option id="0" selected="" disabled="" value="{{ old('estado5') }}">Seleccione el año
-                                            </option>
-                                            @foreach ($variable3 as $g)
-                                            <option value="{{$g}}">{{$g}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-2" id="lbmeses">Meses</label>
-                                    <div class="col-md-8">
-                                        <select id="meses5" type="text" class="form-control" name="meses5"
-                                            value="{{ old('meses5') }}" required>
-                                            <option id="0" selected="" disabled="" value="{{ old('meses5') }}">Seleccione el mes
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group" align="center">
-                                    <input type="hidden" name="action5" id="action5" />
-                                    <input type="hidden" name="hidden_id5" id="hidden_id5" />
-                                    <input type="submit" name="action_button5" id="action_button5" class="btn btn-warning"
-                                        value="Add5" />
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div id="modalListas" class="modal fade" role="dialog" aria-labelledby="modalListasTitle" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -367,7 +269,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title font-weight-bold" id="modalIncidenciasDiariasTitle">Reporte Incidencias Diarias</h5>
+                            <h5 class="modal-title font-weight-bold" id="modalIncidenciasDiariasTitle">Reporte de Incidencias Diarias</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -382,7 +284,7 @@
                                         <select id="tipo6" class="form-control" name="tipo6" required>
                                             <option value="" selected disabled>Seleccione el tipo de incidencia</option>
                                             <option value="1">Mesas canceladas</option>
-                                            <option value="2">Productos eliminados</option>
+                                            <option value="2">Productos cancelados</option>
                                         </select>
                                     </div>
                                 </div>
@@ -407,7 +309,7 @@
                                 <div class="mt-4 text-center form-group">
                                     <input type="hidden" name="action6" id="action6" />
                                     <input type="hidden" name="hidden_id6" id="hidden_id6" />
-                                    <button type="submit" name="action_button6" id="action_button6" class="btn btn-primary">Consultar<</button>
+                                    <button type="submit" name="action_button6" id="action_button6" class="btn btn-primary">Consultar</button>
                                 </div>
                             </form>
                         </div>
@@ -419,7 +321,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title font-weight-bold" id="modalIncidenciasMensualesTitle">Reporte Mensual</h5>
+                            <h5 class="modal-title font-weight-bold" id="modalIncidenciasMensualesTitle">Reporte de Incidencias Mensuales</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -434,7 +336,7 @@
                                         <select id="tipo7" class="form-control" name="tipo7" required>
                                             <option value="" selected disabled>Seleccione el tipo de incidencia</option>
                                             <option value="1">Mesas canceladas</option>
-                                            <option value="2">Productos eliminados</option>
+                                            <option value="2">Productos cancelados</option>
                                         </select>
                                     </div>
                                 </div>
@@ -494,20 +396,21 @@
             </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="modalPorGuia" tabindex="-1" role="dialog" aria-labelledby="modalPorGuiaLabel">
+            <div class="modal fade" id="modalPorGuia" tabindex="-1" role="dialog" aria-labelledby="modalPorGuiaLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Informe "Ingresos por día"</h4>
+                            <h5 class="modal-title" id="modalPorGuiaLabel">Informe "Ingresos por día"</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
-
+                            <!-- Aquí puedes agregar el contenido del modal -->
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary">Guardar cambios</button>
                         </div>
                     </div>
                 </div>
