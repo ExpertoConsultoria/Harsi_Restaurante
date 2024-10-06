@@ -2,18 +2,18 @@
 @section ('content')
 
     @if (Auth::check() && Auth::user()->role == 'administrador')
-        <div class="row mb-4">
-            <div class="col-sm-6 col-xs-12">
-                <h2 align="center"> PANEL DE CONFIGURACIÓN</h2>
+        <div class="my-4 row">
+            <div class="col-6">
+                <h2> PANEL DE CONFIGURACIÓN</h2>
             </div>
-            <div class="col-sm-6 col-xs-12">
-                <h2>
+            <div class="col-6">
+                <h3 class="text-center">
                     <?php
-                $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
-                $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-                echo $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
-                ?>
-                </h2>
+                        $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+                        $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+                        echo $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
+                    ?>
+                </h3>
             </div>
         </div>
 
@@ -184,14 +184,14 @@
     @endif
 
     @if (Auth::check() && Auth::user()->role == 'cajero')
-        <div class="row justify-content-center align-items-center g-2 mt-5">
+        <div class="mt-5 row justify-content-center align-items-center g-2">
             <div class="col-5">
 
-                <div class="card text-center">
+                <div class="text-center card">
                   <img class="card-img-top" src="{{ asset('img/imagenes-07.png') }}" alt="Title">
                   <div class="card-body">
-                    <h2 class="text-center mb-4">¡Acceso Denegado!</h2>
-                    <p class="card-text mb-3">No cuenta con los permisos necesarios para acceder al <b>Resumen Administrativo</b> del sistema.</p>
+                    <h2 class="mb-4 text-center">¡Acceso Denegado!</h2>
+                    <p class="mb-3 card-text">No cuenta con los permisos necesarios para acceder al <b>Resumen Administrativo</b> del sistema.</p>
                     {{-- <p class="text-center">Por fa <a href="/restaurante" style="text-decoration: underline; font-weight: bold">Configuración General</a></p> --}}
                   </div>
                 </div>
