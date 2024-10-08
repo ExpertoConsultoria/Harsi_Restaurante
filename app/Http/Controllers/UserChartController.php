@@ -11,13 +11,10 @@ use Illuminate\Support\Facades\DB;
 class UserChartController extends Controller
 {
     public function index() {
-
-        $comanda1 = comanda::where('articulo_id', '1')->sum('cantidad');
-        $comanda2 = comanda::where('articulo_id', '2')->sum('cantidad');
         $mesas = Orden::select('mesa')->get();
         $orden = Orden::whereMonth('fecha', Carbon::now())->count();
 
-        return view('Graficas.index', compact('comanda1', 'comanda2', 'mesas', 'orden'));
+        return view('Graficas.index', compact('mesas', 'orden'));
     }
 
     public function chart(Request $request) {
