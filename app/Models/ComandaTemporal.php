@@ -8,16 +8,16 @@ class ComandaTemporal extends Model
 {
     protected $table = 'comanda_temporal';
 
-   protected $fillable =
-       [
-        'fila',
+    protected $fillable =
+    [
+        'fila', // Array Index
         'fecha',
         'mesa',
-        'estado',
+        'estado', // Estado de la Mesa [Abierta, Cerrada]
         'cajero',
         'cliente',
         'direccion',
-        'articulo_id',
+
         'articulo',
         'cantidad',
         'precio_compra',
@@ -25,12 +25,7 @@ class ComandaTemporal extends Model
         'status',
         'motivo',
         'comentario',
-       ];
+    ];
 
     protected $primarykey = 'id';
-
-    public function producto(){
-        return $this->belongsTo('App\Models\Producto','articulo_id');
-    }
-
 }

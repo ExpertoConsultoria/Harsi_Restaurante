@@ -28,7 +28,6 @@ return new class extends Migration
             $table->integer('descuento')->nullable();
             $table->string('motivo_descuento',500)->default('Ninguno')->nullable();
             $table->decimal('descuento_pesos',10,2)->nullable();
-            $table->string('ordencol',45)->nullable();
             $table->decimal('total',10,2)->nullable();
             $table->decimal('propina',10,2)->nullable(); // Propina
             $table->decimal('total2',10,2)->nullable();

@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrdenCancelado extends Model
 {
-     protected $table = 'orden_cancelado';
+    protected $table = 'orden_cancelado';
+
     protected $fillable =
-       [
+    [
         'fecha',
         'mesa',
         'cajero',
@@ -17,7 +18,7 @@ class OrdenCancelado extends Model
         'total',
         'motivo',
         'comentario',
-       ];
+    ];
+    
     protected $primarykey = 'id';
-
 }

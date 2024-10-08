@@ -593,7 +593,7 @@
                 };
 
                 $.ajax({
-                    url: "/guardarComentario",
+                    url: "/guardarComentario", // Guardamos Comebtario de Orden
                     type: "POST",
                     data: data,
                     success: function (response) {
@@ -811,7 +811,7 @@
                     }
 
                     $.ajax({
-                        url: "/obtenerComanda/" + mesa,
+                        url: "/obtenerComanda/" + mesa, // Obtenemos Comanda Temporal
                         type: "GET",
                         dataType: "json",
                         success: function (data) {
@@ -931,7 +931,7 @@
                 };
 
                 $.ajax({
-                    url: "/datosHome",
+                    url: "/datosHome", // Abrimos Mesa
                     type: "POST",
                     data: data,
                     success: function (msg) {},
@@ -1019,7 +1019,7 @@
                         };
 
                         $.ajax({
-                            url: "/cerrarMesa",
+                            url: "/cerrarMesa", // Cerrar mesa
                             type: "POST",
                             data: data,
                             success: function (msg) {},
@@ -1030,7 +1030,7 @@
 
                         if ($('#id_proveedor').val() == tituloMesa) {
                             $.ajax({
-                                url: "/ordenCancelada",
+                                url: "/ordenCancelada", // Guardar Orden Cancelada
                                 type: "POST",
                                 data: $('#sample_venta').serialize(),
                                 success: function (data) {},
@@ -1165,7 +1165,7 @@
                                 }
 
                                 $.ajax({
-                                    url: "/obtenerComanda/" + mesa,
+                                    url: "/obtenerComanda/" + mesa, // Obtenemos Comanda Temporal
                                     type: "GET",
                                     dataType: "json",
                                     success: function(data) {
@@ -1266,7 +1266,7 @@
                             };
 
                             $.ajax({
-                                url: "/datosHome",
+                                url: "/datosHome", // Abrimos Mesa
                                 type: "POST",
                                 data: data,
                                 success: function(msg) {},
@@ -1362,7 +1362,7 @@
                 }
 
                         $.ajax({
-                            url: "/obtenerComanda/" + mesa,
+                            url: "/obtenerComanda/" + mesa, // Obtenemos Comanda Temporal
                             type: "GET",
                             dataType: "json",
                             success: function (data) {
@@ -1801,7 +1801,7 @@
                     };
 
                     $.ajax({
-                        url: "/guardarComanda",
+                        url: "/guardarComanda", // Guardamos Comanda Temporal
                         type: "POST",
                         data: data,
                         success: function (response) {
@@ -1921,7 +1921,7 @@
                     };
 
                     $.ajax({
-                        url: "/guardarComanda",
+                        url: "/guardarComanda", // Guardamos Comanda Temporal
                         type: "POST",
                         data: data,
                         success: function (response) {
@@ -2195,7 +2195,7 @@
                     };
 
                     $.ajax({
-                        url: "/guardarComandaExtra",
+                        url: "/guardarComandaExtra", // Guardamos Comanda Extra Temporal
                         type: "POST",
                         data: data,
                         success: function (response) {
@@ -2311,7 +2311,7 @@
                     };
 
                     $.ajax({
-                        url: "/guardarComandaExtra",
+                        url: "/guardarComandaExtra", // Guardamos Comanda Extra Temporal
                         type: "POST",
                         data: data,
                         success: function (response) {
@@ -2531,7 +2531,7 @@
                             if (result.isConfirmed) {
 
                                 $.ajax({
-                                    url: "{{ route('ComandaHome.store') }}",
+                                    url: "{{ route('ComandaHome.store') }}", // Guardamos todo el Pedido
                                     type: "POST",
                                     data: $('#sample_venta').serialize(),
                                     success: function (data) {
@@ -2575,7 +2575,7 @@
                                 };
 
                                 $.ajax({
-                                    url: "/estadoHome",
+                                    url: "/estadoHome", // Cerramos Mesa
                                     type: "POST",
                                     data: data,
                                     sucess: function (msg) {},
@@ -2686,7 +2686,7 @@
                             if (result.isConfirmed) {
 
                                 $.ajax({
-                                    url: "{{ route('ComandaHome.store') }}",
+                                    url: "{{ route('ComandaHome.store') }}", // Guardamos todo el Pedido
                                     type: "POST",
                                     data: $('#sample_venta').serialize(),
                                     success: function (data) {
@@ -2727,7 +2727,7 @@
                                 };
 
                                 $.ajax({
-                                    url: "/estadoHome",
+                                    url: "/estadoHome", // Cerramos Mesa
                                     type: "POST",
                                     data: data,
                                     sucess: function (msg) {},
@@ -2777,7 +2777,7 @@
                     var id_categoria = $('#select_categoria').val();
 
                     $.ajax({
-                        url: "/productos/" + id_categoria,
+                        url: "/productos/" + id_categoria, // Obtenemos los Productos por Categoria
                         type: "GET",
                         dataType: "json",
                         error: function (error) {
@@ -2801,7 +2801,7 @@
                     var id_categoria = $('#select_categoria').val();
 
                     $.ajax({
-                        url: "/subcategory/" + id_categoria,
+                        url: "/subcategory/" + id_categoria, // Obtenemos las Subcategorias
                         type: "GET",
                         dataType: "json",
                         error: function (error) {
@@ -2824,7 +2824,7 @@
                     var id_categoria = $('#select_subcategoria').val();
 
                     $.ajax({
-                        url: "/productos/" + id_categoria,
+                        url: "/productos/" + id_categoria, // Obtenemos los Productos por Subcategoria
                         type: "GET",
                         dataType: "json",
                         error: function (error) {
@@ -2847,7 +2847,7 @@
             $('#producto').on('input', function () {
                 var id_producto = $('#producto').val();
                 $.ajax({
-                    url: "/precio/" + id_producto,
+                    url: "/precio/" + id_producto, // Obtenemos el Precio del Producto
                     type: "GET",
                     dataType: "json",
                     error: function (element) {},
@@ -2925,7 +2925,7 @@
             };
 
             $.ajax({
-                url: "/eliminarFila",
+                url: "/eliminarFila", // Eliminamos Comanda Temporal
                 type: "POST",
                 data: data,
                 success: function (data) {

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comanda extends Model
 {
-   protected $table = 'comanda';
+    protected $table = 'comanda';
 
     protected $fillable = [
         'pedido_id',
@@ -19,11 +19,13 @@ class Comanda extends Model
 
     protected $primarykey = 'id';
 
-    public function orden(){
-        return $this->belongsTo('App\Models\Pedido','orden_id');
+    public function orden()
+    {
+        return $this->belongsTo('App\Models\Pedido', 'orden_id');
     }
 
-    public function producto(){
-        return $this->belongsTo('App\Models\Producto','articulo_id');
+    public function producto()
+    {
+        return $this->belongsTo('App\Models\Producto', 'articulo_id');
     }
 }

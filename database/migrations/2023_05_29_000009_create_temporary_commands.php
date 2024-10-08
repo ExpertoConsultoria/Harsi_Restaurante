@@ -21,11 +21,6 @@ return new class extends Migration
             $table->string('cliente')->nullable();
             $table->string('direccion',500)->nullable();
 
-            $table->unsignedBigInteger('articulo_id')->nullable();
-            $table->foreign('articulo_id')
-                ->references('id')->on('productos')
-                ->onDelete('cascade');
-
             $table->string('articulo')->nullable();
             $table->string('cantidad')->nullable();
             $table->decimal('precio_compra',10,2)->nullable();

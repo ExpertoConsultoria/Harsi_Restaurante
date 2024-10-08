@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Pedido extends Model
 {
     protected $table = 'orden';
+
     protected $fillable =
-       [
+    [
         'fecha',
         'mesa',
         'cajero',
@@ -20,18 +21,17 @@ class Pedido extends Model
         'direccion',
         'articulo',
         'comentario',
+
         'conf_total',
         'descuento',
         'motivo_descuento',
         'descuento_pesos',
-        'ordencol',
         'total',
         'propina',
         'total2',
-        // 'cupon',
         'pago',
         'cambio',
-       ];
-    protected $primarykey = 'id';
+    ];
 
+    protected $primarykey = 'id';
 }

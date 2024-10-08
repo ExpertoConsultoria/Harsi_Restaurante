@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Orden extends Model
 {
     protected $table = 'orden';
+
     protected $fillable =
-        [
+    [
         'fecha',
         'mesa',
         'cajero',
@@ -24,15 +25,12 @@ class Orden extends Model
         'descuento',
         'motivo_descuento',
         'descuento_pesos',
-        'ordencol',
         'total',
         'propina',
         'total2',
-        // 'cupon',
         'pago',
         'cambio',
     ];
 
     protected $primarykey = 'id';
-
 }
