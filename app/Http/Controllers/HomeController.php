@@ -14,9 +14,9 @@ use App\Models\Producto;
 use App\Models\Restaurante;
 use App\Models\User;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -26,15 +26,15 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    public function inicio()
-    {
+    public function inicio() {
+
         $dato = User::min('id'); // Obtenemos el Usuario Administrador Base
 
         if ($dato != null) {
 
             $user = User::select('id', 'name', 'role', 'expiracion')
-                            ->where('role', 'administrador')
-                            ->first();
+                ->where('role', 'administrador')
+                ->first();
 
             if ($user->expiracion != null) {
 
@@ -62,8 +62,7 @@ class HomeController extends Controller
         return view('inicio', compact('message', 'days_left'));
     }
 
-    public function index()
-    {
+    public function index() {
 
         if (Auth::check()) {
             $role = Auth::user()->role;
@@ -73,8 +72,8 @@ class HomeController extends Controller
 
             // Obtener el descuento basado en el rol
             $descuento = DescuentoUsuario::where('role', $role)
-                                            ->select('id', 'role', 'descuento')
-                                            ->first();
+                ->select('id', 'role', 'descuento')
+                ->first();
 
             // Obtener los datos del restaurante
             $dato = Restaurante::min('id');
@@ -97,23 +96,21 @@ class HomeController extends Controller
             }
 
             return view('/home', compact('mesas', 'producto', 'product_categories', 'descuento', 'restaurante'));
-        }
-
-        else {
+        } else {
             return view('inicio');
         }
     }
 
-    public function productos(Request $request, $id_categoria)
-    {
+    public function productos(Request $request, $id_categoria) {
+
         $restaurante = Restaurante::select('subcategoria')->first();
 
         if ($restaurante->subcategoria != 'Si') {
 
             if ($request->ajax()) {
                 $productos = Producto::select('id', 'titulo')
-                                        ->where('category_id', $id_categoria)
-                                        ->get();
+                    ->where('category_id', $id_categoria)
+                    ->get();
 
                 return Response()->json($productos);
             }
@@ -122,8 +119,8 @@ class HomeController extends Controller
 
             if ($request->ajax()) {
                 $productos = Producto::select('id', 'titulo')
-                                ->where('subcategory_id', $id_categoria)
-                                ->get();
+                    ->where('subcategory_id', $id_categoria)
+                    ->get();
 
                 return Response()->json($productos);
             }
@@ -131,22 +128,21 @@ class HomeController extends Controller
         }
     }
 
-    public function precio(Request $request, $id_producto)
-    {
+    public function precio(Request $request, $id_producto) {
         if ($request->ajax()) {
             $precio = Producto::select('titulo', 'precio')
-                                ->where('id', $id_producto)
-                                ->first();
+                ->where('id', $id_producto)
+                ->first();
             return Response()->json($precio);
         }
     }
 
-    public function create($id)
-    {
+    public function create($id) {
+
         if (Auth::check()) {
             $comanda = Mesa::find($id);
             $mesas = Mesa::all();
-            $mesaedit = $mesas;  // Reutilizamos la misma consulta para 'mesas' y 'mesaedit'
+            $mesaedit = $mesas; // Reutilizamos la misma consulta para 'mesas' y 'mesaedit'
             $cta = CategoriaProducto::all();
             $producto = Producto::all();
             $pedido = Pedido::all();
@@ -164,14 +160,12 @@ class HomeController extends Controller
         return view('inicio');
     }
 
-    public function editMesa($id)
-    {
+    public function editMesa($id) {
         $mesaedit = Mesa::find('id', $id)->get();
         return response()->json(['mesaedit' => $mesaedit]);
     }
 
-    public function datos(Request $request)
-    {
+    public function datos(Request $request) {
         if ($request->ajax()) {
 
             $form_data = array(
@@ -186,8 +180,8 @@ class HomeController extends Controller
         }
     }
 
-    public function update(Request $request)
-    {
+    public function update(Request $request) {
+
         if ($request->ajax()) {
 
             $form_data = array(
@@ -202,8 +196,7 @@ class HomeController extends Controller
         }
     }
 
-    public function cerrar(Request $request)
-    {
+    public function cerrar(Request $request) {
         if ($request->ajax()) {
 
             $form_data = array(
@@ -222,8 +215,7 @@ class HomeController extends Controller
         }
     }
 
-    public function ordenCancelada(Request $request)
-    {
+    public function ordenCancelada(Request $request) {
 
         $pedido = new OrdenCancelado;
         $pedido->fecha = $request->fecha;
@@ -235,6 +227,7 @@ class HomeController extends Controller
         $pedido->motivo = $request->motivo;
         $pedido->comentario = $request->comentario;
         $pedido->save();
+
         $articulo = $request->get('articulo');
         $cantidad = $request->get('cantidad');
         $precio_compra = $request->get('precio_compra');
@@ -260,8 +253,7 @@ class HomeController extends Controller
 
     }
 
-    public function manual()
-    {
+    public function manual() {
 
         if (file_exists(public_path() . 'Manual/output (10).pdf')) {
             $path = public_path() . 'Manual/output (10).pdf';

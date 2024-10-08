@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
 use Carbon\Carbon;
 use stdClass;
 
@@ -19,7 +19,7 @@ use App\Models\OrdenCancelado;
 
 class ApiController extends Controller
 {
-    public function getPaymentMethods(){
+    public function getPaymentMethods() {
         return PayMethod::all();
     }
 
@@ -27,11 +27,11 @@ class ApiController extends Controller
         return Mesa::all();
     }
 
-    public function getReservations($id){
+    public function getReservations($id) {
         return Calendar::select('mesas')->where('id',$id)->first();
     }
 
-    public function getResumeSales(){
+    public function getResumeSales() {
         $userg = User::where('role', 'gerente')->count();
         $userc = User::where('role', 'cajero')->count();
         $usera = User::where('role', 'administrador')->count();
@@ -90,7 +90,7 @@ class ApiController extends Controller
 
     }
 
-    public function createEvents(){
+    public function createEvents() {
         $calendar = Calendar::all();
 
         $response = [];

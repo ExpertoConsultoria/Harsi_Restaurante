@@ -2,29 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Models\Mesa;
-use App\Models\CategoriaProducto;
-use App\Models\Producto;
-use App\Models\Pedido;
 use App\Models\Comanda;
-use App\Models\PayMethod;
 use App\Models\ComandaTemporal;
-use App\Models\Estado;
 use App\Models\Orden;
-
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use DataTables;
-use Validator;
-
+use App\Models\Pedido;
+use Illuminate\Http\Request;
 
 class ComandaHomeController extends Controller
 {
-    public function store(Request $request)
-    {
-        // dd($request);
+
+    public function store(Request $request) {
+
         if ($request->input('articulo') != null) {
             $articulos = implode(',', $request->input('articulo'));
         }
@@ -61,9 +49,7 @@ class ComandaHomeController extends Controller
 
         while ($cont < count($articulo)) {
             $detalle = new Comanda;
-            //$ingreso->id del ingreso que recien se guardo
             $detalle->pedido_id = $pedido->id;
-            //id_articulo de la posición cero
             $detalle->articulo = $articulo[$cont];
             $detalle->cantidad = $cantidad[$cont];
             $detalle->precio_compra = $precio_compra[$cont];
@@ -73,15 +59,17 @@ class ComandaHomeController extends Controller
             $procant = $cantidad[$cont] . " " . $articulo[$cont];
             $articantidad[] = $procant;
             $cadena = implode(", ", $articantidad);
+
             Orden::where('id', $pedido->id)->update(['articulo' => $cadena]);
 
             $cont = $cont + 1;
         }
+
         return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa  .');
     }
 
-    public function guardarConsumo(Request $request)
-    {
+    public function guardarConsumo(Request $request) {
+
         if ($request->input('articulo') != null) {
             $articulos = implode(',', $request->input('articulo'));
         }
@@ -94,7 +82,6 @@ class ComandaHomeController extends Controller
         $pedido->forma_pago = $request->forma_pago;
         $pedido->cliente = $request->cliente;
         $pedido->direccion = $request->direccion;
-        //$pedido->articulo =  $articulos;
         $pedido->comentario = $request->comentario;
         if ($request->reducir != 'No') {
             $pedido->conf_total = $request->total1;
@@ -107,7 +94,6 @@ class ComandaHomeController extends Controller
         $pedido->propina = $request->propina;
         $pedido->total = $request->total;
         $pedido->total2 = $request->total2;
-        // $pedido->cupon = $request->cupon;
         $pedido->pago = $request->pago;
         $pedido->cambio = $request->cambio;
         $pedido->save();
@@ -120,9 +106,7 @@ class ComandaHomeController extends Controller
 
         while ($cont < count($articulo)) {
             $detalle = new Comanda;
-            //$ingreso->id del ingreso que recien se guardo
             $detalle->pedido_id = $pedido->id;
-            //id_articulo de la posición cero
             $detalle->articulo = $articulo[$cont];
             $detalle->cantidad = $cantidad[$cont];
             $detalle->precio_compra = $precio_compra[$cont];
@@ -132,15 +116,17 @@ class ComandaHomeController extends Controller
             $procant = $cantidad[$cont] . " " . $articulo[$cont];
             $articantidad[] = $procant;
             $cadena = implode(", ", $articantidad);
+
             Orden::where('id', $pedido->id)->update(['articulo' => $cadena]);
 
             $cont = $cont + 1;
         }
+
         return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa  .');
     }
 
-    public function guardar(Request $request)
-    {
+    public function guardar(Request $request) {
+
         $temporal = new ComandaTemporal;
         $temporal->fecha = $request->fecha;
         $temporal->fila = $request->indice;
@@ -156,11 +142,11 @@ class ComandaHomeController extends Controller
         $temporal->precio_compra = $request->precio_compra;
         $temporal->subtotal = $request->subtotal;
         $temporal->save();
+
         return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa  .');
     }
 
-    public function guardarComentario(Request $request)
-    {
+    public function guardarComentario(Request $request) {
 
         $comanda = ComandaTemporal::select('comanda_temporal.id')->where('comanda_temporal.mesa', '=', $request->mesa)->where('comanda_temporal.estado', '=', 'Abierta')->where('comanda_temporal.status', '=', 'Disponible')->count();
 
@@ -181,8 +167,8 @@ class ComandaHomeController extends Controller
         return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa  .');
     }
 
-    public function obtener($mesa)
-    {
+    public function obtener($mesa) {
+
         $comanda = ComandaTemporal::select(
             'id',
             'fila',
@@ -202,11 +188,12 @@ class ComandaHomeController extends Controller
             ->where('estado', '=', 'Abierta')
             ->where('status', '=', 'Disponible')
             ->get();
+
         return Response()->json($comanda);
     }
 
-    public function guardarextra(Request $request)
-    {
+    public function guardarextra(Request $request) {
+
         $temporal = new ComandaTemporal;
         $temporal->fecha = $request->fecha;
         $temporal->fila = $request->indice;
@@ -222,18 +209,19 @@ class ComandaHomeController extends Controller
         $temporal->precio_compra = $request->precio_compra;
         $temporal->subtotal = $request->subtotal;
         $temporal->save();
+
         return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa  .');
     }
 
-    public function eliminar(Request $request)
-    {
+    public function eliminar(Request $request) {
+        
         $temporal = ComandaTemporal::where('mesa', '=', $request->mesa)
             ->where('estado', '=', 'Abierta')
             ->where('fila', '=', $request->indice)
             ->update([
                 'status' => 'Eliminado',
                 'estado' => 'Cerrada',
-                'motivo' => $request->motivo
+                'motivo' => $request->motivo,
             ]);
 
         return response()->json($temporal);

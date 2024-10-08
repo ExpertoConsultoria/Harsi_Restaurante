@@ -7,17 +7,17 @@ use App\Models\Comanda;
 use App\Models\ComandaTemporal;
 use App\Models\Orden;
 use App\Models\OrdenCancelado;
-use App\Models\Restaurante;
 use App\Models\Producto;
+use App\Models\Restaurante;
 use App\Models\User;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReportesController extends Controller
 {
-    public function index()
-    {
+    public function index() {
 
         $orden1 = Orden::min('id');
         $fecha1 = Carbon::parse($orden1);
@@ -67,17 +67,18 @@ class ReportesController extends Controller
         }
 
         $user = User::all();
+
         return view('Reportes.index', compact('user', 'variable', 'variable2', 'variable3'));
     }
 
-    public function obtenerMeses($estado)
-    {
+    public function obtenerMeses($estado) {
 
         $hoy = Carbon::today();
         $hoya = $hoy->year;
         $hoym = $hoy->month;
 
         if ($estado == $hoya) {
+
             if ($hoym > 1) {
                 for ($i = 1; $i < $hoym; $i++) {
                     if ($i == 1) {
@@ -111,6 +112,7 @@ class ReportesController extends Controller
                 $meses[] = ['id' => 0, 'mes' => 'El mes actual no esta disponible'];
                 return response()->json($meses);
             }
+
         } else {
             for ($i = 1; $i <= 12; $i++) {
                 if ($i == 1) {
@@ -143,8 +145,7 @@ class ReportesController extends Controller
         }
     }
 
-    public function obtenerMesesEliminados($estado)
-    {
+    public function obtenerMesesEliminados($estado) {
 
         $hoy = Carbon::today();
         $hoya = $hoy->year;
@@ -211,14 +212,14 @@ class ReportesController extends Controller
         }
     }
 
-    public function listaUsuarios()
-    {
-        $user = User::all();
+    public function listaUsuarios() {
 
+        $user = User::all();
         $dato = Restaurante::min('id');
+
         if ($dato != null) {
             $restaurante = Restaurante::select('id', 'nombre', 'rfc', 'direccion', 'telefono')
-                                        ->first();
+                ->first();
             $restaurante = array(
                 'id' => $restaurante->id,
                 'nombre' => $restaurante->nombre,
@@ -240,14 +241,14 @@ class ReportesController extends Controller
         return view('pdf.user', compact('user', 'restaurante'));
     }
 
-    public function listaCategorias()
-    {
+    public function listaCategorias() {
+
         $cta = CategoriaProducto::all();
 
         $dato = Restaurante::min('id');
         if ($dato != null) {
             $restaurante = Restaurante::select('id', 'nombre', 'rfc', 'direccion', 'telefono')
-                                        ->first();
+                ->first();
 
             $restaurante = array(
                 'id' => $restaurante->id,
@@ -269,15 +270,14 @@ class ReportesController extends Controller
         return view('pdf.categoria', compact('cta', 'restaurante'));
     }
 
-    public function listaProductos()
-    {
+    public function listaProductos() {
 
         $productos = Producto::select('titulo', 'precio', 'created_at')->get();
-
         $dato = Restaurante::min('id');
+
         if ($dato != null) {
             $restaurante = Restaurante::select('id', 'nombre', 'rfc', 'direccion', 'telefono')
-                                        ->first();
+                ->first();
 
             $restaurante = array(
                 'id' => $restaurante->id,
@@ -299,15 +299,15 @@ class ReportesController extends Controller
         return view('pdf.producto', compact('productos', 'restaurante'));
     }
 
-    public function lista($estado)
-    {
+    public function lista($estado) {
+
         if ($estado == 1) {
             $productos = Producto::select('titulo', 'precio', 'created_at')->get();
-
             $dato = Restaurante::min('id');
+
             if ($dato != null) {
                 $restaurante = Restaurante::select('id', 'nombre', 'rfc', 'direccion', 'telefono')
-                                            ->first();
+                    ->first();
 
                 $restaurante = array(
                     'id' => $restaurante->id,
@@ -331,11 +331,11 @@ class ReportesController extends Controller
         } elseif ($estado == 2) {
 
             $cta = CategoriaProducto::all();
-
             $dato = Restaurante::min('id');
+
             if ($dato != null) {
                 $restaurante = Restaurante::select('id', 'nombre', 'rfc', 'direccion', 'telefono')
-                                            ->first();
+                    ->first();
 
                 $restaurante = array(
                     'id' => $restaurante->id,
@@ -358,11 +358,11 @@ class ReportesController extends Controller
 
         } elseif ($estado == 3) {
             $user = User::all();
-
             $dato = Restaurante::min('id');
+
             if ($dato != null) {
                 $restaurante = Restaurante::select('id', 'nombre', 'rfc', 'direccion', 'telefono')
-                                            ->first();
+                    ->first();
 
                 $restaurante = array(
                     'id' => $restaurante->id,
@@ -387,8 +387,7 @@ class ReportesController extends Controller
 
     }
 
-    public function listaVentas($estado)
-    {
+    public function listaVentas($estado) {
 
         $orden = DB::table('orden')
             ->select(DB::raw("COUNT(*) AS contador, MONTH(fecha) AS mes, SUM(total) as total, YEAR(fecha) AS anno, SUM(descuento_pesos) as descuento, SUM(propina) as propina "))
@@ -427,8 +426,7 @@ class ReportesController extends Controller
         return view('pdf.ventas', compact('orden', 'total', 'propina', 'descuento', 'restaurante', 'estado'));
     }
 
-    public function reporteDiario($estado, $fecha)
-    {
+    public function reporteDiario($estado, $fecha) {
         $fecha1 = Carbon::parse($fecha);
         $dato = Restaurante::min('id');
         if ($dato != null) {
@@ -462,7 +460,6 @@ class ReportesController extends Controller
                 $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('descuento_pesos');
                 $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('total');
                 $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('propina');
-                // $cupon= Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa','Para llevar')->sum('cupon');
                 $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('total2');
                 return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'ordenc', 'estado', 'fecha'));
 
@@ -472,7 +469,6 @@ class ReportesController extends Controller
                 $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('descuento_pesos');
                 $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('total');
                 $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('propina');
-                // $cupon= Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa','=','Uber')->orWhere('mesa','=','Rappi')->orWhere('mesa','=','Diddi');})->sum('cupon');
                 $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('total2');
                 return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
 
@@ -482,7 +478,6 @@ class ReportesController extends Controller
                 $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('descuento_pesos');
                 $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('total');
                 $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('propina');
-                // $cupon= Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa','!=','Para llevar')->where('mesa','!=','Uber')->where('mesa','!=','Rappi')->where('mesa','!=','Diddi')->sum('cupon');
                 $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('total2');
 
                 return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
@@ -492,7 +487,6 @@ class ReportesController extends Controller
                 $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('descuento_pesos');
                 $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('total');
                 $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('propina');
-                // $cupon= Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('cupon');
                 $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('total2');
                 return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
             }
@@ -505,7 +499,6 @@ class ReportesController extends Controller
                 $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('descuento_pesos');
                 $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total');
                 $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('propina');
-                // $cupon= Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa','Para llevar')->where('turno',Auth::user()->turno)->where('cajero',Auth::user()->name)->sum('cupon');
                 $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total2');
                 return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'ordenc', 'estado', 'fecha'));
 
@@ -515,7 +508,6 @@ class ReportesController extends Controller
                 $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('descuento_pesos');
                 $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total');
                 $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('propina');
-                // $cupon= Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa','=','Uber')->orWhere('mesa','=','Rappi')->orWhere('mesa','=','Diddi');})->where('turno',Auth::user()->turno)->where('cajero',Auth::user()->name)->sum('cupon');
                 $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total2');
                 return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
 
@@ -525,7 +517,6 @@ class ReportesController extends Controller
                 $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('descuento_pesos');
                 $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total');
                 $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('propina');
-                // $cupon= Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa','!=','Para llevar')->where('mesa','!=','Uber')->where('mesa','!=','Rappi')->where('mesa','!=','Diddi')->where('turno',Auth::user()->turno)->where('cajero',Auth::user()->name)->sum('cupon');
                 $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total2');
 
                 return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
@@ -535,17 +526,16 @@ class ReportesController extends Controller
                 $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('descuento_pesos');
                 $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('total');
                 $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('propina');
-                // $cupon= Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('turno',Auth::user()->turno)->where('cajero',Auth::user()->name)->sum('cupon');
                 $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total2');
-                //dd($orden);
+
                 return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
             }
         }
 
     }
 
-    public function reporteMensual($estado, $meses)
-    {
+    public function reporteMensual($estado, $meses) {
+
         $orden = DB::table('orden')
             ->select(DB::raw("COUNT(*) AS contador,fecha, DAY(fecha) AS dia, MONTH(fecha) AS mes,SUM(total) as total,YEAR(fecha) AS anno, SUM(descuento_pesos) as descuento, SUM(propina) as propina"))
             ->whereMonth('fecha', $meses)
@@ -557,7 +547,6 @@ class ReportesController extends Controller
         $total = Orden::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->sum('total');
         $descuento = Orden::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->sum('descuento_pesos');
         $propina = Orden::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->sum('propina');
-        // $cupon= Orden::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->sum('cupon');
 
         $dato = Restaurante::min('id');
         if ($dato != null) {
@@ -584,12 +573,12 @@ class ReportesController extends Controller
         }
 
         $month = Carbon::create(2000, $meses, 1)->locale('es')->monthName;
-        $month= ucfirst($month);
+        $month = ucfirst($month);
 
         return view('pdf.reporteMensual', compact('orden', 'total', 'propina', 'descuento', 'restaurante', 'month'));
     }
-    public function reporteEliminados($estado, $meses)
-    {
+
+    public function reporteEliminados($estado, $meses) {
         $orden = DB::table('comanda_temporal')
             ->select(DB::raw("COUNT(*) AS contador,fecha, DAY(fecha) AS dia, MONTH(fecha) AS mes,SUM(subtotal) as total,YEAR(fecha) AS anno"))
             ->whereMonth('fecha', $meses)
@@ -629,9 +618,10 @@ class ReportesController extends Controller
         return view('pdf.reporteEliminados', compact('orden', 'total', 'eliminado', 'restaurante'));
     }
 
-    public function reporteDiarioEliminados($estado)
-    {
+    public function reporteDiarioEliminados($estado) {
+
         $dato = Restaurante::min('id');
+
         if ($dato != null) {
             $restaurante = DB::table('restaurante')
                 ->select('id', 'nombre', 'rfc', 'direccion', 'telefono')
@@ -690,8 +680,8 @@ class ReportesController extends Controller
 
     }
 
-    public function reporteMesasEliminados($estado, $meses)
-    {
+    public function reporteMesasEliminados($estado, $meses) {
+
         $orden = DB::table('orden_cancelado')
             ->select(DB::raw("COUNT(*) AS contador,fecha,motivo, DAY(fecha) AS dia, MONTH(fecha) AS mes,SUM(total) as total,YEAR(fecha) AS anno"))
             ->whereMonth('fecha', $meses)
@@ -702,8 +692,8 @@ class ReportesController extends Controller
 
         $total = OrdenCancelado::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->sum('total');
         $eliminado = OrdenCancelado::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->count();
-
         $dato = Restaurante::min('id');
+
         if ($dato != null) {
             $restaurante = DB::table('restaurante')
                 ->select('id', 'nombre', 'rfc', 'direccion', 'telefono')
@@ -730,8 +720,8 @@ class ReportesController extends Controller
         return view('pdf.reporteMesasEliminadas', compact('orden', 'total', 'eliminado', 'restaurante'));
     }
 
-    public function reporteMesasDiarioEliminados($estado)
-    {
+    public function reporteMesasDiarioEliminados($estado) {
+
         $dato = Restaurante::min('id');
         if ($dato != null) {
             $restaurante = DB::table('restaurante')
@@ -783,11 +773,11 @@ class ReportesController extends Controller
 
     }
 
-    public function incidenciasDiarias($estado, $tipo, $fecha)
-    {
+    public function incidenciasDiarias($estado, $tipo, $fecha) {
 
         $fecha1 = Carbon::parse($fecha);
         $dato = Restaurante::min('id');
+
         if ($dato != null) {
             $restaurante = DB::table('restaurante')
                 ->select('id', 'nombre', 'rfc', 'direccion', 'telefono')
@@ -876,12 +866,11 @@ class ReportesController extends Controller
 
     }
 
-    public function incidenciasMensuales($estado, $tipo, $meses)
-    {
+    public function incidenciasMensuales($estado, $tipo, $meses) {
 
         $dato = Restaurante::min('id');
         $month = Carbon::create(2000, $meses, 1)->locale('es')->monthName;
-        $month= ucfirst($month);
+        $month = ucfirst($month);
 
         if ($dato != null) {
             $restaurante = DB::table('restaurante')
@@ -937,7 +926,6 @@ class ReportesController extends Controller
             $eliminado = ComandaTemporal::whereMonth('fecha', $meses)->whereYear('fecha', $estado)->where('status', 'Eliminado')->count();
 
             return view('pdf.reporteEliminados', compact('orden', 'total', 'eliminado', 'restaurante', 'month'));
-
         }
 
     }
