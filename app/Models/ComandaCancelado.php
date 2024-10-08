@@ -11,7 +11,6 @@ class ComandaCancelado extends Model
     protected $fillable =
     [
         'orden_id',
-        'articulo_id',
         'articulo',
         'cantidad',
         'precio_compra',
@@ -23,10 +22,5 @@ class ComandaCancelado extends Model
     public function orden()
     {
         return $this->belongsTo('App\Models\Pedido', 'orden_id');
-    }
-
-    public function producto()
-    {
-        return $this->belongsTo('App\Models\Producto', 'articulo_id');
     }
 }
