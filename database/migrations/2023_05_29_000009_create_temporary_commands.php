@@ -13,21 +13,30 @@ return new class extends Migration
     {
         Schema::create('comanda_temporal', function (Blueprint $table) {
             $table->id();
-            $table->integer('fila');
-            $table->date('fecha');
-            $table->string('mesa');
-            $table->string('estado')->nullable();
-            $table->string('cajero');
-            $table->string('cliente')->nullable();
-            $table->string('direccion',500)->nullable();
 
-            $table->string('articulo')->nullable();
-            $table->string('cantidad')->nullable();
-            $table->decimal('precio_compra',10,2)->nullable();
-            $table->decimal('subtotal',10,2)->nullable();
-            $table->string('status')->default('Disponible');
-            $table->string('motivo',500)->nullable();
-            $table->string('comentario',500)->nullable();
+            $table->integer('fila'); // Array Index from Orden
+
+            $table->date('fecha'); // Fecha de Guardado
+            $table->string('mesa'); // Mesa Atendida
+            $table->string('estado')->nullable(); // Estado de la Mesa [Abierta, Cerrada]
+            $table->string('cajero'); // Nombre del Cajero
+
+            $table->string('guia')->default('Ninguno')->nullable(); // Nombre del Guia
+            $table->decimal('comision_percentage',10,2)->nullable(); // % de Comisión por Guia
+            $table->string('mesero')->default('Ninguno')->nullable(); // Nombre del Mesero
+            $table->integer('num_comensales')->default(1); // Cantidad de Comensales
+
+            $table->string('cliente')->nullable(); // Nombre del Cliente
+            $table->string('direccion',500)->nullable(); // Dirección del Cliente
+
+            $table->string('articulo')->nullable(); // Nombre del Producto
+            $table->string('cantidad')->nullable(); // Cantidad del Producto Solicitado
+            $table->decimal('precio_compra',10,2)->nullable(); // Precio del Producto
+            $table->decimal('subtotal',10,2)->nullable(); // Total a pagar por los Productos
+            $table->string('status')->default('Disponible'); // Estado de la Comanda [Disponible, Eliminado]
+            $table->string('motivo',500)->nullable(); // Motivo de Cancelación
+            $table->string('comentario',500)->nullable(); // Comentario de la Comanda
+
             $table->timestamps();
         });
     }

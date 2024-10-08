@@ -13,14 +13,22 @@ return new class extends Migration
     {
         Schema::create('orden_cancelado', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha');
-            $table->string('mesa');
-            $table->string('cajero');
-            $table->string('cliente')->nullable();
-            $table->string('direccion')->nullable();
-            $table->decimal('total',10,2)->nullable();
-            $table->string('motivo',500)->default('Ninguno')->nullable();
-            $table->string('comentario',500)->default('Ninguno')->nullable();
+
+            $table->date('fecha'); // Fecha de Guardado
+            $table->string('mesa'); // Mesa Atendida
+            $table->string('cajero'); // Nombre del Cajero
+
+            $table->string('guia')->default('Ninguno')->nullable(); // Nombre del Guia
+            $table->string('mesero')->default('Ninguno')->nullable(); // Nombre del Mesero
+            $table->integer('num_comensales')->default(1); // Cantidad de Comensales
+
+            $table->string('cliente')->nullable(); // Nombre del Cliente
+            $table->string('direccion')->nullable(); // Dirección del Cliente
+
+            $table->decimal('total',10,2)->nullable(); // Total por Consumo
+            $table->string('motivo',500)->default('Ninguno')->nullable(); // Motivo de Cancelación
+            $table->string('comentario',500)->default('Ninguno')->nullable(); // Comentarios del Servicio
+
             $table->timestamps();
         });
     }

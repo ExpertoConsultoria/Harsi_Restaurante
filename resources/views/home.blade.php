@@ -887,7 +887,6 @@
                             $('#total1').val(base);
                             $('#total2').val(base);
                             $("#guardar").show();
-                            $("#consumo").show();
 
                             const contador = parseInt(dataLength > 0 ? data[dataLength - 1].fila : 0) + 1;
                             $('#incrementa').val(contador);
@@ -903,7 +902,6 @@
                         $('#valor').val("0");
                         $('#incrementa').val("0");
                         $("#guardar").hide();
-                        $("#consumo").hide();
                     }
 
                     $('#detalle1').html('');
@@ -1081,7 +1079,7 @@
                             $('#total').html("$0.00");
                             $('#incrementa, #valor').val('0');
 
-                            $('#consumo, #guardar, #cliente, #direccion, #clientelb, #direccionlb').hide();
+                            $('#guardar, #cliente, #direccion, #clientelb, #direccionlb').hide();
                         }
 
                         function cambiar() {
@@ -1216,7 +1214,7 @@
                                         if (total > 0) {
                                             $("#total").html("$" + base);
                                             $('#valor, #total1, #total2').val(base);
-                                            $("#guardar, #consumo").show();
+                                            $("#guardar").show();
 
                                             const contador = parseInt(data[data.length - 1].fila) + 1;
                                             $('#incrementa').val(contador);
@@ -1238,7 +1236,7 @@
                                     $('#total1').val('');
                                     $('#valor, #incrementa').val('0');
                                     $("#total").html("$0.00");
-                                    $("#guardar, #consumo").hide();
+                                    $("#guardar").hide();
                                     $("#comentario").val('');
                                 }
 
@@ -1419,7 +1417,6 @@
                                             $('#res').val(base);
                                             $('#conftotal').val(base);
                                             $("#guardar").show();
-                                            $("#consumo").show();
                                             var f = data.length - 1;
                                             var dato = data[f].fila;
                                             contador = parseInt(dato) + 1;
@@ -1428,9 +1425,7 @@
                                             function evaluar() {
                                                 if (base > 0) {
                                                     $("#guardar").show();
-                                                    $("#consumo").show();
                                                 } else {
-                                                    $("#consumo").hide();
                                                     $("#guardar").hide();
                                                     $("#total").html("$" + "0.00");
                                                     $('#total1').val("");
@@ -1443,7 +1438,6 @@
                                             $('#valor').val("0");
                                             $('#incrementa').val("0");
                                             $("#guardar").hide();
-                                            $("#consumo").hide();
 
                                             if (data == '') {
                                                 $("#comentario").val("");
@@ -1501,7 +1495,6 @@
                                         $('#res').val(base);
                                         $('#conftotal').val(base);
                                         $("#guardar").show();
-                                        $("#consumo").show();
                                         var f = data.length - 1;
                                         var dato = data[f].fila;
                                         contador = parseInt(dato) + 1;
@@ -1510,9 +1503,7 @@
                                         function evaluar() {
                                             if (base > 0) {
                                                 $("#guardar").show();
-                                                $("#consumo").show();
                                             } else {
-                                                $("#consumo").hide();
                                                 $("#guardar").hide();
                                                 $("#total").html("$" + "0.00");
                                                 $('#total1').val("");
@@ -1525,7 +1516,6 @@
                                         $('#valor').val("0");
                                         $('#incrementa').val("0");
                                         $("#guardar").hide();
-                                        $("#consumo").hide();
 
                                         if (data == '') {
                                             $("#comentario").val("");
@@ -1729,7 +1719,6 @@
         var index = 0;
         var contador = 0;
 
-        $("#consumo").hide();
         $("#guardar").hide();
         $("#cliente").hide();
         $("#direccion").hide();
@@ -2048,10 +2037,8 @@
         function evaluar() {
             if (base > 0) {
                 $("#guardar").show();
-                $("#consumo").show();
             } else {
                 $("#guardar").hide();
-                $("#consumo").hide();
             }
         }
 
@@ -2558,7 +2545,7 @@
                                 fieldsToClear.forEach(field => $(field).val(''));
 
                                 $("#total").html("$0.00");
-                                $("#consumo, #guardar, #cliente, #direccion, #clientelb, #direccionlb, #motivoDescuento").hide();
+                                $("#guardar, #cliente, #direccion, #clientelb, #direccionlb, #motivoDescuento").hide();
 
                                 $('#detalle1, #total, #lbcupon, #lbdos, #lbtres, #lbpago').html('');
                                 $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbpago').hide();
@@ -2708,7 +2695,7 @@
                                 $('#incrementa').val("0");
                                 $('#valor').val("0");
 
-                                $("#consumo, #guardar, #cliente, #direccion, #clientelb, #direccionlb, #motivoDescuento").hide();
+                                $("#guardar, #cliente, #direccion, #clientelb, #direccionlb, #motivoDescuento").hide();
 
                                 // Reseteamos valores
                                 $('#detalle1, #total, #lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario, #lbpago').empty();
@@ -2867,9 +2854,9 @@
         function evaluar() {
             base = $('#valor').val();
             if (base > 0) {
-                $("#guardar, #consumo").show();
+                $("#guardar").show();
             } else {
-                $("#consumo, #guardar").hide();
+                $("#guardar").hide();
                 $("#total").html("$" + "0.00");
                 $('#total1').val("");
             }

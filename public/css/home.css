@@ -1,12 +1,12 @@
-   
+
     .table-bordered  {
        font-family: 'Montserrat';
        border-collapse: collapse;
        border-radius: 10px 10px 10px 10px;
        /*overflow: hidden;*/
        margin: 0 0 1em 0;
-       caption-side: top; 
-      
+       caption-side: top;
+
 
     }
 
@@ -22,15 +22,10 @@
      #fecha{
       font-size: 0.5em;
      }
-     
-    }
-    .btn-consumo{
-      color: white;background-color: #006b8e;border: #006b8e;border-radius: 10px;
-      font-family: 'Montserrat';
-      src: url('/fonts/Montserrat-SemiBold.ttf');
-     }
 
-    @media only screen and (min-width: 768px) and (max-width: 1024px) 
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 1024px)
     {
       table {
         display: block;
@@ -38,7 +33,7 @@
       }
     }
 
-  
+
 caption, td, th {
    padding: 0.3em;
 }
@@ -51,7 +46,7 @@ tbody th, tfoot th {
     font-family: Montserrat;
     src: url('/fonts/Montserrat-SemiBold.ttf');
    }
-  
+
     label {
         color: #006b8e;
         font-family: Montserrat;
@@ -64,9 +59,9 @@ tbody th, tfoot th {
         }
         .btn-warning:hover{
     color: white;
-    background-color: #006b8e;  
+    background-color: #006b8e;
     font-family: Montserrat;
-    src: url('/fonts/Montserrat-SemiBold.ttf'); 
+    src: url('/fonts/Montserrat-SemiBold.ttf');
   }
  .btn-warning:active after{
   background-color: #3e8e41;
@@ -95,7 +90,7 @@ tbody th, tfoot th {
     background-color: #006b8e;
     font-family: Montserrat;
     src: url('/fonts/Montserrat-SemiBold.ttf');
-   
+
   }
      .table-primary{
     color: #006b8e;
@@ -110,14 +105,14 @@ tbody th, tfoot th {
     border-color: gray;
    border-radius: 20px;
    }
-   
-   
+
+
     .tablaTotal{
     	color: #006b8e;
       font-family: Montserrat;
       src: url('/fonts/Montserrat-SemiBold.ttf');
     }
-    h1,h2,h4{ 
+    h1,h2,h4{
    color: #006b8e;
    font-family: Montserrat;
    src: url('/fonts/Montserrat-SemiBold.ttf');
@@ -134,14 +129,14 @@ tbody th, tfoot th {
    	border:2px solid #C0C0C0;border-radius: 10px;
    }
    #select-categoria{
-  text-align-last: left;  
+  text-align-last: left;
   color: #000000;
   font-family: Montserrat;
   font-size: 0.8em;
   src: url('/fonts/Montserrat-SemiBold.ttf');
 }
   #producto{
-  text-align-last: left;  
+  text-align-last: left;
   color: #000000;
   font-family: Montserrat;
   font-size:0.8em;
@@ -151,7 +146,7 @@ tbody th, tfoot th {
   background-image: url('../img/fecha.png');
   background-repeat: no-repeat;
   background-size: auto;
-  background-position:left; 
+  background-position:left;
   text-align:center;
   font-family: Montserrat;
   font-size: 0.8em;
@@ -161,7 +156,7 @@ tbody th, tfoot th {
   background-image: url('../img/iconos32px-03.png');
   background-repeat: no-repeat;
   background-size: auto;
-  background-position:left; 
+  background-position:left;
   text-align:center;
   font-family: Montserrat;
   font-size: 0.8em;
@@ -171,7 +166,7 @@ tbody th, tfoot th {
   background-image: url('../img/iconos32px-04.png');
   background-repeat: no-repeat;
   background-size: auto;
-  background-position:left; 
+  background-position:left;
   text-align:center;
   font-size: 0.8em;
   font-family: Montserrat;
@@ -181,13 +176,13 @@ tbody th, tfoot th {
   background-image: url('../img/iconos32px-02.png');
   background-repeat: no-repeat;
   background-size: auto;
-  background-position:left; 
-  text-align-last: right;  
+  background-position:left;
+  text-align-last: right;
   font-family: Montserrat;
   font-size: 0.8em;
   src: url('/fonts/Montserrat-SemiBold.ttf');
 }
- 
+
  #totalEtiqueta {
  color: #006b8e;
  font-family: Montserrat;
@@ -224,7 +219,7 @@ input::-webkit-input-placeholder {
   src: url('/fonts/Montserrat-SemiBold.ttf');
    }
    input::placeholder {
- 
+
    font-family: Montserrat;
    src: url('/fonts/Montserrat-SemiBold.ttf');
    }
@@ -237,7 +232,7 @@ input::-webkit-input-placeholder {
    	color:#006b8e ;background-color: white;	border:2px solid #C0C0C0;border-radius: 10px;
     font-family: Montserrat;
     src: url('/fonts/Montserrat-SemiBold.ttf');
-   
+
 
    }
    #mesa:hover{
@@ -246,8 +241,8 @@ input::-webkit-input-placeholder {
     font-family: Montserrat;
     src: url('/fonts/Montserrat-SemiBold.ttf');
     border:2px solid #C0C0C0;
-    
-   
+
+
   }
   .btn-primary{
   color: white;background-color: #006b8e;border: #006b8e;border-radius: 10px;
@@ -259,7 +254,7 @@ input::-webkit-input-placeholder {
     font-family: Montserrat;
     src: url('/fonts/Montserrat-SemiBold.ttf');
     font-family: 'Montserrat';
-   
+
   }
   .border-dark{
   border-radius: 10px;
