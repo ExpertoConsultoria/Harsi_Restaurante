@@ -30,78 +30,130 @@
 
                         <!-- Detalles Generales -->
                         <div class="card border-dark">
-                            <div class="card-body">
+                            <div class="pb-0 card-body">
                                 <div class="row">
 
-                                    {{-- Fecha --}}
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="fecha">Fecha</label>
-                                            <input type="date" id="fecha" name="fecha" class="form-control"
-                                                value="<?php echo date("Y-m-d");?>" required readonly="readonly"
-                                                style="background-color:#FFF;cursor: no-drop;">
+                                    {{-- First Row --}}
+                                        {{-- Fecha --}}
+                                        <div class="col-md-3">
+                                            <div class="my-0 form-group">
+                                                <label for="fecha">Fecha</label>
+                                                <input type="date" id="fecha" name="fecha" class="form-control"
+                                                    value="<?php echo date("Y-m-d");?>" required readonly="readonly"
+                                                    style="background-color:#FFF;cursor: no-drop;">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {{-- Mesa Atendida --}}
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="mesa">Mesa</label>
-                                            <input type="text" name="mesa" id="id_proveedor" class="form-control"
-                                                readonly="readonly" style="background-color:#FFF;cursor: no-drop;" required>
-                                            <label for="" id="lbmesa"></label>
+                                        {{-- Mesa Atendida --}}
+                                        <div class="col-md-3">
+                                            <div class="my-0 form-group">
+                                                <label for="mesa">Mesa</label>
+                                                <input type="text" name="mesa" id="id_proveedor" class="form-control"
+                                                    readonly="readonly" style="background-color:#FFF;cursor: no-drop;" required>
+                                                <label class="mb-0" for="" id="lbmesa"></label>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {{-- Usuario --}}
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="cajero">Atiende</label>
-                                            <input readonly="readonly" style="background-color:#FFF;cursor: no-drop;"
-                                                id="cajero" type="text" class="form-control" name="cajero"
-                                                value="{{Auth::user()->name}}" required>
+                                        {{-- Usuario --}}
+                                        <div class="col-md-3">
+                                            <div class="my-0 form-group">
+                                                <label for="cajero">Cajero</label>
+                                                <input readonly="readonly" style="background-color:#FFF;cursor: no-drop;"
+                                                    id="cajero" type="text" class="form-control" name="cajero"
+                                                    value="{{Auth::user()->name}}" required>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {{-- Forma de Pago --}}
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="cajero">Forma de pago</label>
-                                            <select class="form-control" name="forma_pago" id="forma_pago"
-                                                title="Seleccione la forma de pago.">
-                                                <option value="" disabled selected>Seleccionar</option>
-                                            </select>
-                                            <label for="" id="lbpago"></label>
+                                        {{-- Forma de Pago --}}
+                                        <div class="col-md-3">
+                                            <div class="my-0 form-group">
+                                                <label for="cajero">Forma de pago</label>
+                                                <select class="form-control" name="forma_pago" id="forma_pago"
+                                                    title="Seleccione la forma de pago.">
+                                                    <option value="" disabled selected>Seleccionar</option>
+                                                </select>
+                                                <label class="mb-0" for="" id="lbpago"></label>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {{-- Turno de Atención --}}
-                                    <div style="display:none" class="col-md-6">
-                                        <div class="form-group">
-                                            <label name="turnolb" id="turno" for="turnolb">Turno</label>
-                                            <input type="text" name="turno" id="turno" value="{{Auth::user()->turno}}"
-                                                class="form-control">
-                                            <label for="" id="lbturno"></label>
-                                        </div>
-                                    </div>
+                                    {{-- Seconds Row --}}
 
-                                    {{-- Cliente --}}
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label name="clientelb" id="clientelb" for="clientelb">Cliente</label>
-                                            <input type="text" name="cliente" id="cliente" class="form-control">
-                                            <label for="" id="lbcliente"></label>
+                                        {{-- Guia --}}
+                                        <div class="col-md-3">
+                                            <div class="my-0 form-group">
+                                                <label for="guide">Guia</label>
+                                                <input id="guide" name="guide" value="Ninguno" class="form-control" type="text" placeholder="Nombre del Guia">
+                                                <label class="mb-0" for="" id="lbguide"></label>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {{-- Dirección del Cliente --}}
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label name="direccionlb" id="direccionlb" for="direccionlb">Dirección</label>
-                                            <input type="text" name="direccion" id="direccion" class="form-control">
-                                            <label for="" id="lbdireccion"></label>
+                                        {{-- Comisión --}}
+                                        <div class="col-md-3">
+                                            <div class="my-0 form-group">
+                                                <label for="comision">Comisión</label>
+                                                <input id="comision" class="form-control" name="comision" onchange="redondearDecimales('comision')"
+                                                    placeholder="Comisión %" value="" step="0.1"
+                                                    autocomplete="off" type="number">
+                                                <label for="" id="lbcomision"></label>
+                                            </div>
                                         </div>
-                                    </div>
+
+                                        {{-- Mesero --}}
+                                        <div class="col-md-3">
+                                            <div class="my-0 form-group">
+                                                <label for="mesero">Mesero</label>
+                                                <input id="mesero" name="mesero" value="Ninguno" class="form-control" type="text" placeholder="Nombre del Guia">
+                                                <label class="mb-0" for="" id="lbmesero"></label>
+                                            </div>
+                                        </div>
+
+                                        {{-- Comensales --}}
+                                        <div class="col-md-3">
+                                            <div class="my-0 form-group">
+                                                <label for="comensales">Comensales</label>
+                                                <input
+                                                    type="number"
+                                                    id="comensales"
+                                                    name="comensales"
+                                                    class="form-control"
+                                                    value="1"
+                                                    placeholder="Cantidad de Comensales"
+                                                    onkeydown="return false"
+                                                    step="1"
+                                                    max="10"
+                                                    min="1"
+                                                >
+                                            </div>
+                                        </div>
+
+                                    {{-- Third Row --}}
+                                        {{-- Turno de Atención --}}
+                                        <div style="display:none" class="col-md-6">
+                                            <div class="my-0 form-group">
+                                                <label name="turnolb" id="turno" for="turnolb">Turno</label>
+                                                <input type="text" name="turno" id="turno" value="{{Auth::user()->turno}}"
+                                                    class="form-control">
+                                                <label for="" id="lbturno"></label>
+                                            </div>
+                                        </div>
+
+                                        {{-- Cliente --}}
+                                        <div class="col-md-6" id="cliente_input">
+                                            <div class="my-0 form-group">
+                                                <label name="clientelb" id="clientelb" for="clientelb">Cliente</label>
+                                                <input type="text" name="cliente" id="cliente" class="form-control">
+                                                <label for="" id="lbcliente"></label>
+                                            </div>
+                                        </div>
+
+                                        {{-- Dirección del Cliente --}}
+                                        <div class="col-md-6">
+                                            <div class="my-0 form-group" id="direccion_input">
+                                                <label name="direccionlb" id="direccionlb" for="direccionlb">Dirección</label>
+                                                <input type="text" name="direccion" id="direccion" class="form-control">
+                                                <label for="" id="lbdireccion"></label>
+                                            </div>
+                                        </div>
 
                                 </div>
                             </div>
@@ -718,11 +770,15 @@
                 if (mesa.trim() == 'Para llevar') {
                     $("#cliente").show();
                     $("#direccion").show();
+                    $("#cliente_input").show();
+                    $("#direccion_input").show();
                     $("#clientelb").show();
                     $("#direccionlb").show();
                 } else {
                     $("#cliente").hide();
                     $("#direccion").hide();
+                    $("#cliente_input").hide();
+                    $("#direccion_input").hide();
                     $("#clientelb").hide();
                     $("#direccionlb").hide();
                     $("#cliente").val("");
@@ -799,11 +855,15 @@
                     if (mesa.trim() == 'Para llevar') {
                         $("#cliente").show();
                         $("#direccion").show();
+                        $("#cliente_input").show();
+                        $("#direccion_input").show();
                         $("#clientelb").show();
                         $("#direccionlb").show();
                     } else {
                         $("#cliente").hide();
                         $("#direccion").hide();
+                        $("#cliente_input").hide();
+                        $("#direccion_input").hide();
                         $("#clientelb").hide();
                         $("#direccionlb").hide();
                         $("#cliente").val("");
@@ -1079,7 +1139,7 @@
                             $('#total').html("$0.00");
                             $('#incrementa, #valor').val('0');
 
-                            $('#guardar, #cliente, #direccion, #clientelb, #direccionlb').hide();
+                            $('#guardar, #cliente_input, #cliente, #direccion_input, #direccion, #clientelb, #direccionlb').hide();
                         }
 
                         function cambiar() {
@@ -1110,10 +1170,10 @@
                             var mesa = $('#id_proveedor').val();
 
                             if (mesa.trim() === 'Para llevar') {
-                                $("#cliente, #direccion, #clientelb, #direccionlb").show();
+                                $("#cliente, #direccion, #clientelb, #direccionlb, #cliente_input, #direccion_input").show();
                             } else {
                                 $("#direccion, #cliente").val("").hide();
-                                $("#clientelb, #direccionlb").hide();
+                                $("#clientelb, #direccionlb, #cliente_input, #direccion_input").hide();
                             }
 
                             // Seleccionar el botón correspondiente
@@ -1155,11 +1215,11 @@
                                 var mesa = $('#id_proveedor').val();
 
                                 if (mesa.trim() === 'Para llevar') {
-                                    $("#cliente, #direccion, #clientelb, #direccionlb").show();
+                                    $("#cliente, #direccion, #clientelb, #direccionlb, #cliente_input, #direccion_input").show();
                                 } else {
                                     $("#direccion").val("");
                                     $("#cliente").val("");
-                                    $("#guardar, #cliente, #direccion, #clientelb, #direccionlb").hide();
+                                    $("#guardar, #cliente, #direccion, #clientelb, #direccionlb, #cliente_input, #direccion_input").hide();
                                 }
 
                                 $.ajax({
@@ -1350,11 +1410,15 @@
                 if (mesa.trim() == 'Para llevar') {
                     $("#cliente").show();
                     $("#direccion").show();
+                    $("#cliente_input").show();
+                    $("#direccion_input").show();
                     $("#clientelb").show();
                     $("#direccionlb").show();
                 } else {
                     $("#cliente").hide();
                     $("#direccion").hide();
+                    $("#cliente_input").hide();
+                    $("#direccion_input").hide();
                     $("#clientelb").hide();
                     $("#direccionlb").hide();
                 }
@@ -1722,6 +1786,8 @@
         $("#guardar").hide();
         $("#cliente").hide();
         $("#direccion").hide();
+        $("#cliente_input").hide();
+        $("#direccion_input").hide();
         $("#clientelb").hide();
         $("#direccionlb").hide();
         $("#motivoDescuento").hide();
@@ -2545,7 +2611,7 @@
                                 fieldsToClear.forEach(field => $(field).val(''));
 
                                 $("#total").html("$0.00");
-                                $("#guardar, #cliente, #direccion, #clientelb, #direccionlb, #motivoDescuento").hide();
+                                $("#guardar, #cliente, #direccion, #clientelb, #direccionlb, #motivoDescuento, #cliente_input, #direccion_input").hide();
 
                                 $('#detalle1, #total, #lbcupon, #lbdos, #lbtres, #lbpago').html('');
                                 $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbpago').hide();
@@ -2695,7 +2761,7 @@
                                 $('#incrementa').val("0");
                                 $('#valor').val("0");
 
-                                $("#guardar, #cliente, #direccion, #clientelb, #direccionlb, #motivoDescuento").hide();
+                                $("#guardar, #cliente_input, #direccion_input, #cliente, #direccion, #clientelb, #direccionlb, #motivoDescuento").hide();
 
                                 // Reseteamos valores
                                 $('#detalle1, #total, #lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario, #lbpago').empty();
