@@ -9,7 +9,6 @@ use App\Models\CategoriaProducto;
 use App\Models\Producto;
 use App\Models\Pedido;
 use App\Models\Comanda;
-use App\Models\ComandaEsp;
 use App\Models\PayMethod;
 use App\Models\ComandaTemporal;
 use App\Models\Estado;

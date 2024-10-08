@@ -5,8 +5,6 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoriaProductoController;
-use App\Http\Controllers\ComandaController;
-use App\Http\Controllers\ComandaEspController;
 use App\Http\Controllers\ComandaHomeController;
 use App\Http\Controllers\DetalleOrdenController;
 use App\Http\Controllers\ErrorsExceptions;
@@ -127,11 +125,6 @@ Route::middleware([
     Route::get('producto/destroy/{id}', [ProductoController::class, 'destroy']);
     Route::get('/subcategory/{id_categoria}', [ProductoController::class, 'subcategorias']);
 
-    //Precio Producto
-    Route::resource('PrecioProducto', ProductoController::class);
-    Route::post('PrecioProducto/update', [ProductoController::class, 'update'])->name('PrecioProducto.update');
-    Route::get('PrecioProducto/destroy/{id}', [ProductoController::class, 'destroy']);
-
     //Metodo de pago
     Route::resource('paymethod', PayMethodController::class);
     Route::post('paymethod/update', [PayMethodController::class, 'update'])->name('paymethod.update');
@@ -141,16 +134,6 @@ Route::middleware([
     Route::resource('Pedido', PedidoController::class);
     Route::post('Pedido/update', [PedidoController::class, 'update'])->name('Pedido.update');
     Route::get('Pedido/destroy/{id}', [PedidoController::class, 'destroy']);
-
-    //Comanda
-    Route::resource('Comanda', ComandaController::class);
-    Route::post('Comanda/update', [ComandaController::class, 'update'])->name('Comanda.update');
-    Route::get('Comanda/destroy/{id}', [ComandaController::class, 'destroy']);
-
-    //Comanda especial
-    Route::resource('ComandaEsp', ComandaEspController::class);
-    Route::post('ComandaEsp/update', [ComandaEspController::class, 'update'])->name('ComandaEsp.update');
-    Route::get('ComandaEsp/destroy/{id}', [ComandaEspController::class, 'destroy']);
 
     //Comanda Home
     Route::resource('ComandaHome', ComandaHomeController::class);

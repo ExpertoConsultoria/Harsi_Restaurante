@@ -9,11 +9,11 @@ class Mesa extends Model
     public $table = "mesas";
 
     public $fillable =
-        [
-            'estado',
-            'titulo',
-            'color'
-        ];
+    [
+        'estado',
+        'titulo',
+        'color'
+    ];
+    
     public $primaryKey = "id";
-
 }

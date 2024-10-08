@@ -10,7 +10,6 @@ class Comanda extends Model
 
     protected $fillable = [
         'pedido_id',
-        'articulo_id',
         'articulo',
         'cantidad',
         'precio_compra',

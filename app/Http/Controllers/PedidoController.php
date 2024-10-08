@@ -179,10 +179,7 @@ class PedidoController extends Controller
         	while($cont < count($articulo))
     		{
     			$detalle = new Comanda;
-    			//$ingreso->id del ingreso que recien se guardo
     			$detalle->orden_id = $pedido->id;
-    			//id_articulo de la posición cero
-//    			$detalle->articulo_id = $articulo_id[$cont];
     			$detalle->articulo = $articulo[$cont];
     			$detalle->cantidad = $cantidad[$cont];
     			$detalle->precio_compra = $precio_compra[$cont];

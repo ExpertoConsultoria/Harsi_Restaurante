@@ -7,17 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class DetalleOrden extends Model
 {
     protected $table = 'comanda';
-    
+
     protected $fillable = [
         'orden_id',
         'articulo',
         'cantidad',
         'precio_compra',
         'subtotal',
-        'pespecial',
-        'pesprecio',
-        'pespcant',
-        'subtotales'
     ];
 
     protected $primarykey = 'id';

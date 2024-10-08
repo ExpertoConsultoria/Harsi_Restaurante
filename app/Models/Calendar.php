@@ -21,5 +21,6 @@ class Calendar extends Model
     protected $casts = [
         'mesas' => 'array'
     ];
+
     public $primaryKey = "id";
 }

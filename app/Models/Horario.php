@@ -8,10 +8,11 @@ class Horario extends Model
 {
     public $table = "horario";
 
-      public $fillable = [
+    public $fillable = [
         'turno',
         'fecha_ini',
         'fecha_fin'
     ];
+    
     public $primaryKey = "id";
 }

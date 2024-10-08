@@ -12,5 +12,6 @@ class DescuentoUsuario extends Model
         'role',
         'descuento'
     ];
+
     public $primaryKey = "id";
 }

@@ -81,12 +81,6 @@ class ProductoController extends Controller
         return Producto::where('id',$id)->get();
     }
 
-
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
        if($request->rsubcategoria != 'No'){
@@ -106,11 +100,6 @@ class ProductoController extends Controller
 
        Producto::create($form_data);
        return response()->json(['success' => 'Registro con exito']);
-    }
-
-    public function show($id)
-    {
-        //
     }
 
     public function edit($id)
