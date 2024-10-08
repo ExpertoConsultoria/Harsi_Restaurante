@@ -137,12 +137,7 @@ class OrdenController extends Controller
                     ->where('d.pedido_id', '=', $id)
                     ->get();
 
-            $detalle = DB::table('comandaesp as x')
-                     ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                     ->where('x.pedido_id', '=', $id)
-                     ->get();
-
-            return view('Ordenes.show',['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
+            return view('Ordenes.show',['orden' => $orden,'pedido' => $pedido,'producto' => $producto, 'restaurante' => $restaurante]);
         }
         if(Auth::check() && Auth::user()->role == 'cajero'){
 
@@ -158,12 +153,7 @@ class OrdenController extends Controller
                     ->where('d.pedido_id', '=', $id)
                     ->get();
 
-            $detalle = DB::table('comandaesp as x')
-                     ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                     ->where('x.pedido_id', '=', $id)
-                     ->get();
-
-            return view('Ordenes.show',['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
+            return view('Ordenes.show',['orden' => $orden,'pedido' => $pedido,'producto' => $producto, 'restaurante' => $restaurante]);
         }
         else{
             return view('error');
@@ -224,12 +214,7 @@ class OrdenController extends Controller
                     ->where('d.pedido_id', '=', $id)
                     ->get();
 
-            $detalle = DB::table('comandaesp as x')
-                     ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                     ->where('x.pedido_id', '=', $id)
-                     ->get();
-                    // dd($orden);
-            return view('Ordenes.ticket',['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
+            return view('Ordenes.ticket',['orden' => $orden,'pedido' => $pedido,'producto' => $producto, 'restaurante' => $restaurante]);
 
     }
 
@@ -292,17 +277,9 @@ class OrdenController extends Controller
                     ->select('d.articulo','d.cantidad', 'd.precio_compra', 'd.subtotal')
                     ->where('d.pedido_id', '=', $id)
                     ->get();
-
-            $detalle = DB::table('comandaesp as x')
-                     ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                     ->where('x.pedido_id', '=', $id)
-                     ->get();
-
-        $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
+        $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto, 'restaurante' => $restaurante]);
 
         return $pdf->download('ticket.pdf');
-
-        //return view('Ordenes.ticket',['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
 
     }
 
@@ -361,12 +338,8 @@ class OrdenController extends Controller
                     ->where('d.pedido_id', '=', $id)
                     ->get();
 
-            $detalle = DB::table('comandaesp as x')
-                     ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                     ->where('x.pedido_id', '=', $id)
-                     ->get();
             $asunto="Su consumo en restaurante: ".$nombre;
-            $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
+            $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto, 'restaurante' => $restaurante]);
             $email= $request->email;
             Mail::to($request->email)->send(new SendMailTicket($restaurante,$asunto,$pdf));
         }
@@ -385,12 +358,8 @@ class OrdenController extends Controller
                     ->where('d.pedido_id', '=', $id)
                     ->get();
 
-            $detalle = DB::table('comandaesp as x')
-                     ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                     ->where('x.pedido_id', '=', $id)
-                     ->get();
             $asunto="Su consumo en restaurante: ".$nombre;
-            $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
+            $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto, 'restaurante' => $restaurante]);
             $email= $request->email;
             Mail::to($request->email)->send(new SendMailTicket($restaurante,$asunto,$pdf));
         }
@@ -454,13 +423,9 @@ class OrdenController extends Controller
                     ->where('d.pedido_id', '=', $id)
                     ->get();
 
-            $detalle = DB::table('comandaesp as x')
-                     ->select('x.producto','x.cant','x.precio_c','x.sub_total')
-                     ->where('x.pedido_id', '=', $id)
-                     ->get();
         $asunto="Su consumo en restaurante: ".$nombre;
 
-        $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto,'detalle' => $detalle , 'restaurante' => $restaurante]);
+        $pdf = \PDF::loadView('Ordenes.ticketPdf', ['orden' => $orden,'pedido' => $pedido,'producto' => $producto, 'restaurante' => $restaurante]);
 
         $email= $request->email;
         Mail::to($request->email)->send(new SendMailTicket($restaurante,$asunto,$pdf));

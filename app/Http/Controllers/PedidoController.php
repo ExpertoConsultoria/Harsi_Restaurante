@@ -7,7 +7,6 @@ use App\Models\CategoriaProducto;
 use App\Models\Producto;
 use App\Models\Pedido;
 use App\Models\Comanda;
-use App\Models\ComandaEsp;
 use App\Models\PayMethod;
 use App\Models\Estado;
 use App\Models\Orden;
@@ -195,27 +194,6 @@ class PedidoController extends Controller
         $mesa->color = '#27a243';
         $mesa->save();
 
-
-//        $producto = $request->get('producto'); //array()
-//        $cant = $request->get('cant');
-//        $precio_c = $request->get('precio_c');
-//        $sub_total = $request->get('sub_total');
-//
-//        $contador = 0;
-//
-//            while($contador < count($producto))
-//            {
-//                $ingreso = new ComandaEsp;
-//
-//                $ingreso->pedido_id = $pedido->id;
-//                $ingreso->producto = $producto[$contador];
-//                $ingreso->cant = $cant[$contador];
-//                $ingreso->precio_c = $precio_c[$contador];
-//                $ingreso->sub_total = $sub_total[$contador];
-//                $ingreso->save();
-//
-//                $contador = $contador + 1;
-//            }
         return redirect()->route('Ordenes.index')->with('success','Reservación exitosa  .');
     }
 

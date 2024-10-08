@@ -45,12 +45,7 @@
                     <td class="subtotal">${{ $pedido->subtotal }}</td>
                 </tr>
                 @endforeach
-                @foreach($detalle as $detalle)
-                    <td class="cantidad">{{ $detalle->cant }}</td>
-                    <td class="producto">{{ $detalle->producto }}</td>
-                    <td class="precio">${{ $detalle->precio_c }} </td>
-                    <td class="subtotal">${{ $detalle->sub_total }}</td>
-                @endforeach
+                
             </tbody>
 
         </table>
