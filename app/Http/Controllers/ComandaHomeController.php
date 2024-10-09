@@ -142,7 +142,11 @@ class ComandaHomeController extends Controller
 
     public function guardarComentario(Request $request) {
 
-        $comanda = ComandaTemporal::select('comanda_temporal.id')->where('comanda_temporal.mesa', '=', $request->mesa)->where('comanda_temporal.estado', '=', 'Abierta')->where('comanda_temporal.status', '=', 'Disponible')->count();
+        $comanda = ComandaTemporal::where([
+            ['mesa', '=', $request->mesa],
+            ['estado', '=', 'Abierta'],
+            ['status', '=', 'Disponible']
+        ])->count();
 
         if ($comanda == 0) {
             $temporal = new ComandaTemporal;
@@ -150,15 +154,25 @@ class ComandaHomeController extends Controller
             $temporal->mesa = $request->mesa;
             $temporal->estado = $request->estado;
             $temporal->cajero = $request->cajero;
+
+            $temporal->guia = $request->guide;
+            $temporal->comision_percentage = $request->comision;
+            $temporal->mesero = $request->mesero;
+            $temporal->num_comensales = $request->comensales;
+
             $temporal->cliente = $request->cliente;
             $temporal->direccion = $request->direccion;
             $temporal->comentario = $request->comentario;
             $temporal->save();
         }
 
-        ComandaTemporal::where('mesa', '=', $request->mesa)->where('estado', '=', 'Abierta')->where('status', '=', 'Disponible')->update(['comentario' => $request->comentario]);
+        ComandaTemporal::where([
+            ['mesa', '=', $request->mesa],
+            ['estado', '=', 'Abierta'],
+            ['status', '=', 'Disponible']
+        ])->update(['comentario' => $request->comentario]);
 
-        return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa  .');
+        return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa.');
     }
 
     public function obtener($mesa) {

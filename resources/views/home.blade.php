@@ -590,8 +590,15 @@
             var mesa = $('#id_proveedor').val();
             var estado = $('#mesa_estado').val();
             var cajero = $('#cajero').val();
+
+            var guide = $('#guide').val();
+            var comision = $('#comision').val();
+            var mesero = $('#mesero').val();
+            var comensales = $('#comensales').val();
+
             var cliente = $('#cliente').val();
             var direccion = $('#direccion').val();
+
             var comentario = $('#comentario').val();
 
             if (comentario !== "" && mesa !== "") {
@@ -600,6 +607,10 @@
                     "mesa": mesa,
                     "estado": estado,
                     "cajero": cajero,
+                    "guide": guide,
+                    "comision": comision,
+                    "mesero": mesero,
+                    "comensales": comensales,
                     "cliente": cliente,
                     "direccion": direccion,
                     "comentario": comentario
@@ -1319,7 +1330,7 @@
             var suma = 0;
 
             $(document).on('click', '#see_table', function (e) {
-                console.log('Var Mesa');
+                e.preventDefault();
 
                 localStorage.setItem("tableOrden", '');
 
@@ -1577,6 +1588,7 @@
 
                 // Calcular el cobro por comisión
                 const cobroComision = (subtotal * comision / 100).toFixed(2);
+                $('#comision_price').val(cobroComision);
 
                 // Calcular el total (subtotal + propina + comisión)
                 const totalCalculado = (subtotal + propina + parseFloat(cobroComision)).toFixed(2);
@@ -1621,6 +1633,7 @@
 
                 // Calcular el cobro por comisión
                 const cobroComision = (subtotal * comision / 100).toFixed(2);
+                $('#comision_price').val(cobroComision);
 
                 // Calcular el total (subtotal + propina + comisión)
                 const totalCalculado = (subtotal + propina + parseFloat(cobroComision)).toFixed(2);
@@ -1696,6 +1709,7 @@
 
                 // Calcular el cobro por comisión
                 const cobroComision = (subtotal * comision / 100).toFixed(2);
+                $('#comision_price').val(cobroComision);
 
                 // Calcular el total (subtotal + propina + comisión)
                 const totalCalculado = (subtotal + propina + parseFloat(cobroComision)).toFixed(2);
