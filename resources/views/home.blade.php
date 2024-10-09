@@ -1241,7 +1241,7 @@
 
     </script>
 
-    {{-- Ver Mesa !--}}
+    {{-- Ver Mesa --}}
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -1406,11 +1406,12 @@
                                     var guia = element.guia;
                                     $('#mesero').val(mesero);
                                     $('#comensales').val(comensales);
-                                    $('#guide').val(guia);
+                                    $('#guide').val(guia).trigger('change');
 
-                                    if (guia.toString().trim() !== "Ninguno") {
-                                        var comision = element.comision_percentage;
+                                    if (guia !== "Ninguno") {
+                                        const comision = element.comision_percentage || 0;  // Evita valores undefined
                                         $('#comision').val(comision);
+                                        calcular();
                                     }
 
                                     total += parseFloat(element.subtotal);
@@ -1492,11 +1493,14 @@
 
             $("#comision_col, #comision_price, #res").hide();
 
-            $("#guide").on("keyup", function () {
+            $("#guide").on("keyup", activateForCommission);
+            $("#guide").on("change", activateForCommission);
+
+            function activateForCommission() {
                 var guide_name = $('#guide').val().toString().trim();
                 var shouldShow = guide_name && guide_name !== "Ninguno";
                 $("#comision_col, #comision_price, #res").toggle(shouldShow);
-            });
+            }
 
             $("#comision").on("change", function () {
                 // Calcular total (Con propina y Comisión)
