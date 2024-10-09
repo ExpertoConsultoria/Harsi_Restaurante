@@ -460,7 +460,8 @@
 
                                                                 {{-- Cobro por Comisión --}}
                                                                 <input id="comision_price" class="form-control" name="comision_price" placeholder="Cobro por Comisión"
-                                                                    style="margin-top:5px;" autocomplete="off" required type="number" step=".01"
+                                                                    style="margin-top:5px; font-weight: bold;" autocomplete="off" required type="number" step=".01"
+                                                                    readonly="readonly" style="background-color:#FFF;cursor: no-drop;"
                                                                     onchange="redondearDecimales('comision_price')">
                                                                 <label for="" id="lbcomision_price"></label>
 
@@ -539,7 +540,7 @@
     {{-- Funciones Generales --}}
     <script type="text/javascript">
 
-        // Reiniciar Mesa
+        // Reiniciar Tabla de Mesas
         function reiniciar() {
             var k = $("#tableUserList tr").length; // Obtener la cantidad de filas
             var elementos = $("input[name='estado_mesa2']"); // Seleccionar los elementos por nombre
@@ -1561,110 +1562,121 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $("#comision_col").hide();
-            $("#comision_price").hide();
+            $("#comision_col, #comision_price").hide();
 
             $("#guide").on("keyup", function () {
-                var guide_name = $('#guide').val().trim();
-                $("#comision_col").toggle(guide_name && guide_name !== "Ninguno");
-                $("#comision_price").toggle(guide_name && guide_name !== "Ninguno");
+                var guide_name = $('#guide').val().toString().trim();
+                var shouldShow = guide_name && guide_name !== "Ninguno";
+                $("#comision_col, #comision_price").toggle(shouldShow);
+            });
+
+            $("#comision").on("change", function () {
+                // Calcular total (Con propina y Comisión)
+                const subtotal = parseFloat($('#res').val()) || 0; // Subtotal SUMA
+                const comision = parseFloat($('#comision').val()) || 0; // % de Comisión
+                const propina = parseFloat($('#propina').val()) || 0; // Propina
+
+                // Calcular el cobro por comisión
+                const cobroComision = (subtotal * comision / 100).toFixed(2);
+
+                // Calcular el total (subtotal + propina + comisión)
+                const totalCalculado = (subtotal + propina + parseFloat(cobroComision)).toFixed(2);
+
+                // Actualizar el valor de "total2"
+                $('#total2').val(totalCalculado);
+            });
+
+        });
+    </script>
+
+    {{-- Funciones - Ultima parte del Formulario --}}#
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".user").hide()
+
+            // Calcular Cambio
+            function multiplicar() {
+                // Obtener los elementos
+                var uno = $('#total2'); // Total Calculado (Con Propina y Comisisón)
+                var dos = $('#dos'); // Pago
+                var tres = $('#tres'); // Cambio
+
+                // Convertir los valores a números
+                var totalc = parseFloat(uno.val()) || 0; // Usar 0 si es NaN
+                var valorDos = parseFloat(dos.val()) || 0; // Usar 0 si es NaN
+
+                // Calcular la operación
+                var operacion = valorDos - totalc;
+
+                // Actualizar el valor de "tres"
+                tres.val(operacion.toFixed(2));
+            }
+
+            // Calcular total (Con propina y Comisión)
+            function suma() {
+                // Obtener los elementos
+                const subtotal = parseFloat($('#res').val()) || 0; // Subtotal SUMA
+                const comision = parseFloat($('#comision').val()) || 0; // % de Comisión
+                const propina = parseFloat($('#propina').val()) || 0; // Propina
+                const total2 = $('#total2'); // Total Calculado (Con Propina)
+
+                // Calcular el cobro por comisión
+                const cobroComision = (subtotal * comision / 100).toFixed(2);
+
+                // Calcular el total (subtotal + propina + comisión)
+                const totalCalculado = (subtotal + propina + parseFloat(cobroComision)).toFixed(2);
+
+                // Actualizar el valor de "total2"
+                total2.val(totalCalculado);
+            }
+
+            // Total Original sin Modificaciones
+            $("#total2").keyup(function () {
+                var dos = $('#dos').val();
+                if (dos != "") {
+                    multiplicar()
+                }
+            });
+
+            // Pago
+            $("#dos").keyup(function () {
+                var uno = $('#total2').val();
+                if (dos != "") {
+                    multiplicar()
+                }
+            });
+
+            // Subtotal
+            $("#res").keyup(function () {
+                var propina = $('#propina').val();
+                if (propina != "") {
+                    suma()
+                }
+            });
+
+            // Propina
+            $("#propina").keyup(function () {
+                var res = $('#res').val();
+                if (res != "") {
+                    suma()
+                }
+            });
+
+            // Descuento
+            $("#desc").keyup(function () {
+                var res = $('#desc').val();
+                if (res > 0) {
+                    $("#motivoDescuento").show();
+                } else {
+                    $("#motivoDescuento").hide();
+                }
             });
 
         })
     </script>
 
-    {{-- Funciones - Ultima parte del Formulario --}}
+    {{-- Calcular Total --}}#
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(".user").hide()
-
-                // Calcular Cambio
-                function multiplicar() {
-                    // Obtener los elementos
-                    var uno = $('#total2'); // Total Calculado (Con Propina)
-                    var dos = $('#dos'); // Pago
-                    var tres = $('#tres'); // Cambio
-
-                    // Convertir los valores a números
-                    var totalc = parseFloat(uno.val()) || 0; // Usar 0 si es NaN
-                    var valorDos = parseFloat(dos.val()) || 0; // Usar 0 si es NaN
-
-                    // Calcular la operación
-                    var operacion = valorDos - totalc;
-
-                    // Actualizar el valor de "tres"
-                    tres.val(operacion.toFixed(2));
-                }
-
-                // Calcular total (Con propina)
-                function suma() {
-                    // Obtener los elementos
-                    var propina = $('#propina'); // Propina
-                    var subtotal = $('#res'); // Subtotal
-                    var total2 = $('#total2'); // Total Calculado (Con Propina)
-
-                    // Convertir los valores a números
-                    var propinaVal = parseFloat(propina.val()) || 0; // Usar 0 si es NaN
-                    var subtotalVal = parseFloat(subtotal.val()) || 0; // Usar 0 si es NaN
-
-                    // Calcular la operación
-                    var operacion2 = propinaVal + subtotalVal;
-
-                    // Actualizar el valor de "total2"
-                    total2.val(operacion2.toFixed(2));
-                }
-
-                // Total Original sin Modificaciones
-                $("#total2").keyup(function () {
-                    var dos = $('#dos').val();
-                    if (dos != "") {
-                        multiplicar()
-                    }
-                });
-
-                // Pago
-                $("#dos").keyup(function () {
-                    var uno = $('#total2').val();
-                    if (dos != "") {
-                        multiplicar()
-                    }
-                });
-
-                // Subtotal
-                $("#res").keyup(function () {
-                    var propina = $('#propina').val();
-                    if (propina != "") {
-                        suma()
-                    }
-                });
-
-                // Propina
-                $("#propina").keyup(function () {
-                    var res = $('#res').val();
-                    if (res != "") {
-                        suma()
-                    }
-                });
-
-                // Descuento
-                $("#desc").keyup(function () {
-                    var res = $('#desc').val();
-                    if (res > 0) {
-                        $("#motivoDescuento").show();
-                    } else {
-                        $("#motivoDescuento").hide();
-                    }
-                });
-
-        })
-    </script>
-
-    <!-- Calcular Total -->
-    <script type="text/javascript">
-
-        $('#desc').on('change', function(e) {
-            alert('Changed!')
-        });
 
         function calcular() {
             // Obtener los elemento
@@ -1679,15 +1691,23 @@
             $('#res').val((conftotal - desc).toFixed(2));
             $('#descuento1').val(desc.toFixed(2));
 
-            // Actualizar total2 solo si propina es 0 o vacío
-            if (propina === 0) {
-                $('#total2').val((conftotal - desc).toFixed(2));
-            }
+            // Actualizar total final
+                const subtotal = parseFloat($('#res').val()) || 0; // Subtotal SUMA
+                const comision = parseFloat($('#comision').val()) || 0; // % de Comisión
+
+                // Calcular el cobro por comisión
+                const cobroComision = (subtotal * comision / 100).toFixed(2);
+
+                // Calcular el total (subtotal + propina + comisión)
+                const totalCalculado = (subtotal + propina + parseFloat(cobroComision)).toFixed(2);
+
+                // Actualizar el valor de "total2"
+                $('#total2').val(totalCalculado);
         }
 
     </script>
 
-    <!-- Script para las ventas-->
+    {{-- Script para las ventas --}}#
     <script type="text/javascript">
         $(document).ready(function () {
             $("#bt_add").click(function () {
