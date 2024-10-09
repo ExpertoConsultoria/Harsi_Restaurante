@@ -686,78 +686,36 @@
                 var k = idt - 1;
 
                 // Limpiamos las Etiquetas Superiores
-                $('#lbmesa').html('');
-                $('#lbprecio_compra').html('');
-                $('#lbcantidad').html('');
-                $('#lbpespecial').html('');
-                $('#lbpesprecio').html('');
-                $('#lbpespcant').html('');
-                $('#lbcliente').html('');
-                $('#lbmesero').html('');
-                $('#lbguide').html('');
-                $('#lbcomision').html('');
-                $('#lbdireccion').html('');
+                $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbmesero, #lbguide, #lbcomision, #lbdireccion').html('');
 
                 // Limpiar Valores del Resumen
                 $('#detalle1').html('');    // Tabla de Productos
                 $('#total').html('');       // Total Visual
 
                 // Limpiamos las Etiquetas del Formulario de Pago
-                    $('#lbconf_total').html('');
-                    $('#lbcupon').html('');
-                    $('#lbdesc').html('');
-                    $('#lbres').html('');
-                    $('#lbpropina').html('');
-                    $('#lbtotal2').html('');
-                    $('#lbdos').html('');
-                    $('#lbtres').html('');
-                    $('#lbcomision_price').html('');
-                    $('#lbmotivoDescuento').html('');
-                    $('#lbcomentario').html('');
+                $('#lbconf_total, #lbcupon, #lbdesc, #lbres, #lbcomision_price, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbcomision_price, #lbmotivoDescuento, #lbcomentario').html('');
 
                 // Reseteamos Valores del Formulario de Pago
-                $('#total1').val("");
-                $("#total").html(" ");
-                $("#total").html("$" + "0.00");
-                $('#valor').val("0");
-                $('#incrementa').val("0");
-                $("#comentario").val("");
-                $('#conftotal').val("");
-                $('#desc').val("");
-                $('#res').val("");
-                $('#propina').val("");
-                $('#total2').val("");
-                $('#dos').val("");
-                $('#tres').val("");
-                $('#comision_price').val("");
-                $('#motivoDescuento').val("");
+                $('#product_name, #total1, #comentario, #conftotal, #desc,  #res, #comision_price, #propina, #total2, #dos, #tres, #motivoDescuento, #Comisión').val("");
 
-                $('#guide').val("Ninguno");
-                $('#Comisión').val("");
-                $('#mesero').val("Ninguno");
+                $("#total").html("");
+                $("#total").html("$" + "0.00");
+
+                $('#valor, #incrementa').val("0");
+                $('#guide, #mesero').val("Ninguno");
                 $('#comensales').val(1);
 
                 // Colocamos los Valores de la Mesa en la Pantalla
                 $('#id_proveedor').val(tituloMesa);
                 $('#mesa_estado').val('Abierta');
+
                 var mesa = $('#id_proveedor').val();
 
                 if (mesa.trim() == 'Para llevar') {
-                    $("#cliente").show();
-                    $("#direccion").show();
-                    $("#cliente_input").show();
-                    $("#direccion_input").show();
-                    $("#clientelb").show();
-                    $("#direccionlb").show();
+                    $("#cliente, #direccion, #cliente_input, #direccion_input, #clientelb, #direccionlb").show();
                 } else {
-                    $("#cliente").hide();
-                    $("#direccion").hide();
-                    $("#cliente_input").hide();
-                    $("#direccion_input").hide();
-                    $("#clientelb").hide();
-                    $("#direccionlb").hide();
-                    $("#cliente").val("");
-                    $("#direccion").val("");
+                    $("#cliente, #direccion, #cliente_input, #direccion_input, #clientelb, #direccionlb").hide();
+                    $("#cliente, #direccion").val("");
                 }
 
                 // Cambiamos el Boton Principal de la Mesa
@@ -783,38 +741,14 @@
                     var k = idt - 1;
                     var f = 0;
 
-                    $('#lbmesa').html('');
-                    $('#lbcomision').html('');
-                    $('#lbguide').html('');
-                    $('#lbmesero').html('');
-                    $('#lbprecio_compra').html('');
-                    $('#lbcantidad').html('');
-                    $('#lbpespecial').html('');
-                    $('#lbpesprecio').html('');
-                    $('#lbpespcant').html('');
-                    $('#lbcliente').html('');
-                    $('#lbdireccion').html('');
+                    // Reseteamos Etiquetas Superiores
+                    $('#lbmesa, #lbcomision, #lbguide, #lbmesero, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion').html('');
 
-                        $('#lbconf_total').html('');
-                        $('#lbcupon').html('');
-                        $('#lbdesc').html('');
-                        $('#lbres').html('');
-                        $('#lbpropina').html('');
-                        $('#lbcomision_price').html('');
-                        $('#lbtotal2').html('');
-                        $('#lbdos').html('');
-                        $('#lbtres').html('');
-                        $('#lbmotivoDescuento').html('');
-                        $('#lbcomentario').html('');
+                    // Reseteamos Etiquetas del Formulario de Pag0
+                    $('#lbconf_total, #lbcupon, #lbdesc, #lbres, #lbcomision_price, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
-                    $('#conftotal').val("");
-                    $('#desc').val("");
-                    $('#res').val("");
-                    $('#propina').val("");
-                    $('#total2').val("");
-                    $('#dos').val("");
-                    $('#tres').val("");
-                    $('#motivoDescuento').val("");
+                    // Reseteamos Formulario de Pag0
+                    $('#conftotal, #desc, #res, #comision_price, #propina, #total2, #dos, #tres, #motivoDescuento').val("");
 
                     $('#id_proveedor').val(tituloMesa);
                     $('#mesa_estado').val(estadoMesa);
@@ -823,21 +757,10 @@
                     $('figure').eq(k).css('display', 'block');
 
                     if (mesa.trim() == 'Para llevar') {
-                        $("#cliente").show();
-                        $("#direccion").show();
-                        $("#cliente_input").show();
-                        $("#direccion_input").show();
-                        $("#clientelb").show();
-                        $("#direccionlb").show();
+                        $("#cliente, #direccion, #cliente_input, #direccion_input, #clientelb, #direccionlb").show();
                     } else {
-                        $("#cliente").hide();
-                        $("#direccion").hide();
-                        $("#cliente_input").hide();
-                        $("#direccion_input").hide();
-                        $("#clientelb").hide();
-                        $("#direccionlb").hide();
-                        $("#cliente").val("");
-                        $("#direccion").val("");
+                        $("#cliente, #direccion, #cliente_input, #direccion_input, #clientelb, #direccionlb").hide();
+                        $("#cliente, #direccion").val("");
                     }
 
                     $.ajax({
@@ -913,9 +836,7 @@
 
                         if (evaluar !== 0) {
                             $("#total").html("$" + base);
-                            $('#valor').val(base);
-                            $('#total1').val(base);
-                            $('#total2').val(base);
+                            $('#valor, #total1, #total2').val(base);
                             $("#guardar").show();
 
                             const contador = parseInt(dataLength > 0 ? data[dataLength - 1].fila : 0) + 1;
@@ -929,13 +850,11 @@
                     function resetFields() {
                         $('#total1').val("");
                         $("#total").html("$0.00");
-                        $('#valor').val("0");
-                        $('#incrementa').val("0");
+                        $('#valor, #incrementa').val("0");
                         $("#guardar").hide();
                     }
 
-                    $('#detalle1').html('');
-                    $('#total').html('');
+                    $('#detalle1, #total').html('');
 
                 }
 
@@ -993,6 +912,12 @@
                 var mesa = $('#id_proveedor').val();
                 var estado = $('#mesa_estado').val();
                 var cajero = $('#cajero').val();
+
+                var mesero = $('#mesero').val();
+                var comision = $('#comision').val();
+                var guide = $('#guide').val();
+                var comensales = $('#comensales').val();
+
                 var cliente = $('#cliente').val();
                 var direccion = $('#direccion').val();
                 var comentario = $('#comentario').val();
@@ -1025,10 +950,10 @@
                     if (result.isConfirmed) {
 
                         // Limpiamos las Etiquetas del Formulario de Pago
-                        $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
+                        $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario, #lbcomision_price').html('');
 
                         // Reseteamos Valores del Formulario de Pago
-                        $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento').val("");
+                        $('#conftotal, #desc, #res, #comision_price, #propina, #total2, #dos, #tres, #motivoDescuento').val("");
 
                         var estadoMesa = $(this).closest("tr").find('.estado_mesa2').val();
                         var motivo = $('#swal-input1').val();
@@ -1106,7 +1031,7 @@
                             $('#total').html("$0.00");
                             $('#incrementa, #valor').val('0');
 
-                            $('#guardar, #cliente_input, #cliente, #direccion_input, #direccion, #clientelb, #direccionlb').hide();
+                            $('#guardar, #cliente_input, #cliente, #direccion_input, #direccion, #clientelb, #direccionlb, #comision_col, #comision_price').hide();
                         }
 
                         function cambiar() {
@@ -1119,9 +1044,9 @@
 
                             $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion').html('');
 
-                            $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
+                            $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario, #lbcomision_price').html('');
 
-                            $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #comentario').val('');
+                            $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #comentario, #comision_price').val('');
                             $('#detalle1, #total').html('');
 
                             $('#guide').val("Ninguno");
@@ -1316,7 +1241,7 @@
 
     </script>
 
-    {{-- Ver Mesa --}}
+    {{-- Ver Mesa !--}}
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -1345,20 +1270,14 @@
                 var f = 0;
 
                 // Limpiamos las Etiquetas Superiores
-                $('#lbmesa').html('');
-                $('#lbprecio_compra').html('');
-                $('#lbcantidad').html('');
-                $('#lbpespecial').html('');
-                $('#lbpesprecio').html('');
-                $('#lbpespcant').html('');
-                $('#lbcliente').html('');
-                $('#lbdireccion').html('');
+                $('#lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant').html('');
+                $('#lbmesa, #lbmesero, #lbcomision, #lbguide, #lbcliente, #lbdireccion').html('');
 
                 // Limpiamos las Etiquetas del Formulario de Pago
-                $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
+                $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario, #lbcomision_price').html('');
 
                 // Reseteamos Valores del Formulario de Pago
-                $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento').val('');
+                $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #comision_price').val('');
 
                 // Colocamos los Valores de la Mesa en la Pantalla
                 $('#id_proveedor').val(tituloMesa);
@@ -1368,200 +1287,199 @@
                 $('figure').eq(k).css('display', 'block');
 
                 if (mesa.trim() == 'Para llevar') {
-                    $("#cliente").show();
-                    $("#direccion").show();
-                    $("#cliente_input").show();
-                    $("#direccion_input").show();
-                    $("#clientelb").show();
-                    $("#direccionlb").show();
+                    $("#cliente, #direccion, #cliente_input, #direccion_input, #clientelb, #direccionlb").show();
                 } else {
-                    $("#cliente").hide();
-                    $("#direccion").hide();
-                    $("#cliente_input").hide();
-                    $("#direccion_input").hide();
-                    $("#clientelb").hide();
-                    $("#direccionlb").hide();
+                    $("#cliente, #direccion, #cliente_input, #direccion_input, #clientelb, #direccionlb").hide();
                 }
 
-                        $.ajax({
-                            url: "/obtenerComanda/" + mesa, // Obtenemos Comanda Temporal
-                            type: "GET",
-                            dataType: "json",
-                            success: function (data) {
+                $.ajax({
+                    url: "/obtenerComanda/" + mesa, // Obtenemos Comanda Temporal
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
 
-                                var tableOrden = localStorage.getItem("tableOrden");
+                        console.log(data);
 
-                                if(tableOrden != ''){
-                                    data = JSON.stringify(data);
+                        var tableOrden = localStorage.getItem("tableOrden");
 
-                                    if(data != tableOrden){
-                                        data = JSON.parse(data);
-                                        data.forEach(function (element, indice, array) {
-                                            var articulo = element.articulo;
+                        if(tableOrden != ''){
+                            data = JSON.stringify(data);
 
-                                            if (articulo != null) {
-                                                $('#detalles').append(
-                                                    '<tr class="selected" id="fila' + element.fila + '">' +
-                                                    '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + element.fila + ',' + element.subtotal + ')">Eliminar</button></td>' +
-                                                    '<td><input type="hidden" name="articulo[]" value="' + element.articulo + '">' + element.articulo + '</td>' +
-                                                    '<td><input type="hidden" name="cantidad[]" value="' + element.cantidad + '">' + element.cantidad + '</td>' +
-                                                    '<td><input type="hidden" name="precio_compra[]" value="' + element.precio_compra + '">' + element.precio_compra + '</td>' +
-                                                    '<td><input type="hidden" name="subtotal[]" value="' + element.subtotal + '">' + element.subtotal + '</td>' +
-                                                    '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' + element.fila + '"></td></tr>'
-                                                );
+                            if(data != tableOrden){
+                                data = JSON.parse(data);
+                                data.forEach(function (element, indice, array) {
+                                    var articulo = element.articulo;
 
-                                                total += parseFloat(element.subtotal);
-                                                base = total.toFixed(2);
+                                    if (articulo != null) {
+                                        $('#detalles').append(
+                                            '<tr class="selected" id="fila' + element.fila + '">' +
+                                            '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + element.fila + ',' + element.subtotal + ')">Eliminar</button></td>' +
+                                            '<td><input type="hidden" name="articulo[]" value="' + element.articulo + '">' + element.articulo + '</td>' +
+                                            '<td><input type="hidden" name="cantidad[]" value="' + element.cantidad + '">' + element.cantidad + '</td>' +
+                                            '<td><input type="hidden" name="precio_compra[]" value="' + element.precio_compra + '">' + element.precio_compra + '</td>' +
+                                            '<td><input type="hidden" name="subtotal[]" value="' + element.subtotal + '">' + element.subtotal + '</td>' +
+                                            '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' + element.fila + '"></td></tr>'
+                                        );
 
-                                                var cliente = element.cliente;
-                                                var direccion = element.direccion;
-                                                $('#cliente').val(cliente);
-                                                $('#direccion').val(direccion);
-                                            } else {
-                                                total = 0;
-                                                base = total.toFixed(2);
-                                            }
+                                        total += parseFloat(element.subtotal);
+                                        base = total.toFixed(2);
 
-                                            var comentario = element.comentario;
-                                            if (comentario != null) {
-                                                $('#comentario').val(comentario);
-                                            } else {
-                                                $('#comentario').val('');
-                                            }
-
-                                        });
-
-                                        evaluar = parseInt(total);
-
-                                        if (evaluar != 0) {
-                                            $("#total").html("$" + base);
-                                            $('#valor').val(base);
-                                            $('#total1').val(base);
-                                            $('#total2').val(base);
-                                            $('#res').val(base);
-                                            $('#conftotal').val(base);
-                                            $("#guardar").show();
-                                            var f = data.length - 1;
-                                            var dato = data[f].fila;
-                                            contador = parseInt(dato) + 1;
-                                            $('#incrementa').val(contador);
-
-                                            function evaluar() {
-                                                if (base > 0) {
-                                                    $("#guardar").show();
-                                                } else {
-                                                    $("#guardar").hide();
-                                                    $("#total").html("$" + "0.00");
-                                                    $('#total1').val("");
-                                                }
-                                            }
-                                        } else {
-                                            $('#total1').val("");
-                                            $('#conftotal').val("");
-                                            $("#total").html("$" + "0.00");
-                                            $('#valor').val("0");
-                                            $('#incrementa').val("0");
-                                            $("#guardar").hide();
-
-                                            if (data == '') {
-                                                $("#comentario").val("");
-                                            }
-                                        }
-                                        data = JSON.stringify(data);
-                                        localStorage.setItem("tableOrden",data);
-
-                                    }
-
-                                } else {
-
-                                    data.forEach(function (element, indice, array) {
-                                        var articulo = element.articulo;
-
-                                        if (articulo != null) {
-                                            $('#detalles').append(
-                                                '<tr class="selected" id="fila' + element.fila + '">' +
-                                                '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + element.fila + ',' + element.subtotal + ')">Eliminar</button></td>' +
-                                                '<td><input type="hidden" name="articulo[]" value="' + element.articulo + '">' + element.articulo + '</td>' +
-                                                '<td><input type="hidden" name="cantidad[]" value="' + element.cantidad + '">' + element.cantidad + '</td>' +
-                                                '<td><input type="hidden" name="precio_compra[]" value="' + element.precio_compra + '">' + element.precio_compra + '</td>' +
-                                                '<td><input type="hidden" name="subtotal[]" value="' + element.subtotal + '">' + element.subtotal + '</td>' +
-                                                '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' + element.fila + '"></td></tr>'
-                                            );
-
-                                            total += parseFloat(element.subtotal);
-                                            base = total.toFixed(2);
-
-                                            var cliente = element.cliente;
-                                            var direccion = element.direccion;
-                                            $('#cliente').val(cliente);
-                                            $('#direccion').val(direccion);
-                                        } else {
-                                            total = 0;
-                                            base = total.toFixed(2);
-                                        }
-
-                                        var comentario = element.comentario;
-                                        if (comentario != null) {
-                                            $('#comentario').val(comentario);
-                                        } else {
-                                            $('#comentario').val('');
-                                        }
-
-                                    });
-
-                                    evaluar = parseInt(total);
-
-                                    if (evaluar != 0) {
-                                        $("#total").html("$" + base);
-                                        $('#valor').val(base);
-                                        $('#total1').val(base);
-                                        $('#total2').val(base);
-                                        $('#res').val(base);
-                                        $('#conftotal').val(base);
-                                        $("#guardar").show();
-                                        var f = data.length - 1;
-                                        var dato = data[f].fila;
-                                        contador = parseInt(dato) + 1;
-                                        $('#incrementa').val(contador);
-
-                                        function evaluar() {
-                                            if (base > 0) {
-                                                $("#guardar").show();
-                                            } else {
-                                                $("#guardar").hide();
-                                                $("#total").html("$" + "0.00");
-                                                $('#total1').val("");
-                                            }
-                                        }
+                                        var cliente = element.cliente;
+                                        var direccion = element.direccion;
+                                        $('#cliente').val(cliente);
+                                        $('#direccion').val(direccion);
                                     } else {
-                                        $('#total1').val("");
-                                        $('#conftotal').val("");
-                                        $("#total").html("$" + "0.00");
-                                        $('#valor').val("0");
-                                        $('#incrementa').val("0");
-                                        $("#guardar").hide();
+                                        total = 0;
+                                        base = total.toFixed(2);
+                                    }
 
-                                        if (data == '') {
-                                            $("#comentario").val("");
+                                    var comentario = element.comentario;
+                                    if (comentario != null) {
+                                        $('#comentario').val(comentario);
+                                    } else {
+                                        $('#comentario').val('');
+                                    }
+
+                                });
+
+                                evaluar = parseInt(total);
+
+                                if (evaluar != 0) {
+                                    $("#total").html("$" + base);
+                                    $('#valor').val(base);
+                                    $('#total1').val(base);
+                                    $('#total2').val(base);
+                                    $('#res').val(base);
+                                    $('#conftotal').val(base);
+                                    $("#guardar").show();
+                                    var f = data.length - 1;
+                                    var dato = data[f].fila;
+                                    contador = parseInt(dato) + 1;
+                                    $('#incrementa').val(contador);
+
+                                    function evaluar() {
+                                        if (base > 0) {
+                                            $("#guardar").show();
+                                        } else {
+                                            $("#guardar").hide();
+                                            $("#total").html("$" + "0.00");
+                                            $('#total1').val("");
                                         }
                                     }
-                                    data = JSON.stringify(data);
-                                    localStorage.setItem("tableOrden",data);
+                                } else {
+                                    $('#total1').val("");
+                                    $('#conftotal').val("");
+                                    $("#total").html("$" + "0.00");
+                                    $('#valor').val("0");
+                                    $('#incrementa').val("0");
+                                    $("#guardar").hide();
+
+                                    if (data == '') {
+                                        $("#comentario").val("");
+                                    }
+                                }
+                                data = JSON.stringify(data);
+                                localStorage.setItem("tableOrden",data);
+
+                            }
+
+                        } else {
+
+
+
+                            data.forEach(function (element, indice, array) {
+                                var articulo = element.articulo;
+
+                                if (articulo != null) {
+                                    $('#detalles').append(
+                                        '<tr class="selected" id="fila' + element.fila + '">' +
+                                        '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + element.fila + ',' + element.subtotal + ')">Eliminar</button></td>' +
+                                        '<td><input type="hidden" name="articulo[]" value="' + element.articulo + '">' + element.articulo + '</td>' +
+                                        '<td><input type="hidden" name="cantidad[]" value="' + element.cantidad + '">' + element.cantidad + '</td>' +
+                                        '<td><input type="hidden" name="precio_compra[]" value="' + element.precio_compra + '">' + element.precio_compra + '</td>' +
+                                        '<td><input type="hidden" name="subtotal[]" value="' + element.subtotal + '">' + element.subtotal + '</td>' +
+                                        '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' + element.fila + '"></td></tr>'
+                                    );
+
+                                    var mesero = element.mesero;
+                                    var comensales = element.num_comensales;
+                                    var guia = element.guia;
+                                    $('#mesero').val(mesero);
+                                    $('#comensales').val(comensales);
+                                    $('#guide').val(guia);
+
+                                    if (guia.toString().trim() !== "Ninguno") {
+                                        var comision = element.comision_percentage;
+                                        $('#comision').val(comision);
+                                    }
+
+                                    total += parseFloat(element.subtotal);
+                                    base = total.toFixed(2);
+
+                                    var cliente = element.cliente;
+                                    var direccion = element.direccion;
+                                    $('#cliente').val(cliente);
+                                    $('#direccion').val(direccion);
+                                } else {
+                                    total = 0;
+                                    base = total.toFixed(2);
                                 }
 
-                            },
-                            error: function (error) {
-                                console.log(error);
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: '¡Error!',
-                                    text: '¡No se ha podido obtener la Comanda!',
-                                })
-                            }
-                        });
+                                var comentario = element.comentario;
+                                if (comentario != null) {
+                                    $('#comentario').val(comentario);
+                                } else {
+                                    $('#comentario').val('');
+                                }
 
-                        $('#detalle1').html('');
-                        $('#total').html('');
+                            });
+
+                            evaluar = parseInt(total);
+
+                            if (evaluar != 0) {
+                                $("#total").html("$" + base);
+                                $('#valor, #total1, #total2, #res, #conftotal').val(base);
+                                $("#guardar").show();
+                                var f = data.length - 1;
+                                var dato = data[f].fila;
+                                contador = parseInt(dato) + 1;
+                                $('#incrementa').val(contador);
+
+                                function evaluar() {
+                                    if (base > 0) {
+                                        $("#guardar").show();
+                                    } else {
+                                        $("#guardar").hide();
+                                        $("#total").html("$" + "0.00");
+                                        $('#total1').val("");
+                                    }
+                                }
+                            } else {
+                                $('#total1, #conftotal').val("");
+                                $("#total").html("$" + "0.00");
+                                $('#valor, #incrementa').val("0");
+                                $("#guardar").hide();
+
+                                if (data == '') {
+                                    $("#comentario").val("");
+                                }
+                            }
+                            data = JSON.stringify(data);
+                            localStorage.setItem("tableOrden",data);
+                        }
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Error!',
+                            text: '¡No se ha podido obtener la Comanda!',
+                        })
+                    }
+                });
+
+                $('#detalle1, #total').html('');
 
             });
 
@@ -2420,7 +2338,7 @@
 
     </script>
 
-    {{-- Guardar Orden en la BD--}}
+    {{-- Guardar Orden en la BD ##--}}
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -2711,7 +2629,7 @@
         });
     </script>
 
-    {{-- Eliminar Producto Registrado en Orden --}}
+    {{-- Eliminar Producto Registrado en Orden #--}}
     <script type="text/javascript">
 
         function evaluar() {

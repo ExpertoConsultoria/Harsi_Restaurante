@@ -219,8 +219,14 @@ class HomeController extends Controller
         $pedido->fecha = $request->fecha;
         $pedido->mesa = $request->mesa;
         $pedido->cajero = $request->cajero;
+
+        $pedido->guia = $request->guide;
+        $pedido->mesero = $request->mesero;
+        $pedido->num_comensales = $request->comensales;
+
         $pedido->cliente = $request->cliente;
         $pedido->direccion = $request->direccion;
+
         $pedido->total = $request->total1;
         $pedido->motivo = $request->motivo;
         $pedido->comentario = $request->comentario;
