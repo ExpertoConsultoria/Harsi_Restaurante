@@ -2414,6 +2414,10 @@
                     var desU = parseInt(desUser);
                     var formaPago = $('#forma_pago').val();
 
+                    var guide = $('#guide').val();
+                    var comision = $('#comision').val();
+                    var mesero = $('#mesero').val();
+
                     if (formaPago == null || formaPago.trim() == '' || formaPago == 0) {
                         $('#lbpago').html("<span style='color:red;'>Seleccione una opción</span>");
                         $('#forma_pago').focus();
@@ -2479,6 +2483,36 @@
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Error el valor es incorrecto, verifique sus datos!',
+                        })
+                        return false;
+                    } else if (guide == null || guide.trim() == '') {
+                        $('#lbguide').html("<span style='color:red;'>Nombre requerido</span>");
+                        $('#guide').focus();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error: El nombre del Guia es obligatorio!',
+                        })
+                        return false;
+                    } else if (
+                        (guide == null || guide.trim() == '')
+                        && (comision == null || isNaN(comision))
+                    ) {
+                        $('#lbcomision').html("<span style='color:red;'>% de Comisión requerido</span>");
+                        $('#comision').focus();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error: La Comisión del Guia es obligatoria!',
+                        })
+                        return false;
+                    } else if (mesero == null || mesero.trim() == '') {
+                        $('#lbmesero').html("<span style='color:red;'>Nombre requerido</span>");
+                        $('#mesero').focus();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error: El nombre del Mesero es obligatorio!',
                         })
                         return false;
                     } else {
@@ -2562,6 +2596,7 @@
                                     }
                                 });
 
+                                location.reload();
                             }
 
                         });

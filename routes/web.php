@@ -135,7 +135,6 @@ Route::middleware([
 
     //Comanda Home
     Route::resource('ComandaHome', ComandaHomeController::class);
-    Route::post('ComandaHome/guardar', [ComandaHomeController::class, 'guardarConsumo'])->name('ComandaHome.guardarConsumo');
     Route::post('ComandaHome/update', [ComandaHomeController::class, 'update'])->name('ComandaHome.update');
     Route::get('ComandaHome/destroy/{id}', [ComandaHomeController::class, 'destroy']);
 

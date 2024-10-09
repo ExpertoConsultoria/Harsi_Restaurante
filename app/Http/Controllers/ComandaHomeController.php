@@ -13,31 +13,37 @@ class ComandaHomeController extends Controller
 
     public function store(Request $request) {
 
-        dd($request);
-
-        if ($request->input('articulo') != null) {
-            $articulos = implode(',', $request->input('articulo'));
-        }
-
+        // Guardamos todo el Servicio
         $pedido = new Pedido;
-        $pedido->fecha = $request->fecha;
-        $pedido->mesa = $request->mesa;
-        $pedido->cajero = $request->cajero;
-        $pedido->turno = $request->turno;
-        $pedido->forma_pago = $request->forma_pago;
-        $pedido->cliente = $request->cliente;
-        $pedido->direccion = $request->direccion;
-        $pedido->comentario = $request->comentario;
-        $pedido->conf_total = $request->conf_total;
-        $pedido->descuento = $request->descuento;
-        $pedido->motivo_descuento = $request->motivoDescuento;
-        $pedido->descuento_pesos = $request->descuento1;
-        $pedido->propina = $request->propina;
-        $pedido->total = $request->total;
-        $pedido->total2 = $request->total2;
-        $pedido->pago = $request->pago;
-        $pedido->cambio = $request->cambio;
-        $pedido->save();
+            $pedido->fecha = $request->fecha;
+            $pedido->mesa = $request->mesa;
+            $pedido->cajero = $request->cajero;
+            $pedido->turno = $request->turno;
+            $pedido->forma_pago = $request->forma_pago;
+
+            $pedido->guia = $request->guide;
+            $pedido->comision_percentage = $request->comision;
+            $pedido->mesero = $request->mesero;
+            $pedido->num_comensales = $request->comensales;
+
+            $pedido->cliente = $request->cliente;
+            $pedido->direccion = $request->direccion;
+            $pedido->comentario = $request->comentario;
+
+            $pedido->conf_total = $request->conf_total;
+            $pedido->descuento = $request->descuento;
+            $pedido->comision = $request->comision_price;
+            $pedido->motivo_descuento = $request->motivoDescuento;
+            $pedido->descuento_pesos = $request->descuento1;
+            $pedido->propina = $request->propina;
+            $pedido->total = $request->total;
+            $pedido->total2 = $request->total2;
+            $pedido->pago = $request->pago;
+            $pedido->cambio = $request->cambio;
+
+            $pedido->save();
+
+        // Obtenemos el resumen de Productos[]
         $articulo = $request->get('articulo');
         $cantidad = $request->get('cantidad');
         $precio_compra = $request->get('precio_compra');
@@ -46,71 +52,21 @@ class ComandaHomeController extends Controller
         $cont = 0;
 
         while ($cont < count($articulo)) {
+
+            // Guardamos cada Comanda de forma Individual
             $detalle = new Comanda;
-            $detalle->pedido_id = $pedido->id;
-            $detalle->articulo = $articulo[$cont];
-            $detalle->cantidad = $cantidad[$cont];
-            $detalle->precio_compra = $precio_compra[$cont];
-            $detalle->subtotal = $subtotal[$cont];
-            $detalle->save();
+                $detalle->pedido_id = $pedido->id;
+                $detalle->articulo = $articulo[$cont];
+                $detalle->cantidad = $cantidad[$cont];
+                $detalle->precio_compra = $precio_compra[$cont];
+                $detalle->subtotal = $subtotal[$cont];
+                $detalle->save();
 
             $procant = $cantidad[$cont] . " " . $articulo[$cont];
             $articantidad[] = $procant;
             $cadena = implode(", ", $articantidad);
 
-            Orden::where('id', $pedido->id)->update(['articulo' => $cadena]);
-
-            $cont = $cont + 1;
-        }
-
-        return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa  .');
-    }
-
-    public function guardarConsumo(Request $request) {
-
-        if ($request->input('articulo') != null) {
-            $articulos = implode(',', $request->input('articulo'));
-        }
-
-        $pedido = new Pedido;
-        $pedido->fecha = $request->fecha;
-        $pedido->mesa = $request->mesa;
-        $pedido->cajero = $request->cajero;
-        $pedido->turno = $request->turno;
-        $pedido->forma_pago = $request->forma_pago;
-        $pedido->cliente = $request->cliente;
-        $pedido->direccion = $request->direccion;
-        $pedido->comentario = $request->comentario;
-        $pedido->conf_total = $request->conf_total;
-        $pedido->descuento = $request->descuento;
-        $pedido->motivo_descuento = $request->motivoDescuento;
-        $pedido->descuento_pesos = $request->descuento1;
-        $pedido->propina = $request->propina;
-        $pedido->total = $request->total;
-        $pedido->total2 = $request->total2;
-        $pedido->pago = $request->pago;
-        $pedido->cambio = $request->cambio;
-        $pedido->save();
-        $articulo = $request->get('articulo');
-        $cantidad = $request->get('cantidad');
-        $precio_compra = $request->get('precio_compra');
-        $subtotal = $request->get('subtotal');
-
-        $cont = 0;
-
-        while ($cont < count($articulo)) {
-            $detalle = new Comanda;
-            $detalle->pedido_id = $pedido->id;
-            $detalle->articulo = $articulo[$cont];
-            $detalle->cantidad = $cantidad[$cont];
-            $detalle->precio_compra = $precio_compra[$cont];
-            $detalle->subtotal = $subtotal[$cont];
-            $detalle->save();
-
-            $procant = $cantidad[$cont] . " " . $articulo[$cont];
-            $articantidad[] = $procant;
-            $cadena = implode(", ", $articantidad);
-
+            // Guardamos el resumen plano de la orden
             Orden::where('id', $pedido->id)->update(['articulo' => $cadena]);
 
             $cont = $cont + 1;
