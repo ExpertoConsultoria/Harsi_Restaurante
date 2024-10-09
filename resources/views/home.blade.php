@@ -425,111 +425,66 @@
                                                             <th></th>
                                                             <th>
 
-                                                                {{-- Formulario de Pago No Reducido --}}
-                                                                    @if($restaurante['reducir'] === 'No')
+                                                            {{-- Total (Text) --}}
+                                                            <h1 id="total" style="margin-bottom: -1rem;">0.00</h1>
 
-                                                                        {{-- Is Reduced Value --}}
-                                                                        <input type="hidden" id="reducir" name="reducir"
-                                                                            class="form-control" value="{{$restaurante['reducir']}}">
+                                                            {{-- Total for Products --}}
+                                                            <input type="hidden" id="total1" class="m-0" name="total1">
 
-                                                                        {{-- Total (Text) --}}
-                                                                        <h1 id="total" style="margin-bottom: -1rem;">0.00</h1>
+                                                            {{-- Total Original sin Modificaciones --}}
+                                                            <input id="conftotal" class="m-0" name="conf_total" type="hidden"
+                                                                placeholder="Confirma el importe" style="" autocomplete="off" required>
+                                                            <label for="" id="lbconf_total"></label>
 
-                                                                        {{-- Total for Products --}}
-                                                                        <input type="hidden" id="total1" class="m-0" name="total1">
+                                                            {{-- Desceunto Asignado --}}
+                                                            <input id="desc" class="form-control" name="descuento" onchange="calcular()"
+                                                                placeholder="Descuento %" style="margin-top:5px;" value=""
+                                                                autocomplete="off" type="number">
+                                                            <label for="" id="lbdesc"></label>
 
-                                                                        {{-- Total Original sin Modificaciones --}}
-                                                                        <input id="conftotal" class="m-0" name="conf_total" type="hidden"
-                                                                            placeholder="Confirma el importe" style="" autocomplete="off" required>
-                                                                        <label for="" id="lbconf_total"></label>
+                                                            {{-- Motivo de Descuento --}}
+                                                            <input id="motivoDescuento" class="form-control"
+                                                                name="motivoDescuento" placeholder="Motivo del descuento"
+                                                                style="">
+                                                            <label for="" id="lbmotivoDescuento"></label>
 
-                                                                        {{-- Desceunto Asignado --}}
-                                                                        <input id="desc" class="form-control" name="descuento" onchange="calcular()"
-                                                                            placeholder="Descuento %" style="margin-top:5px;" value=""
-                                                                            autocomplete="off" type="number">
-                                                                        <label for="" id="lbdesc"></label>
+                                                            {{-- Cantidad Descontada --}}
+                                                            <input type="hidden" id="descuento1" class="form-control"
+                                                                name="descuento1">
 
-                                                                        {{-- Motivo de Descuento --}}
-                                                                        <input id="motivoDescuento" class="form-control"
-                                                                            name="motivoDescuento" placeholder="Motivo del descuento"
-                                                                            style="">
-                                                                        <label for="" id="lbmotivoDescuento"></label>
+                                                            {{-- Total Calculado (Sin Propina) --}}
+                                                            <input id="res" class="form-control " name="total" autocomplete="off"
+                                                                placeholder="Subtotal" required style="margin-top:5px;" required
+                                                                readonly="readonly" type="hidden"
+                                                                style="background-color:#FFF;cursor: no-drop;">
+                                                            <label for="" id="lbres"></label>
 
-                                                                        {{-- Cantidad Descontada --}}
-                                                                        <input type="hidden" id="descuento1" class="form-control"
-                                                                            name="descuento1">
+                                                            {{-- Propina --}}
+                                                            <input id="propina" class="form-control " name="propina"
+                                                            placeholder="Propina $" style="margin-top:5px;" value=""
+                                                            autocomplete="off" required type="number" onchange="redondearDecimales('propina')">
+                                                            <label for="" id="lbpropina"></label>
 
-                                                                        {{-- Total Calculado (Sin Propina) --}}
-                                                                        <input id="res" class="form-control " name="total" autocomplete="off"
-                                                                            placeholder="Subtotal" required style="margin-top:5px;" required
-                                                                            readonly="readonly" type="hidden"
-                                                                            style="background-color:#FFF;cursor: no-drop;">
-                                                                        <label for="" id="lbres"></label>
+                                                            {{-- Total Calculado (Con Propina) --}}
+                                                            <input id="total2" class="form-control" name="total2"
+                                                                autocomplete="off" placeholder="Total" required
+                                                                style="margin-top:5px;font-weight: bold;" required
+                                                                readonly="readonly"
+                                                                style="background-color:#FFF;cursor: no-drop;">
+                                                            <label for="" id="lbtotal2"></label>
 
-                                                                        {{-- Propina --}}
-                                                                        <input id="propina" class="form-control " name="propina"
-                                                                        placeholder="Propina $" style="margin-top:5px;" value=""
-                                                                        autocomplete="off" required type="number" onchange="redondearDecimales('propina')">
-                                                                        <label for="" id="lbpropina"></label>
+                                                            {{-- Cantidad Pagada --}}
+                                                            <input id="dos" class="form-control" name="pago" placeholder="Pago"
+                                                                style="margin-top:5px;" autocomplete="off" required type="number" step=".01"
+                                                                onchange="redondearDecimales('dos')">
+                                                            <label for="" id="lbdos"></label>
 
-                                                                        {{-- Total Calculado (Con Propina) --}}
-                                                                        <input id="total2" class="form-control" name="total2"
-                                                                            autocomplete="off" placeholder="Total" required
-                                                                            style="margin-top:5px;font-weight: bold;" required
-                                                                            readonly="readonly"
-                                                                            style="background-color:#FFF;cursor: no-drop;">
-                                                                        <label for="" id="lbtotal2"></label>
-
-                                                                        {{-- Cantidad Pagada --}}
-                                                                        <input id="dos" class="form-control" name="pago" placeholder="Pago"
-                                                                            style="margin-top:5px;" autocomplete="off" required type="number" step=".01"
-                                                                            onchange="redondearDecimales('dos')">
-                                                                        <label for="" id="lbdos"></label>
-
-                                                                        {{-- Cambio Regresado --}}
-                                                                        <input id="tres" class="form-control" name="cambio"
-                                                                            placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
-                                                                            required readonly="readonly"
-                                                                            style="background-color:#FFF;cursor: no-drop;">
-                                                                        <label for="" id="lbtres"></label>
-
-                                                                    @endif
-
-                                                                {{-- Formulario de Pago Reducido --}}
-                                                                    @if($restaurante['reducir'] === 'Si')
-
-                                                                        {{-- Is Reduced Value --}}
-                                                                        <input type="hidden" id="reducir" name="reducir"
-                                                                            class="form-control" value="{{$restaurante['reducir']}}">
-
-                                                                        {{-- Total (Text) --}}
-                                                                        <h1 id="total">0.00</h1>
-
-                                                                        {{-- Total for Products --}}
-                                                                        <input type="hidden" id="total1" class="form-control" name="total1">
-
-                                                                        {{-- Total Original sin Modificaciones --}}
-                                                                        <input id="total2" class="form-control" name="total2"
-                                                                            autocomplete="off" placeholder="Total" required
-                                                                            style="margin-top:5px;font-weight: bold;" required
-                                                                            readonly="readonly"
-                                                                            style="background-color:#FFF;cursor: no-drop;">
-                                                                        <label for="" id="lbtotal2"></label>
-
-                                                                        {{-- Cantidad Pagada --}}
-                                                                        <input id="dos" class="form-control" name="pago" placeholder="Pago"
-                                                                            style="margin-top:5px;" autocomplete="off" required type="number"
-                                                                            onchange="redondearDecimales('dos')" step=".01">
-                                                                        <label for="" id="lbdos"></label>
-
-                                                                        {{-- Cambio Regresado --}}
-                                                                        <input id="tres" class="form-control" name="cambio"
-                                                                            placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
-                                                                            required readonly="readonly"
-                                                                            style="background-color:#FFF;cursor: no-drop;">
-                                                                        <label for="" id="lbtres"></label>
-
-                                                                    @endif
+                                                            {{-- Cambio Regresado --}}
+                                                            <input id="tres" class="form-control" name="cambio"
+                                                                placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
+                                                                required readonly="readonly"
+                                                                style="background-color:#FFF;cursor: no-drop;">
+                                                            <label for="" id="lbtres"></label>
 
                                                             </th>
                                                         </tfoot>
@@ -731,7 +686,6 @@
                 $('#total').html('');       // Total Visual
 
                 // Limpiamos las Etiquetas del Formulario de Pago
-                if ($('#reducir').val() != 'Si') {
                     $('#lbconf_total').html('');
                     $('#lbcupon').html('');
                     $('#lbdesc').html('');
@@ -742,12 +696,6 @@
                     $('#lbtres').html('');
                     $('#lbmotivoDescuento').html('');
                     $('#lbcomentario').html('');
-                } else {
-                    $('#lbtotal2').html('');
-                    $('#lbcupon').html('');
-                    $('#lbdos').html('');
-                    $('#lbtres').html('');
-                }
 
                 // Reseteamos Valores del Formulario de Pago
                 $('#total1').val("");
@@ -828,8 +776,6 @@
                     $('#lbcliente').html('');
                     $('#lbdireccion').html('');
 
-
-                    if ($('#reducir').val() != 'Si') {
                         $('#lbconf_total').html('');
                         $('#lbcupon').html('');
                         $('#lbdesc').html('');
@@ -840,13 +786,6 @@
                         $('#lbtres').html('');
                         $('#lbmotivoDescuento').html('');
                         $('#lbcomentario').html('');
-                    } else {
-                        $('#lbtotal2').html('');
-                        $('#lbcupon').html('');
-                        $('#lbdos').html('');
-                        $('#lbtres').html('');
-                    }
-
 
                     $('#conftotal').val("");
                     $('#desc').val("");
@@ -1066,11 +1005,7 @@
                     if (result.isConfirmed) {
 
                         // Limpiamos las Etiquetas del Formulario de Pago
-                        if ($('#reducir').val() != 'Si') {
-                            $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
-                        } else {
-                            $('#lbtotal2, #lbcupon, #lbdos, #lbtres').html('');
-                        }
+                        $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
                         // Reseteamos Valores del Formulario de Pago
                         $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento').val("");
@@ -1139,11 +1074,7 @@
                         if (tituloMesa == mesa) {
                             $('#detalle1, #total').html('');
 
-                            if ($('#reducir').val() != 'Si') {
-                                $('#lbconf_total, #lbcupon, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
-                            } else {
-                                $('#lbtotal2, #lbcupon, #lbdos, #lbtres').html('');
-                            }
+                            $('#lbconf_total, #lbcupon, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
                             $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #id_proveedor, #direccion, #cliente, #comentario').val('');
 
@@ -1168,11 +1099,7 @@
 
                             $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion').html('');
 
-                            if ($('#reducir').val() != 'Si') {
-                                $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
-                            } else {
-                                $('#lbtotal2, #lbcupon, #lbdos, #lbtres').html('');
-                            }
+                            $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
                             $$('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #comentario').val('');
                             $('#detalle1, #total').html('');
@@ -1222,11 +1149,7 @@
 
                                 $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion').html('');
 
-                                if ($('#reducir').val() != 'Si') {
-                                    $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
-                                } else {
-                                    $('#lbtotal2, #lbcupon, #lbdos, #lbtres').html('');
-                                }
+                                $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
                                 $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento').val("");
 
@@ -1412,11 +1335,7 @@
                 $('#lbdireccion').html('');
 
                 // Limpiamos las Etiquetas del Formulario de Pago
-                if ($('#reducir').val() != 'Si') {
-                    $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
-                } else {
-                    $('#lbtotal2, #lbcupon, #lbdos, #lbtres').html('');
-                }
+                $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
                 // Reseteamos Valores del Formulario de Pago
                 $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento').val('');
@@ -1649,47 +1568,6 @@
         $(document).ready(function () {
             $(".user").hide()
 
-            if ($('#reducir').val() != 'No') {
-
-                // Calcular Cambio
-                function multiplicar() {
-                    // Obtener los elementos
-                    var uno = $('#total1'); // Total por productos
-                    var dos = $('#dos'); // Pago
-                    var total2 = $('#total2'); // Total Original sin Modificaciones
-                    var tres = $('#tres');  // Cambio
-
-                    // Convertir los valores a números
-                    var totalc = parseFloat(uno.val()) || 0; // Usar 0 si es NaN
-                    var valorDos = parseFloat(dos.val()) || 0; // Usar 0 si es NaN
-                    var valorTotal2 = parseFloat(total2.val()) || 0; // Usar 0 si es NaN
-
-                    // Actualizar total2
-                    total2.val(totalc.toFixed(2));
-
-                    // Calcular la operación y actualizar tres
-                    var operacion = valorDos - valorTotal2;
-                    tres.val(operacion.toFixed(2));
-                }
-
-                // Pago
-                $("#dos").keyup(function () {
-                    var uno = $('#total1').val();
-                    if (uno != "") {
-                        multiplicar();
-                    }
-                });
-
-                // Total Original sin Modificaciones
-                $("#total2").keyup(function () {
-                    var dos = $('#dos').val();
-                    if (dos != "") {
-                        multiplicar();
-                    }
-                });
-
-            } else {
-
                 // Calcular Cambio
                 function multiplicar() {
                     // Obtener los elementos
@@ -1768,7 +1646,6 @@
                     }
                 });
 
-            }
         })
     </script>
 
@@ -1911,11 +1788,7 @@
 
                     limpiar();
 
-                    if ($('#reducir').val() != 'Si') {
-                        $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
-                    } else {
-                        $('#lbtotal2, #lbcupon, #lbdos, #lbtres').html('');
-                    }
+                    $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
                     $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento').val("");
                     $("#pcantidad").val("1");
@@ -2031,12 +1904,7 @@
 
                     limpiar();
 
-                    if ($('#reducir').val() != 'Si') {
-                        $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
-                    } else {
-                        $('#lbtotal2, #lbcupon, #lbdos, #lbtres').html('');
-                    }
-
+                    $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
                     $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento').val('');
                     $("#pcantidad").val('1');
@@ -2124,11 +1992,8 @@
         }
 
         function limpiar() {
-            if ($('#reducir').val() != 'Si') {
-                $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
-            } else {
-                $('#lbcupon, #lbtotal2, #lbdos, #lbtres').html('');
-            }
+
+            $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
             // $('#cupon').val(""); // Descomentar si es necesario
             $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #select-categoria, #producto, #pprecio_compra, #pcantidad, #pespecial, #pesprecio, #pespcant, #comentario').val('');
@@ -2184,11 +2049,7 @@
         });
 
         function limpiarSeleccion() {
-            if ($('#reducir').val() != 'Si') {
-                $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
-            } else {
-                $('#lbcupon, #lbtotal2, #lbdos, #lbtres').html('');
-            }
+            $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
             $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #select-categoria, #producto, #pprecio_compra, #pcantidad, #pespecial, #pesprecio, #pespcant, #id_proveedor, #comentario').val("");
             $('#pcantidad, #pespcant').val("1");
@@ -2469,11 +2330,7 @@
         }
 
         function limpiar() {
-            if ($('#reducir').val() !== 'Si') {
-                $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').empty();
-            } else {
-                $('#lbtotal2, #lbcupon, #lbdos, #lbtres').empty();
-            }
+            $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').empty();
 
             $('#cupon, #conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #pespcant, #pesprecio, #pespecial, #comentario').val(function() {
                 return $(this).is('#pespcant') ? '1' : '';
@@ -2526,8 +2383,6 @@
 
             $('.pagar').click(function () {
 
-                if ($('#reducir').val() != 'Si') {
-
                     var mesaTitulo = $('#id_proveedor').val(); // Mesa atendida
                     var conftotal = $('#conftotal').val(); // Total Original sin Modificaciones
                     var total = $('#total');
@@ -2558,139 +2413,6 @@
                     var desU = parseInt(desUser);
                     var formaPago = $('#forma_pago').val();
 
-                } else {
-                    var mesaTitulo = $('#id_proveedor').val();
-                    var tcomanda = parseInt($('#total1').val());
-                    var total3 = parseInt($('#total2').val());
-                    var dos = parseInt($('#dos').val());
-                    var tres = parseInt($('#tres').val());
-                    var formaPago = $('#forma_pago').val();
-                }
-
-                if ($('#reducir').val() != 'No') {
-                    if (formaPago == null || formaPago.trim() == '' || formaPago == 0) {
-                        $('#lbpago').html("<span style='color:red;'>Seleccione una opción</span>");
-                        $('#forma_pago').focus();
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Selecciona una opción, verifica tus datos!',
-                        });
-                        return false;
-                    } else if (total3 == null || isNaN(total3)) {
-                        $('#lbtotal2').html("<span style='color:red;'>El total no puede ser menor al subtotal</span>");
-                        $('#total2').focus();
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Error: el total no puede ser menor al subtotal, verifica tus datos!',
-                        });
-                        return false;
-                    } else if (dos == null || isNaN(dos)) {
-                        $('#lbdos').html("<span style='color:red;'>El pago es incorrecto</span>");
-                        $('#dos').focus();
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Error: el pago es incorrecto, ingresa un valor válido!',
-                        });
-                        return false;
-                    } else if (tres == null || isNaN(tres)) {
-                        $('#lbtres').html("<span style='color:red;'>El valor es incorrecto</span>");
-                        $('#tres').focus();
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Error: el valor es incorrecto, verifica tus datos!',
-                        });
-                        return false;
-                    } else {
-
-                        Swal.fire({
-                            title: 'Está seguro que desea pagar la mesa?',
-                            text: "¡No podrás revertir esto!",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            cancelButtonText: 'Cancelar',
-                            confirmButtonText: 'Sí!'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-
-                                $.ajax({
-                                    url: "{{ route('ComandaHome.store') }}", // Guardamos todo el Pedido
-                                    type: "POST",
-                                    data: $('#sample_venta').serialize(),
-                                    success: function (data) {
-                                        console.log(data);
-                                        location.reload();
-                                        window.open('/ticket', 'width=1000,height=800');
-                                    },
-                                    error: function (error) {
-                                        console.log(error);
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error!',
-                                            text: 'No se ha podido guardar 6!',
-                                        });
-                                    }
-                                });
-
-                                const fieldsToClear = [
-                                    '#conftotal', '#desc', '#res', '#propina', '#total2',
-                                    '#dos', '#tres', '#total1', '#id_proveedor', '#incrementa',
-                                    '#direccion', '#cliente', '#valor', '#comentario', '#motivoDescuento'
-                                ];
-
-                                fieldsToClear.forEach(field => $(field).val(''));
-
-                                $("#total").html("$0.00");
-                                $("#guardar, #cliente, #direccion, #clientelb, #direccionlb, #motivoDescuento, #cliente_input, #direccion_input").hide();
-
-                                $('#detalle1, #total, #lbcupon, #lbdos, #lbtres, #lbpago').html('');
-                                $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbpago').hide();
-
-                                Swal.fire(
-                                    'Pagado!',
-                                    'Orden finalizada, ' + mesaTitulo + ' disponible.',
-                                    'success'
-                                )
-
-                                var data = {
-                                    "_token": $("meta[name='csrf-token']").attr("content"),
-                                    "tituloMesa": mesaTitulo
-                                };
-
-                                $.ajax({
-                                    url: "/estadoHome", // Cerramos Mesa
-                                    type: "POST",
-                                    data: data,
-                                    sucess: function (msg) {},
-                                    error: function (error) {
-                                        console.log(error);
-                                    }
-                                });
-
-                                var elementos = $("input[name='titulo_mesa2']");
-                                var estados = $("input[name='estado_mesa2']");
-
-                                elementos.each(function(index) {
-                                    var j = index + 1;
-
-                                    if ($(this).val() === mesaTitulo) {
-                                        $('tr').eq(j).find('td').eq(1).css("background-color", "#008000");
-                                        $('button').eq(j).css("background-color", "#FFFFFF").prop("disabled", false).text("Abrir mesa");
-                                        estados.eq(index).val("Cerrada");
-                                        $("label").eq(index).hide();
-                                    } else {
-                                        $('button').eq(j).prop("disabled", false);
-                                    }
-                                });
-                            }
-                        })
-                    }
-                } else {
                     if (formaPago == null || formaPago.trim() == '' || formaPago == 0) {
                         $('#lbpago').html("<span style='color:red;'>Seleccione una opción</span>");
                         $('#forma_pago').focus();
@@ -2844,9 +2566,6 @@
                         });
 
                     }
-
-                }
-
             });
 
         });

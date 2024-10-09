@@ -152,42 +152,6 @@ class RestauranteController extends Controller
 
     }
 
-    public function editReducir() {
-        if (request()->ajax()) {
-
-            $dato = Restaurante::min('id');
-
-            if ($dato != null) {
-                $data = Restaurante::select('id', 'reducir')->first();
-                if ($data->reducir != null) {
-                    $data = array(
-                        'id' => $data->id,
-                        'reducir' => $data->reducir,
-                    );
-                }
-            } else {
-                $data = array(
-                    'id' => 0,
-                    'reducir' => 'No',
-                );
-            }
-            return response()->json(['data' => $data]);
-        }
-    }
-
-    public function updateReducir(Request $request) {
-
-        $dato = Restaurante::min('id');
-
-        if ($dato != null) {
-            Restaurante::whereId($request->hidden_id4)->update(['reducir' => $request->reducir]);
-            return response()->json(['success', ' Bien Hecho']);
-        } else {
-            return response()->json(['error', 'No hay datos del restaurante, agregue
-            información del restaurante.', ]);
-        }
-    }
-
     public function update(Request $request) {
 
         $form_data = array(

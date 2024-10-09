@@ -99,8 +99,6 @@ Route::middleware([
     Route::post('restaurante/updateDescuento', [RestauranteController::class, 'updateDescuento'])->name('restaurante.updateDescuento');
     Route::post('restaurante/updateSubcategoria', [RestauranteController::class, 'updateSubcategoria'])->name('restaurante.updateSubcategoria');
     Route::get('/editSubcategoria', [RestauranteController::class, 'editSubcategoria']);
-    Route::post('restaurante/updateReducir', [RestauranteController::class, 'updateReducir'])->name('restaurante.updateReducir');
-    Route::get('/editReducirElementos', [RestauranteController::class, 'editReducir']);
 
     //Mesas
     Route::resource('Mesa', MesaController::class);

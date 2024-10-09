@@ -28,11 +28,7 @@ class ComandaHomeController extends Controller
         $pedido->cliente = $request->cliente;
         $pedido->direccion = $request->direccion;
         $pedido->comentario = $request->comentario;
-        if ($request->reducir != 'No') {
-            $pedido->conf_total = $request->total1;
-        } else {
-            $pedido->conf_total = $request->conf_total;
-        }
+        $pedido->conf_total = $request->conf_total;
         $pedido->descuento = $request->descuento;
         $pedido->motivo_descuento = $request->motivoDescuento;
         $pedido->descuento_pesos = $request->descuento1;
@@ -85,11 +81,7 @@ class ComandaHomeController extends Controller
         $pedido->cliente = $request->cliente;
         $pedido->direccion = $request->direccion;
         $pedido->comentario = $request->comentario;
-        if ($request->reducir != 'No') {
-            $pedido->conf_total = $request->total1;
-        } else {
-            $pedido->conf_total = $request->conf_total;
-        }
+        $pedido->conf_total = $request->conf_total;
         $pedido->descuento = $request->descuento;
         $pedido->motivo_descuento = $request->motivoDescuento;
         $pedido->descuento_pesos = $request->descuento1;

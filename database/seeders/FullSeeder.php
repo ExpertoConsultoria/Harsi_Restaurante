@@ -229,7 +229,6 @@ class FullSeeder extends Seeder
                 'telefono' => 'Desconocido',
                 'email' => 'Desconocido',
                 'subcategoria' => 'No',
-                'reducir' => 'No',
                 'facebook' => 'Ninguno',
                 'instagram' => 'Ninguno',
                 'twitter' => 'Ninguno',

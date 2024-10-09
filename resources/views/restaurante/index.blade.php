@@ -21,7 +21,6 @@
                         subcategoría?</button>
                 </div>
                 <div class="col-2 d-flex justify-content-center align-items-center">
-                    <button type="button" name="elementos" id="elementos" class="btn btn-primary">¿Reducir?</button>
                 </div>
                 <div class="col-1 d-flex justify-content-center align-items-center">
                     <a href="Manual/manual.pdf" target="_blank"><img src="/img/manual.jpg" height="50"
@@ -268,40 +267,6 @@
                 </div>
             </div>
 
-            <div id="formModal4" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title4">Reducir elementos</h4>
-                        </div>
-                        <div class="modal-body">
-                            <span id="form_result4"></span>
-                            <form method="post" id="sample_form4" class="form-horizontal" enctype="multipart/form-data"
-                                autocomplete="off">
-                                @csrf
-                                <div class="form-group">
-                                    <label class="control-label col-md-2">¿Reducir elementos? </label>
-                                    <div class="col-md-8">
-                                        <select id="reducir" name="reducir" class="form-control" required="">
-                                            <option value="No">No</option>
-                                            <option value="Si">Si</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group" align="center">
-                                    <input type="hidden" name="action4" id="action4" />
-                                    <input type="hidden" name="hidden_id4" id="hidden_id4" />
-                                    <input type="submit" name="action_button4" id="action_button4"
-                                        class="btn btn-warning" value="Add4" />
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div id="confirmModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content" style="background: #e9605c;">
@@ -518,81 +483,6 @@
                             'success'
                         );
                         $('#formModal3').modal('hide');
-                        //$('#user_table').DataTable().ajax.reload();
-
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        Swal.fire(
-                            'Error!',
-                            'No se ha podido guardar!',
-                            'error'
-                        );
-                    }
-                });
-            }
-        });
-
-        $('#elementos').click(function () {
-            $('#form_result4').html('');
-            $.ajax({
-                url: "/editReducirElementos",
-                dataType: "json",
-                success: function (html) {
-                    console.log(html);
-                    $('#reducir').val(html.data.reducir);
-                    $('#hidden_id4').val(html.data.id);
-                    $('.modal-title4').text("Reducir elementos");
-                    $('#action_button4').val("Modificar");
-                    $('#action4').val("Add4");
-                    $('#formModal4').modal('show');
-                }
-            })
-        });
-
-        $('#sample_form4').on('submit', function (event) {
-            event.preventDefault();
-
-            if ($('#action4').val() == "Add4") {
-                $.ajax({
-                    url: "{{ route('restaurante.updateReducir') }}",
-                    method: "POST",
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    dataType: "json",
-                    success: function (data) {
-
-                        console.log(data);
-                        var html = '';
-                        if (data.errors) {
-                            html = '<div class="alert alert-danger">';
-                            for (var count = 0; count < data.errors.length; count++) {
-                                html += '<p>' + data.errors[count] + '</p>';
-                            }
-                            html += '</div>';
-                            Swal.fire(
-                                'Error!',
-                                'No se ha podido guardar!',
-                                'error'
-                            );
-                        }
-                        if (data.success) {
-                            Swal.fire(
-                                'Exito!',
-                                'Agregado correctamente!',
-                                'success'
-                            );
-                            $('#sample_form4')[0].reset();
-
-                        }
-                        Swal.fire(
-                            'Exito!',
-                            'Actualizado correctamente!',
-                            'success'
-                        );
-                        $('#formModal4').modal('hide');
                         //$('#user_table').DataTable().ajax.reload();
 
                     },

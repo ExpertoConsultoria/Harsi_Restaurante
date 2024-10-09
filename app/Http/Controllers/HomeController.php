@@ -79,19 +79,17 @@ class HomeController extends Controller
             $dato = Restaurante::min('id');
 
             if ($dato != null) {
-                $restaurante = Restaurante::select('subcategoria', 'reducir')
+                $restaurante = Restaurante::select('subcategoria')
                     ->first();
 
                 if ($restaurante->subcategoria != null) {
                     $restaurante = array(
-                        'subcategoria' => $restaurante->subcategoria,
-                        'reducir' => $restaurante->reducir,
+                        'subcategoria' => $restaurante->subcategoria
                     );
                 }
             } else {
                 $restaurante = array(
-                    'subcategoria' => 'No',
-                    'reducir' => 'No',
+                    'subcategoria' => 'No'
                 );
             }
 

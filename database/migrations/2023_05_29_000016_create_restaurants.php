@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('telefono')->default('Ninguno');
             $table->string('email')->default('Ninguno');
             $table->string('subcategoria',5)->default('No');
-            $table->string('reducir',5)->default('No');
             $table->string('facebook',150)->default('Ninguno')->nullable();
             $table->string('instagram',150)->default('Ninguno')->nullable();
             $table->string('twitter',150)->default('Ninguno')->nullable();
