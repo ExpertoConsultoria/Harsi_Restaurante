@@ -1110,7 +1110,7 @@
 
                             $('#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
-                            $$('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #comentario').val('');
+                            $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #comentario').val('');
                             $('#detalle1, #total').html('');
 
                             $('#guide').val("Ninguno");
@@ -2069,7 +2069,7 @@
 
     </script>
 
-    <!--  Script para Boton guardar Comanda -->
+    {{--  Script para Boton guardar Comanda --}}
     <script type="text/javascript">
         $(document).ready(function () {
             $("#guardarComanda").click(function () {
@@ -2092,12 +2092,12 @@
                 }
             });
 
-            $(location).attr('href', '/home');
+            // $(location).attr('href', '/home');
         }
 
     </script>
 
-    <!--  Script para Especialidades  -->
+    {{-- Script para Especialidades --}}
     <script type="text/javascript">
         $(document).ready(function () {
             $("#agrega").click(function () {
@@ -2198,7 +2198,7 @@
                     evaluar();
                     $("#detalles").append(fila);
 
-                    reiniciar();
+                    // reiniciar();
                     calcular();
 
                 } else {
@@ -2314,7 +2314,7 @@
 
                     $("#detalles").append(fila);
 
-                    reiniciar();
+                    // reiniciar();
                     calcular();
 
                 } else {
@@ -2872,7 +2872,7 @@
             });
         }
         $(document).ready(function () {
-            setInterval(getPayMethods, 20000); //Cada 30 segundo (30 mil milisegundos)
+            setInterval(getPayMethods, 90000); // Cada 1 minuto y medio (90 mil milisegundos)
         });
 
         // Renderizar Tabla (Mesas)
