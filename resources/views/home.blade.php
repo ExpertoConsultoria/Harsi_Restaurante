@@ -1031,7 +1031,7 @@
                             $('#total').html("$0.00");
                             $('#incrementa, #valor').val('0');
 
-                            $('#guardar, #cliente_input, #cliente, #direccion_input, #direccion, #clientelb, #direccionlb, #comision_col, #comision_price').hide();
+                            $('#guardar, #cliente_input, #cliente, #direccion_input, #direccion, #clientelb, #direccionlb, #comision_col, #comision_price, #res').hide();
                         }
 
                         function cambiar() {
@@ -1490,12 +1490,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $("#comision_col, #comision_price").hide();
+            $("#comision_col, #comision_price, #res").hide();
 
             $("#guide").on("keyup", function () {
                 var guide_name = $('#guide').val().toString().trim();
                 var shouldShow = guide_name && guide_name !== "Ninguno";
-                $("#comision_col, #comision_price").toggle(shouldShow);
+                $("#comision_col, #comision_price, #res").toggle(shouldShow);
             });
 
             $("#comision").on("change", function () {
@@ -2667,17 +2667,27 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let base = $('#valor').val() - subtotal1;
-                    $('#valor, #total1, #total2, #conftotal').val(base);
+
+                    // Restamos la Cantidad del Total por Consumo
+                    let base = $('#total1').val() - subtotal1;
+
+                    // ## - Total for Products - Total Calculado (Con Propina y Comisión) - Total Original sin Modificaciones
+                    $('#valor, #total1, #conftotal, #res').val(base);
                     $("#total").text(`$${base}`);
                     $(`#fila${index}`).remove();
-                    evaluar();
 
+                    evaluar(); // Mostramos Boton?
+
+                    calcular();// Calculamos Descuento y Valores siguientes
+
+                    // Eliminamos la Fila
                     const motivo = $('#swal-input1').val();
                     eliminarFila(index, motivo);
 
                     Swal.fire('Eliminado!', 'El producto ha sido eliminado.', 'success');
+
                 }
+
             })
         }
 
