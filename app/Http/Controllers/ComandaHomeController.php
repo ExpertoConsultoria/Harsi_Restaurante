@@ -127,6 +127,12 @@ class ComandaHomeController extends Controller
         $temporal->mesa = $request->mesa;
         $temporal->estado = $request->estado;
         $temporal->cajero = $request->cajero;
+
+        $temporal->guia = $request->guide;
+        $temporal->comision_percentage = $request->comision;
+        $temporal->mesero = $request->mesero;
+        $temporal->num_comensales = $request->comensales;
+
         $temporal->cliente = $request->cliente;
         $temporal->direccion = $request->direccion;
         $temporal->comentario = $request->comentario;
@@ -212,6 +218,12 @@ class ComandaHomeController extends Controller
         $temporal->mesa = $request->mesa;
         $temporal->estado = $request->estado;
         $temporal->cajero = $request->cajero;
+
+        $temporal->guia = $request->guide;
+        $temporal->comision_percentage = $request->comision;
+        $temporal->mesero = $request->mesero;
+        $temporal->num_comensales = $request->comensales;
+
         $temporal->cliente = $request->cliente;
         $temporal->direccion = $request->direccion;
         $temporal->comentario = $request->comentario;

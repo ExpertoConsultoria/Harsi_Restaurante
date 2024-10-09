@@ -1677,6 +1677,12 @@
             var mesa = $('#id_proveedor').val();
             var estado = $('#mesa_estado').val();
             var cajero = $('#cajero').val();
+
+            var guide = $('#guide').val();
+            var comision = $('#comision').val();
+            var mesero = $('#mesero').val();
+            var comensales = $('#comensales').val();
+
             var cliente = $('#cliente').val();
             var direccion = $('#direccion').val();
             var comentario = $('#comentario').val();
@@ -1719,6 +1725,12 @@
                         "mesa": mesa,
                         "estado": estado,
                         "cajero": cajero,
+
+                        "guide": guide,
+                        "comision": comision,
+                        "mesero": mesero,
+                        "comensales": comensales,
+
                         "articulo": articulo,
                         "cantidad": cantidad,
                         "precio_compra": precio_compra,
@@ -1835,6 +1847,12 @@
                         "mesa": mesa,
                         "estado": estado,
                         "cajero": cajero,
+
+                        "guide": guide,
+                        "comision": comision,
+                        "mesero": mesero,
+                        "comensales": comensales,
+
                         "articulo": articulo,
                         "cantidad": cantidad,
                         "precio_compra": precio_compra,
@@ -2058,6 +2076,12 @@
             var mesa = $('#id_proveedor').val();
             var estado = $('#mesa_estado').val();
             var cajero = $('#cajero').val();
+
+            var guide = $('#guide').val();
+            var comision = $('#comision').val();
+            var mesero = $('#mesero').val();
+            var comensales = $('#comensales').val();
+
             var cliente = $('#cliente').val();
             var direccion = $('#direccion').val();
             var comentario = $('#comentario').val();
@@ -2095,6 +2119,12 @@
                         "mesa": mesa,
                         "estado": estado,
                         "cajero": cajero,
+
+                        "guide": guide,
+                        "comision": comision,
+                        "mesero": mesero,
+                        "comensales": comensales,
+
                         "articulo": especialidad,
                         "cantidad": espcant,
                         "precio_compra": esprecio,
@@ -2211,6 +2241,12 @@
                         "mesa": mesa,
                         "estado": estado,
                         "cajero": cajero,
+
+                        "guide": guide,
+                        "comision": comision,
+                        "mesero": mesero,
+                        "comensales": comensales,
+
                         "articulo": especialidad,
                         "cantidad": espcant,
                         "precio_compra": esprecio,
@@ -2629,7 +2665,7 @@
         });
     </script>
 
-    {{-- Eliminar Producto Registrado en Orden #--}}
+    {{-- Eliminar Producto Registrado en Orden --}}
     <script type="text/javascript">
 
         function evaluar() {
