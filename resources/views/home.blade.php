@@ -88,7 +88,7 @@
                                         </div>
 
                                         {{-- Comisión --}}
-                                        <div class="col-md-3">
+                                        <div class="col-md-3" id="comision_col">
                                             <div class="my-0 form-group">
                                                 <label for="comision">Comisión</label>
                                                 <input id="comision" class="form-control" name="comision" onchange="redondearDecimales('comision')"
@@ -1609,6 +1609,20 @@
 
     </script>
 
+    {{-- Funciones - Primera parte del Formulario (Detalles Generales) --}}
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#comision_col").hide();
+
+            $("#guide").on("keyup", function () {
+                var guide_name = $('#guide').val().trim();
+                $("#comision_col").toggle(guide_name && guide_name !== "Ninguno");
+            });
+
+        })
+    </script>
+
     {{-- Funciones - Ultima parte del Formulario --}}
     <script type="text/javascript">
         $(document).ready(function () {
@@ -3091,7 +3105,6 @@
         $(document).ready(function () {
             setInterval(getPayMethods, 20000); //Cada 30 segundo (30 mil milisegundos)
         });
-
 
         // Renderizar Tabla (Mesas)
         function generateTableRow(data) {
