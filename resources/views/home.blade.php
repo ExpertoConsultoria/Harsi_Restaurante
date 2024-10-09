@@ -425,66 +425,71 @@
                                                             <th></th>
                                                             <th>
 
-                                                            {{-- Total (Text) --}}
-                                                            <h1 id="total" style="margin-bottom: -1rem;">0.00</h1>
+                                                                {{-- Total (Text) --}}
+                                                                <h1 id="total" style="margin-bottom: -1rem;">0.00</h1>
 
-                                                            {{-- Total for Products --}}
-                                                            <input type="hidden" id="total1" class="m-0" name="total1">
+                                                                {{-- Total for Products --}}
+                                                                <input type="hidden" id="total1" class="m-0" name="total1">
 
-                                                            {{-- Total Original sin Modificaciones --}}
-                                                            <input id="conftotal" class="m-0" name="conf_total" type="hidden"
-                                                                placeholder="Confirma el importe" style="" autocomplete="off" required>
-                                                            <label for="" id="lbconf_total"></label>
+                                                                {{-- Total Original sin Modificaciones --}}
+                                                                <input id="conftotal" name="conf_total" type="hidden" autocomplete="off" required>
+                                                                <label for="" id="lbconf_total"></label>
 
-                                                            {{-- Desceunto Asignado --}}
-                                                            <input id="desc" class="form-control" name="descuento" onchange="calcular()"
-                                                                placeholder="Descuento %" style="margin-top:5px;" value=""
-                                                                autocomplete="off" type="number">
-                                                            <label for="" id="lbdesc"></label>
+                                                                {{-- Desceunto Asignado --}}
+                                                                <input id="desc" class="form-control" name="descuento" onchange="calcular()"
+                                                                    placeholder="Descuento %" style="margin-top:5px;" value=""
+                                                                    autocomplete="off" type="number">
+                                                                <label for="" id="lbdesc"></label>
 
-                                                            {{-- Motivo de Descuento --}}
-                                                            <input id="motivoDescuento" class="form-control"
-                                                                name="motivoDescuento" placeholder="Motivo del descuento"
-                                                                style="">
-                                                            <label for="" id="lbmotivoDescuento"></label>
+                                                                {{-- Motivo de Descuento --}}
+                                                                <input id="motivoDescuento" class="form-control"
+                                                                    name="motivoDescuento" placeholder="Motivo del descuento"
+                                                                    style="">
+                                                                <label for="" id="lbmotivoDescuento"></label>
 
-                                                            {{-- Cantidad Descontada --}}
-                                                            <input type="hidden" id="descuento1" class="form-control"
-                                                                name="descuento1">
+                                                                {{-- Cantidad Descontada --}}
+                                                                <input type="hidden" id="descuento1" class="form-control"
+                                                                    name="descuento1">
 
-                                                            {{-- Total Calculado (Sin Propina) --}}
-                                                            <input id="res" class="form-control " name="total" autocomplete="off"
-                                                                placeholder="Subtotal" required style="margin-top:5px;" required
-                                                                readonly="readonly" type="hidden"
-                                                                style="background-color:#FFF;cursor: no-drop;">
-                                                            <label for="" id="lbres"></label>
+                                                                {{-- Total Calculado (Sin Propina) --}}
+                                                                <input id="res" class="form-control " name="total" autocomplete="off"
+                                                                    placeholder="Subtotal" required style="margin-top:5px; font-weight: bold;" required
+                                                                    readonly="readonly"
+                                                                    style="background-color:#FFF;cursor: no-drop;">
+                                                                <label for="" id="lbres"></label>
 
-                                                            {{-- Propina --}}
-                                                            <input id="propina" class="form-control " name="propina"
-                                                            placeholder="Propina $" style="margin-top:5px;" value=""
-                                                            autocomplete="off" required type="number" onchange="redondearDecimales('propina')">
-                                                            <label for="" id="lbpropina"></label>
+                                                                {{-- Cobro por Comisión --}}
+                                                                <input id="comision_price" class="form-control" name="comision_price" placeholder="Cobro por Comisión"
+                                                                    style="margin-top:5px;" autocomplete="off" required type="number" step=".01"
+                                                                    onchange="redondearDecimales('comision_price')">
+                                                                <label for="" id="lbcomision_price"></label>
 
-                                                            {{-- Total Calculado (Con Propina) --}}
-                                                            <input id="total2" class="form-control" name="total2"
-                                                                autocomplete="off" placeholder="Total" required
-                                                                style="margin-top:5px;font-weight: bold;" required
-                                                                readonly="readonly"
-                                                                style="background-color:#FFF;cursor: no-drop;">
-                                                            <label for="" id="lbtotal2"></label>
+                                                                {{-- Propina --}}
+                                                                <input id="propina" class="form-control " name="propina"
+                                                                placeholder="Propina $" style="margin-top:5px;" value=""
+                                                                autocomplete="off" required type="number" onchange="redondearDecimales('propina')">
+                                                                <label for="" id="lbpropina"></label>
 
-                                                            {{-- Cantidad Pagada --}}
-                                                            <input id="dos" class="form-control" name="pago" placeholder="Pago"
-                                                                style="margin-top:5px;" autocomplete="off" required type="number" step=".01"
-                                                                onchange="redondearDecimales('dos')">
-                                                            <label for="" id="lbdos"></label>
+                                                                {{-- Total Calculado (Con Propina y Comisión) --}}
+                                                                <input id="total2" class="form-control" name="total2"
+                                                                    autocomplete="off" placeholder="Total" required
+                                                                    style="margin-top:5px;font-weight: bold;" required
+                                                                    readonly="readonly"
+                                                                    style="background-color:#FFF;cursor: no-drop;">
+                                                                <label for="" id="lbtotal2"></label>
 
-                                                            {{-- Cambio Regresado --}}
-                                                            <input id="tres" class="form-control" name="cambio"
-                                                                placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
-                                                                required readonly="readonly"
-                                                                style="background-color:#FFF;cursor: no-drop;">
-                                                            <label for="" id="lbtres"></label>
+                                                                {{-- Cantidad Pagada --}}
+                                                                <input id="dos" class="form-control" name="pago" placeholder="Pago"
+                                                                    style="margin-top:5px;" autocomplete="off" required type="number" step=".01"
+                                                                    onchange="redondearDecimales('dos')">
+                                                                <label for="" id="lbdos"></label>
+
+                                                                {{-- Cambio Regresado --}}
+                                                                <input id="tres" class="form-control" name="cambio"
+                                                                    placeholder="Cambio" style="margin-top:5px;" autocomplete="off"
+                                                                    required readonly="readonly"
+                                                                    style="background-color:#FFF;cursor: no-drop;">
+                                                                <label for="" id="lbtres"></label>
 
                                                             </th>
                                                         </tfoot>
@@ -694,6 +699,7 @@
                     $('#lbtotal2').html('');
                     $('#lbdos').html('');
                     $('#lbtres').html('');
+                    $('#lbcomision_price').html('');
                     $('#lbmotivoDescuento').html('');
                     $('#lbcomentario').html('');
 
@@ -711,6 +717,7 @@
                 $('#total2').val("");
                 $('#dos').val("");
                 $('#tres').val("");
+                $('#comision_price').val("");
                 $('#motivoDescuento').val("");
 
                 $('#guide').val("Ninguno");
@@ -781,6 +788,7 @@
                         $('#lbdesc').html('');
                         $('#lbres').html('');
                         $('#lbpropina').html('');
+                        $('#lbcomision_price').html('');
                         $('#lbtotal2').html('');
                         $('#lbdos').html('');
                         $('#lbtres').html('');
@@ -1074,9 +1082,9 @@
                         if (tituloMesa == mesa) {
                             $('#detalle1, #total').html('');
 
-                            $('#lbconf_total, #lbcupon, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
+                            $('#lbconf_total, #lbcupon, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario, #lbcomision_price').html('');
 
-                            $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #id_proveedor, #direccion, #cliente, #comentario').val('');
+                            $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #id_proveedor, #direccion, #cliente, #comentario, #comision_price').val('');
 
                             $('#guide').val("Ninguno");
                             $('#Comisión').val("");
@@ -1554,10 +1562,12 @@
         $(document).ready(function () {
 
             $("#comision_col").hide();
+            $("#comision_price").hide();
 
             $("#guide").on("keyup", function () {
                 var guide_name = $('#guide').val().trim();
                 $("#comision_col").toggle(guide_name && guide_name !== "Ninguno");
+                $("#comision_price").toggle(guide_name && guide_name !== "Ninguno");
             });
 
         })
