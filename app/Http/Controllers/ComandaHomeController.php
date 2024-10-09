@@ -13,6 +13,8 @@ class ComandaHomeController extends Controller
 
     public function store(Request $request) {
 
+        dd($request);
+
         if ($request->input('articulo') != null) {
             $articulos = implode(',', $request->input('articulo'));
         }
@@ -214,7 +216,7 @@ class ComandaHomeController extends Controller
     }
 
     public function eliminar(Request $request) {
-        
+
         $temporal = ComandaTemporal::where('mesa', '=', $request->mesa)
             ->where('estado', '=', 'Abierta')
             ->where('fila', '=', $request->indice)

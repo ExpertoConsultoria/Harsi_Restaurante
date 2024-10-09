@@ -721,6 +721,9 @@
                 $('#lbpesprecio').html('');
                 $('#lbpespcant').html('');
                 $('#lbcliente').html('');
+                $('#lbmesero').html('');
+                $('#lbguide').html('');
+                $('#lbcomision').html('');
                 $('#lbdireccion').html('');
 
                 // Limpiar Valores del Resumen
@@ -761,6 +764,11 @@
                 $('#dos').val("");
                 $('#tres').val("");
                 $('#motivoDescuento').val("");
+
+                $('#guide').val("Ninguno");
+                $('#Comisión').val("");
+                $('#mesero').val("Ninguno");
+                $('#comensales').val(1);
 
                 // Colocamos los Valores de la Mesa en la Pantalla
                 $('#id_proveedor').val(tituloMesa);
@@ -809,6 +817,9 @@
                     var f = 0;
 
                     $('#lbmesa').html('');
+                    $('#lbcomision').html('');
+                    $('#lbguide').html('');
+                    $('#lbmesero').html('');
                     $('#lbprecio_compra').html('');
                     $('#lbcantidad').html('');
                     $('#lbpespecial').html('');
@@ -1028,7 +1039,7 @@
                 var comentario = $('#comentario').val();
 
                 // Limpiamos las Etiquetas Superiores
-                $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion').html('');
+                $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion, #lbmesero, #lbguide, #lbcomision').html('');
 
                 Swal.fire({
                     title: 'Está seguro que desea cerrar la mesa?',
@@ -1136,6 +1147,11 @@
 
                             $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #id_proveedor, #direccion, #cliente, #comentario').val('');
 
+                            $('#guide').val("Ninguno");
+                            $('#Comisión').val("");
+                            $('#mesero').val("Ninguno");
+                            $('#comensales').val(1);
+
                             $('#total').html("$0.00");
                             $('#incrementa, #valor').val('0');
 
@@ -1160,6 +1176,11 @@
 
                             $$('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #comentario').val('');
                             $('#detalle1, #total').html('');
+
+                            $('#guide').val("Ninguno");
+                            $('#Comisión').val("");
+                            $('#mesero').val("Ninguno");
+                            $('#comensales').val(1);
 
                             $("#total").html("$" + "0.00");
                             $('#valor').val("0");
