@@ -228,22 +228,20 @@ input::-webkit-input-placeholder {
    src: url('/fonts/Montserrat-SemiBold.ttf');
    }
 
-   #mesa{
+   #open_table, #see_table{
    	color:#006b8e ;background-color: white;	border:2px solid #C0C0C0;border-radius: 10px;
     font-family: Montserrat;
     src: url('/fonts/Montserrat-SemiBold.ttf');
-
-
    }
-   #mesa:hover{
+
+   #open_table:hover, #see_table:hover{
     color: #006b8e;
-    background-color:white;
+    background-color:rgb(238, 238, 238);
     font-family: Montserrat;
     src: url('/fonts/Montserrat-SemiBold.ttf');
     border:2px solid #C0C0C0;
-
-
   }
+
   .btn-primary{
   color: white;background-color: #006b8e;border: #006b8e;border-radius: 10px;
   font-family: 'Montserrat';

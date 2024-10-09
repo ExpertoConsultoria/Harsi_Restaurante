@@ -655,7 +655,7 @@
 
     {{-- Abrir Mesa --}}
     <script type="text/javascript">
-        setTimeout(function(){
+        $(document).ready(function () {
 
             $.ajaxSetup({
                 headers: {
@@ -663,7 +663,7 @@
                 }
             });
 
-            $('.mesabtn').click(function (e) {
+            $(document).on('click', '#open_table', function (e) {
                 e.preventDefault();
 
                 localStorage.setItem("tableOrden", '');
@@ -957,12 +957,12 @@
 
             });
 
-        }, 1500);
+        });
     </script>
 
     {{-- Cerrar Mesa --}}
     <script type="text/javascript">
-        setTimeout(function(){
+        $(document).ready(function () {
 
             $.ajaxSetup({
                 headers: {
@@ -970,7 +970,7 @@
                 }
             });
 
-            $('.cerrar').click(function (e) {
+            $(document).on('click', '#close_table', function (e) {
                 e.preventDefault();
 
                 var tituloMesa = $(this).closest("tr").find('.titulo_mesa').val();
@@ -1307,7 +1307,7 @@
 
     {{-- Ver Mesa --}}
     <script type="text/javascript">
-        setTimeout(function(){
+        $(document).ready(function () {
 
             $.ajaxSetup({
                 headers: {
@@ -1318,8 +1318,8 @@
             var total = 0;
             var suma = 0;
 
-            $('.vermesabtn').click(function (e) {
-                e.preventDefault();
+            $(document).on('click', '#see_table', function (e) {
+                console.log('Var Mesa');
 
                 localStorage.setItem("tableOrden", '');
 
@@ -1554,8 +1554,7 @@
 
             });
 
-        }, 1500);
-
+        });
     </script>
 
     {{-- Funciones - Primera parte del Formulario (Detalles Generales) --}}
@@ -1589,7 +1588,7 @@
         });
     </script>
 
-    {{-- Funciones - Ultima parte del Formulario --}}#
+    {{-- Funciones - Ultima parte del Formulario --}}
     <script type="text/javascript">
         $(document).ready(function () {
             $(".user").hide()
@@ -1675,7 +1674,7 @@
         })
     </script>
 
-    {{-- Calcular Total --}}#
+    {{-- Calcular Total --}}
     <script type="text/javascript">
 
         function calcular() {
@@ -1707,7 +1706,7 @@
 
     </script>
 
-    {{-- Script para las ventas --}}#
+    {{-- Script para las ventas --}}
     <script type="text/javascript">
         $(document).ready(function () {
             $("#bt_add").click(function () {
@@ -2882,18 +2881,18 @@
 
             if (data.estado !== 'Abierta') {
                 viewOfButton += `
-                    <button type="button" id="mesa" name="mesa" class="mesabtn btn btn-info" target="_blank">Abrir mesa</button>
+                    <button type="button" id="open_table" class="btn btn-info" target="_blank">Abrir mesa</button>
                     <figure id="elem" name="elem" style="display:none; cursor: pointer;" class="mt-2 mb-0">
-                        <a id="cerrar" name="cerrar" class="cerrar">
+                        <a id="close_table" name="cerrar" class="cerrar">
                             <img src="/img/papelera.png" height="25" width="25">Cerrar
                         </a>
                     </figure>
                 `;
             } else {
                 viewOfButton += `
-                    <button type="button" id="mesa" name="mesa" class="vermesabtn btn btn-info" target="_blank">Ver mesa</button>
-                    <figure id="elem" name="elem" class="mt-2 mb-0" style="cursor: pointer;">
-                        <a id="cerrar" name="cerrar" class="cerrar">
+                    <button type="button" id="see_table" class="btn btn-info" target="_blank">Ver mesa</button>
+                    <figure id="elem" name="elem" class="mt-2 mb-0 btn" style="cursor: pointer;">
+                        <a id="close_table" name="cerrar" class="cerrar">
                             <img src="/img/papelera.png" height="25" width="25">Cerrar
                         </a>
                     </figure>
