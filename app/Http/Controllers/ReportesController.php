@@ -28,6 +28,8 @@ class ReportesController extends Controller
         $fecha2 = Carbon::parse($orden2);
         $fecha2 = strtotime($fecha2->subYear());
 
+        $variable = [];
+
         if ($orden1 != null && $fecha1 > $fecha2) {
 
             $data1 = Orden::min('fecha');
@@ -69,7 +71,7 @@ class ReportesController extends Controller
 
         $user = User::all();
 
-        return view('Reportes.index', compact('user', 'variable2', 'variable3'));
+        return view('Reportes.index', compact('user', 'variable', 'variable2', 'variable3'));
     }
 
     public function obtenerMeses($estado) {
