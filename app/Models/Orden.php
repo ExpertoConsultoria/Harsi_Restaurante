@@ -39,4 +39,9 @@ class Orden extends Model
     ];
 
     protected $primarykey = 'id';
+
+    public function comandas()
+    {
+        return $this->hasMany(Comanda::class, 'pedido_id', 'id');
+    }
 }
