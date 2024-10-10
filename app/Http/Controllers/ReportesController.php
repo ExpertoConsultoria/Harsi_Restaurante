@@ -20,6 +20,7 @@ class ReportesController extends Controller
     public function index() {
 
         $orden1 = Orden::min('id');
+        // $orden1 = Orden::min('fecha');
         $fecha1 = Carbon::parse($orden1);
         $fecha1 = strtotime($fecha1->year);
 
@@ -68,7 +69,7 @@ class ReportesController extends Controller
 
         $user = User::all();
 
-        return view('Reportes.index', compact('user', 'variable', 'variable2', 'variable3'));
+        return view('Reportes.index', compact('user', 'variable2', 'variable3'));
     }
 
     public function obtenerMeses($estado) {
