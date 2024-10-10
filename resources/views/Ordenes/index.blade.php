@@ -3,75 +3,49 @@
 @section('plugins.Sweetalert2',true)
 @section('content')
 
-    <div class="row">
+    <style>
+        .th_minus {
+            font-size: 0.9rem !important
+        }
 
-        <div class="col-xs-12">
-            <div>
-                <h1 align="left">Órdenes realizadas por consumos</h1>
-                <br>
-                @if (Auth::check() && Auth::user()->role == 'administrador')
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover tableUserList" id="user_table">
-                        <thead>
-                            <tr>
-                                <th width="col">Folio</th>
-                                <th width="col">Fecha</th>
-                                <th width="col">Mesa</th>
-                                <th width="col">Cajero</th>
-                                <th width="col">Forma de Pago</th>
-                                <th width="col">Importe</th>
-                                <th width="col">Descuento</th>
-                                <th width="col">Subtotal</th>
-                                <th width="col">Propina</th>
-                                <th width="col">Total</th>
-                                <th scope="col">Creación</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
+        td {
+            font-size: 0.95rem !important;
+        }
 
-                    </table>
-                </div>
-                @endif
-                @if (Auth::check() && Auth::user()->role == 'cajero')
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover tableUserList" id="user_table">
-                        <thead>
-                            <tr>
-                                <th width="col">Folio</th>
-                                <th width="col">Fecha</th>
-                                <th width="col">Mesa</th>
-                                <th width="col">Cajero</th>
-                                <th width="col">Forma de Pago</th>
-                                <th width="col">Importe</th>
-                                <th width="col">Descuento</th>
-                                <th width="col">Subtotal</th>
-                                <th width="col">Propina</th>
-                                <th width="col">Total</th>
-                                <th scope="col">Creación</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($orden as $orden)
-                            <tr>
-                                <td>{{$orden['id']}}</td>
-                                <td>{{$orden['fecha']}}</td>
-                                <td>{{$orden['mesa']}}</td>
-                                <td>{{$orden['cajero']}}</td>
-                                <td>{{$orden['forma_pago']}}</td>
-                                <td>{{$orden['conf_total']}}</td>
-                                <td>{{$orden['descuento']}}</td>
-                                <td>{{$orden['total']}}</td>
-                                <td>{{$orden['propina']}}</td>
-                                <td>{{$orden['total2']}}</td>
-                                <td>{{$orden['created_at']}}</td>
-                                <td></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                @endif
+        tr {
+            background-color: #fefefe;
+        }
+
+        td, th {
+            text-align: center; /* Centra horizontalmente el contenido en cada celda */
+            vertical-align: middle; /* Centra verticalmente el contenido */
+        }
+    </style>
+
+    <h2 class="my-3">Órdenes realizadas por Consumo</h1>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center align-items-center g-2">
+            <div class="pt-3 table-responsive col-12">
+                <table class="table table-sm table-bordered table-striped table-hover tableUserList" id="user_table">
+                    <thead>
+                        <tr>
+                            <th class="text-center th_minus" scope="col">Folio</th>
+                            <th class="text-center th_minus" scope="col">Fecha</th>
+                            <th class="text-center th_minus" scope="col">Mesa</th>
+                            <th class="text-center th_minus" scope="col">Cajero</th>
+                            <th class="text-center th_minus" scope="col">Método de Pago</th>
+                            <th class="text-center th_minus" scope="col">Importe</th>
+                            <th class="text-center th_minus" scope="col">Descuento</th>
+                            <th class="text-center th_minus" scope="col">Subtotal</th>
+                            <th class="text-center th_minus" scope="col">Propina</th>
+                            <th class="text-center th_minus" scope="col">Total</th>
+                            <th class="text-center th_minus" scope="col">Creación</th>
+                            <th class="text-center th_minus" scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+
+                </table>
             </div>
         </div>
     </div>

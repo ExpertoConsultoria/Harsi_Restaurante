@@ -24,7 +24,7 @@ class OrdenController extends Controller
 {
     public function index(Request $request) {
 
-        if (Auth::check() && Auth::user()->role == 'administrador') {
+        if (Auth::check()) {
 
             $mesa = Mesa::all();
             $cta = CategoriaProducto::all();
@@ -37,9 +37,9 @@ class OrdenController extends Controller
             if (request()->ajax()) {
                 return datatables()->of(Orden::latest()->get())
                     ->addColumn('action', function ($data) {
-                        $button = '<a type="button" name="showTicket" id="' . $data->id . '" class="btn btn-success btn-sm" href="/Ordenes/' . $data->id . '">Ver Ticket</a>';
+                        $button = '<a type="button" name="showTicket" id="' . $data->id . '" class="btn btn-success btn-sm" href="/Ordenes/' . $data->id . '"><i class="fas fa-print"></i></a>';
                         $button .= '&nbsp;&nbsp;';
-                        $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Eliminar</button>';
+                        $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>';
                         return $button;
                     })
                     ->rawColumns(['action'])
@@ -48,32 +48,7 @@ class OrdenController extends Controller
 
             return view('Ordenes.index', compact('orden', 'mesa', 'producto',
                 'cta', 'pedido', 'paymethod', 'orden', 'restaurante'));
-        }
 
-        if (Auth::check() && Auth::user()->role == 'cajero') {
-
-            $mesa = Mesa::all();
-            $cta = CategoriaProducto::all();
-            $producto = Producto::all();
-            $paymethod = PayMethod::all();
-            $pedido = Pedido::all();
-            $orden = Orden::all();
-            $restaurante = Restaurante::all();
-
-            if (request()->ajax()) {
-                return datatables()->of(Orden::latest()->get())
-                    ->addColumn('action', function ($data) {
-                        $button = '<a type="button" name="showTicket" id="' . $data->id . '" class="btn btn-success btn-sm" href="/Ordenes/' . $data->id . '">Ver Ticket</a>';
-                        $button .= '&nbsp;&nbsp;';
-                        $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Eliminar</button>';
-                        return $button;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-            }
-
-            return view('Ordenes.index', compact('orden', 'mesa', 'producto',
-                'cta', 'pedido', 'paymethod', 'orden', 'restaurante'));
         } else {
             return view('error');
         }
