@@ -106,11 +106,13 @@
                     Ticket Externo
                 </a>
             </li>
-            <li class="mx-2 nav-item">
-                <a class="nav-link" id="internal-tab" href="#internal" role="tab" aria-controls="internal" aria-selected="false">
-                    Ticket Interno
-                </a>
-            </li>
+            @if($orden->guia != 'Ninguno')
+                <li class="mx-2 nav-item">
+                    <a class="nav-link" id="internal-tab" href="#internal" role="tab" aria-controls="internal" aria-selected="false">
+                        Ticket Interno
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
 
@@ -225,123 +227,125 @@
         </div>
 
         {{-- Internal Ticket  (Sin Guia)  --}}
-        <div class="tab-pane fade" id="internal" role="tabpanel" aria-labelledby="internal-tab">
-            <div class="rounded ticket">
-                <img src="{{ asset('img/imagenes-07.png') }}" alt="Harsi Logo" width="140" height="50">
+        @if($orden->guia != 'Ninguno')
+            <div class="tab-pane fade" id="internal" role="tabpanel" aria-labelledby="internal-tab">
+                <div class="rounded ticket">
+                    <img src="{{ asset('img/imagenes-07.png') }}" alt="Harsi Logo" width="140" height="50">
 
-                <p class="pt-2 text-center">
+                    <p class="pt-2 text-center">
 
-                    @if($restaurante->nombre != '')
-                        <b class="pb-0 mb-0 text-uppercase" style="font-size: 1.1rem !important">{{$restaurante->nombre}}</b>
-                        <br>
-                    @endif
-                    <span style="font-size: 0.65rem !important">- TICKET DE VENTA -</span>
+                        @if($restaurante->nombre != '')
+                            <b class="pb-0 mb-0 text-uppercase" style="font-size: 1.1rem !important">{{$restaurante->nombre}}</b>
+                            <br>
+                        @endif
+                        <span style="font-size: 0.65rem !important">- TICKET DE VENTA -</span>
 
-                <p class="px-2 text-left">
+                    <p class="px-2 text-left">
 
-                    Folio: &nbsp;{{ $orden->id }}
+                        Folio: &nbsp;{{ $orden->id }}
 
-                    @if($restaurante->direccion != '')
-                        <br>
-                        Calle:  &nbsp;<span class="text-uppercase">{{$restaurante->direccion}}</span>
-                    @endif
+                        @if($restaurante->direccion != '')
+                            <br>
+                            Calle:  &nbsp;<span class="text-uppercase">{{$restaurante->direccion}}</span>
+                        @endif
 
-                    @if($restaurante->rfc != '')
-                        <br>
-                        RFC:  &nbsp;<span class="text-uppercase">{{$restaurante->rfc}}</span>
-                    @endif
-
-
-                    <br><br>Mesa:  &nbsp;<span class="text-uppercase">{{ $orden->mesa }} -- {{ $orden->num_comensales }} Comensales</span>
-                    <br>Turno:  &nbsp;<span class="text-uppercase">{{ $orden->turno }}</span>
-
-                    <br>Atendío &nbsp;<span class="text-uppercase">{{ $orden->mesero }}</span>
-                    <br>Cobró: &nbsp;<span class="text-uppercase">{{ $orden->cajero }}</span>
-
-                    @if($orden->guia != 'Ninguno')
-                        <br>Guía: &nbsp;<span class="text-uppercase">{{ $orden->guia }}</span>
-                    @endif
-
-                    <br>Fecha: {{ $orden->created_at }}
-
-                    @if($orden->mesa == 'Para llevar')
-                        <br><br>Cliente: &nbsp;<span class="text-uppercase">{{ $orden->cliente }}</span>
-                        <br>Dirección: &nbsp;<span class="text-uppercase">{{ $orden->direccion }}</span>
-                    @endif
+                        @if($restaurante->rfc != '')
+                            <br>
+                            RFC:  &nbsp;<span class="text-uppercase">{{$restaurante->rfc}}</span>
+                        @endif
 
 
-                </p>
-                <table class="mt-2 mb-3">
-                    <thead>
-                        <tr>
-                            <th class="cantidad">CANT</th>
-                            <th class="producto">PRODUCTO</th>
-                            <th class="precio">PRECIO</th>
-                            <th class="subtotal">IMPORTE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($pedidos as $pedido)
+                        <br><br>Mesa:  &nbsp;<span class="text-uppercase">{{ $orden->mesa }} -- {{ $orden->num_comensales }} Comensales</span>
+                        <br>Turno:  &nbsp;<span class="text-uppercase">{{ $orden->turno }}</span>
+
+                        <br>Atendío &nbsp;<span class="text-uppercase">{{ $orden->mesero }}</span>
+                        <br>Cobró: &nbsp;<span class="text-uppercase">{{ $orden->cajero }}</span>
+
+                        @if($orden->guia != 'Ninguno')
+                            <br>Guía: &nbsp;<span class="text-uppercase">{{ $orden->guia }}</span>
+                        @endif
+
+                        <br>Fecha: {{ $orden->created_at }}
+
+                        @if($orden->mesa == 'Para llevar')
+                            <br><br>Cliente: &nbsp;<span class="text-uppercase">{{ $orden->cliente }}</span>
+                            <br>Dirección: &nbsp;<span class="text-uppercase">{{ $orden->direccion }}</span>
+                        @endif
+
+
+                    </p>
+                    <table class="mt-2 mb-3">
+                        <thead>
                             <tr>
-                                <td class="cantidad">{{ $pedido->cantidad }}</td>
-                                <td class="text-left producto">{{ $pedido->articulo }}</td>
-                                <td class="precio">${{ $pedido->precio_compra }}</td>
-                                <td class="subtotal">${{ $pedido->subtotal }}</td>
+                                <th class="cantidad">CANT</th>
+                                <th class="producto">PRODUCTO</th>
+                                <th class="precio">PRECIO</th>
+                                <th class="subtotal">IMPORTE</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <p class="text-center">
+                        </thead>
+                        <tbody>
+                            @foreach($pedidos as $pedido)
+                                <tr>
+                                    <td class="cantidad">{{ $pedido->cantidad }}</td>
+                                    <td class="text-left producto">{{ $pedido->articulo }}</td>
+                                    <td class="precio">${{ $pedido->precio_compra }}</td>
+                                    <td class="subtotal">${{ $pedido->subtotal }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <p class="text-center">
 
-                    Número de Articulos: &nbsp;{{ $pedido_count }}
-                    <br>Forma de Pago: &nbsp;{{ $orden->forma_pago }}
+                        Número de Articulos: &nbsp;{{ $pedido_count }}
+                        <br>Forma de Pago: &nbsp;{{ $orden->forma_pago }}
 
-                    @if($orden->descuento != null)
-                        <br>Importe: &nbsp;${{ $orden->conf_total }}
-                        <br>Descuento: &nbsp;{{ $orden->descuento }} %
-                    @endif
+                        @if($orden->descuento != null)
+                            <br>Importe: &nbsp;${{ $orden->conf_total }}
+                            <br>Descuento: &nbsp;{{ $orden->descuento }} %
+                        @endif
 
-                    @if($orden->guia != 'Ninguno')
-                        <br>Subtotal: &nbsp;${{ $orden->total }}
-                        <br>
-                        Importe por Guia ({{ $orden->comision_percentage }}%):
-                        &nbsp;${{ $orden->comision }}
-                    @endif
+                        @if($orden->guia != 'Ninguno')
+                            <br>Subtotal: &nbsp;${{ $orden->total }}
+                            <br>
+                            Importe por Guia ({{ $orden->comision_percentage }}%):
+                            &nbsp;${{ $orden->comision }}
+                        @endif
 
-                    @if($orden->propina != null)
-                        <br>Propina: &nbsp;${{ $orden->propina }}
-                    @endif
+                        @if($orden->propina != null)
+                            <br>Propina: &nbsp;${{ $orden->propina }}
+                        @endif
 
-                    <br><b>Total: &nbsp;${{ $orden->total2 - $orden->propina }} M.N</b>
-                    <br>Pago: &nbsp;${{ $orden->pago }}
-                    <br>Cambio: &nbsp;${{ $orden->cambio + $orden->propina }}
-                </p>
+                        <br><b>Total: &nbsp;${{ $orden->total2 - $orden->propina }} M.N</b>
+                        <br>Pago: &nbsp;${{ $orden->pago }}
+                        <br>Cambio: &nbsp;${{ $orden->cambio + $orden->propina }}
+                    </p>
 
-                <p class="text-center">¡GRACIAS POR SU PREFERENCIA!
-                    @if($restaurante->telefono != '')
-                    <br>Telefono: {{$restaurante->telefono}}
-                    @endif
-                    @if($restaurante->email != '')
-                    <br>Correo: {{$restaurante->email}}
-                    @endif
-                    @if($restaurante->facebook != '')
-                    <br>Facebook: {{$restaurante->facebook}}
-                    @endif
-                    @if($restaurante->instagram != '')
-                    <br>Instagram:{{$restaurante->instagram}}
-                    @endif
-                    @if($restaurante->twitter != '')
-                    <br>Twitter: {{$restaurante->twitter}}
-                    @endif
-                    @if($restaurante->youTube != '')
-                    <br>Youtube: {{$restaurante->youTube}}
-                    @endif
-                    @if($restaurante->linkedIn != '')
-                    <br>LinkedIn: {{$restaurante->linkedIn}}
-                    @endif
-                </p>
+                    <p class="text-center">¡GRACIAS POR SU PREFERENCIA!
+                        @if($restaurante->telefono != '')
+                        <br>Telefono: {{$restaurante->telefono}}
+                        @endif
+                        @if($restaurante->email != '')
+                        <br>Correo: {{$restaurante->email}}
+                        @endif
+                        @if($restaurante->facebook != '')
+                        <br>Facebook: {{$restaurante->facebook}}
+                        @endif
+                        @if($restaurante->instagram != '')
+                        <br>Instagram:{{$restaurante->instagram}}
+                        @endif
+                        @if($restaurante->twitter != '')
+                        <br>Twitter: {{$restaurante->twitter}}
+                        @endif
+                        @if($restaurante->youTube != '')
+                        <br>Youtube: {{$restaurante->youTube}}
+                        @endif
+                        @if($restaurante->linkedIn != '')
+                        <br>LinkedIn: {{$restaurante->linkedIn}}
+                        @endif
+                    </p>
+                </div>
             </div>
-        </div>
+        @endif
 
     </div>
 
