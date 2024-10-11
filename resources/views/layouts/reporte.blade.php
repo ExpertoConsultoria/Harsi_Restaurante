@@ -25,11 +25,12 @@
 
 <body>
 
+    @yield('extra-styles')
+
     <style type="text/css" media="print">
         @page {
             size: landscape;
         }
-
     </style>
 
     <div id="app">

@@ -383,7 +383,7 @@
 
                         <tr ng-repeat="report in getReportsForGroup(reportGroup.id)" class="ng-scope">
                             <td class="text-center col-1">1</td>
-                            <td class="col-9">XXXX</td>
+                            <td class="col-9 font-weight-bold">Comisiones por Día y Guía</td>
                             <td class="text-center col-3">
                                 <button data-toggle="modal" data-target="#modalPorGuia" class="btn btn-primary with-icon" title="Abrir">
                                     <i class="fas fa-cloud-download-alt" aria-hidden="true"></i>
@@ -397,26 +397,40 @@
 
             <!-- Modal -->
             <div class="modal fade" id="modalPorGuia" tabindex="-1" role="dialog" aria-labelledby="modalPorGuiaLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalPorGuiaLabel">Informe "Ingresos por día"</h5>
+                            <h5 class="modal-title font-weight-bold" id="modalDiarioTitle">Reporte "Comsiones por Día y Guía"</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            <!-- Aquí puedes agregar el contenido del modal -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary">Guardar cambios</button>
+                        <div class="px-5 modal-body">
+                            <span id="form_result"></span>
+                            <form method="post" id="guide_report_form" class="form-horizontal" enctype="multipart/form-data" autocomplete="off">
+                                <meta name="csrf-token" content="{{ csrf_token() }}">
+                                <div class="form-group row">
+                                    <label for="guide_name" class="col-md-3 col-form-label">Guía</label>
+                                    <div class="col-md-9">
+                                        <input id="guide_name" name="guide_name" value="" class="form-control" type="text" placeholder="Nombre del Guia" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="service_day" class="col-md-3 col-form-label">Fecha:</label>
+                                    <div class="col-md-9">
+                                        <input type="date" class="form-control" id="service_day" name="service_day" required>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-center form-group">
+                                    <button type="submit" name="guide_report_submit" id="guide_report_submit" class="btn btn-primary">Consultar</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-        {{-- Scripts --}}
+        {{-- Scripts For Original Reports  --}}
         <script type="text/javascript">
             function reporteAnual() {
                 $('.modal-title1').text("Reporte anual");
@@ -668,6 +682,48 @@
 
             }
 
+        </script>
+
+        {{-- Script for Don Agave Reports --}}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $.ajaxSetup({
+                    beforeSend: function (xhr, type) {
+                        if (!type.crossDomain) {
+                            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+                        }
+                    },
+                });
+
+                $('#guide_name').on('change', function () {
+                    var guide_name = $(this).val(); // Cambiado $this a $(this)
+
+                    if (guide_name == "Ninguno") $('#guide_name').val("");
+                });
+
+                $('#guide_report_form').on('submit', function (event) {
+                    event.preventDefault();
+
+                    const service_day = $('#service_day').val();
+                    const guide_name = $('#guide_name').val();
+
+                    var data = {
+                        "_token": $("meta[name='csrf-token']").attr("content"),
+                        "service_day": service_day,
+                        "guide_name": guide_name,
+                    };
+                    $.ajax({
+                        url: `/commissionsPerDay/${service_day}/${guide_name}`,
+                        type: "GET",
+                        success: function (data) {
+                            $('#guide_report_form')[0].reset();
+                            $('#modalPorGuia').modal('hide');
+                            $(location).attr('href', `/commissionsPerDay/${service_day}/${guide_name}`);
+                        }
+                    })
+                });
+            });
         </script>
 
     @endsection

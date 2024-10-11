@@ -188,6 +188,8 @@ Route::middleware([
     Route::get('/reporteIncidenciasDiarias/{estado}/{tipo}/{fecha}', [ReportesController::class, 'incidenciasDiarias']);
     Route::get('/reporteIncidenciasMensuales/{estado}/{tipo}/{meses}', [ReportesController::class, 'incidenciasMensuales']);
 
+    Route::get('/commissionsPerDay/{fecha}/{guide}', [ReportesController::class, 'commissionsPerDay']);
+
     Route::get('/horario', [Turno::class, 'index'])->name('Turno.index');
     Route::post('Turno/store', [Turno::class, 'store'])->name('Turno.store');
     Route::post('Turno/update', [Turno::class, 'update'])->name('Turno.update');

@@ -932,4 +932,16 @@ class ReportesController extends Controller
         }
 
     }
+
+    public function commissionsPerDay ($fecha, $guide) {
+
+        $restaurante = Restaurante::first();
+
+        $ordenes = Orden::select('id', 'fecha', 'conf_total', 'comision_percentage',)
+                        ->where('fecha',$fecha)
+                        ->where('guia','like',$guide)
+                        ->get();
+
+        return view('pdf.commissionsPerDay', compact('ordenes', 'fecha', 'guide', 'restaurante'));
+    }
 }
