@@ -30,16 +30,15 @@ Comisiones por Guia | {{ $fecha }} | {{ $guide }}
         @foreach($ordenes as $orden)
             @php
                 // Calculamos la comisión para esta orden
-                $comision = ($orden->conf_total * $orden->comision_percentage) / 100;
-                $total += $comision;
+                $total += $orden->comision;
             @endphp
 
             <tr>
                 <td>{{ $orden->id }}</td>
                 <td>{{ $orden->fecha }}</td>
-                <td>$ {{ number_format($orden->conf_total, 2) }}</td>
+                <td>$ {{ number_format($orden->total2 - $orden->propina, 2) }}</td>
                 <td>{{ $orden->comision_percentage }} %</td>
-                <td>$ {{ number_format($comision, 2) }}</td>
+                <td>$ {{ number_format($orden->comision, 2) }}</td>
             </tr>
         @endforeach
     </tbody>

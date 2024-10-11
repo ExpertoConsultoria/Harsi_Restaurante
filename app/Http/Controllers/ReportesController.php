@@ -937,7 +937,7 @@ class ReportesController extends Controller
 
         $restaurante = Restaurante::first();
 
-        $ordenes = Orden::select('id', 'fecha', 'conf_total', 'comision_percentage',)
+        $ordenes = Orden::select('id', 'fecha', 'comision', 'total2', 'propina', 'comision_percentage')
                         ->where('fecha',$fecha)
                         ->where('guia','like',$guide)
                         ->get();
