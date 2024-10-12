@@ -71,6 +71,8 @@ class HomeController extends Controller
             $mesas = Mesa::all();
             $product_categories = CategoriaProducto::all();
             $producto = Producto::all();
+            $meseros = Guia::all();
+            $guias = Mesero::all();
 
             // Obtener el descuento basado en el rol
             $descuento = DescuentoUsuario::where('role', $role)
@@ -95,7 +97,7 @@ class HomeController extends Controller
                 );
             }
 
-            return view('/home', compact('mesas', 'producto', 'product_categories', 'descuento', 'restaurante'));
+            return view('/home', compact('mesas', 'producto', 'product_categories', 'descuento', 'restaurante', 'meseros', 'guias'));
         } else {
             return view('inicio');
         }

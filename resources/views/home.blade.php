@@ -82,7 +82,15 @@
                                         <div class="col-md-3">
                                             <div class="my-0 form-group">
                                                 <label for="guide">Guia</label>
-                                                <input id="guide" name="guide" value="Ninguno" class="form-control" type="text" placeholder="Nombre del Guia">
+                                                <select class="form-control" name="guide" id="guide"
+                                                    title="Seleccione el Guía.">
+                                                    <option value="" disabled selected>-- Opcional --</option>
+
+                                                    @foreach ($guias as $guia)
+                                                        <option value="{{ $guia->id }}">{{ $guia->full_name }}</option>
+                                                    @endforeach
+
+                                                </select>
                                                 <label class="mb-0" for="" id="lbguide"></label>
                                             </div>
                                         </div>
@@ -102,7 +110,15 @@
                                         <div class="col-md-3">
                                             <div class="my-0 form-group">
                                                 <label for="mesero">Mesero</label>
-                                                <input id="mesero" name="mesero" value="Ninguno" class="form-control" type="text" placeholder="Nombre del Guia">
+                                                <select class="form-control" name="mesero" id="mesero"
+                                                    title="Seleccione el Mesero." required>
+                                                    <option value="" disabled selected>-- Seleccione --</option>
+
+                                                    @foreach ($meseros as $mesero)
+                                                        <option value="{{ $mesero->id }}">{{ $mesero->full_name }}</option>
+                                                    @endforeach
+
+                                                </select>
                                                 <label class="mb-0" for="" id="lbmesero"></label>
                                             </div>
                                         </div>
