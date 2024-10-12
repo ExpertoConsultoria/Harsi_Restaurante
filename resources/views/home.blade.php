@@ -84,10 +84,15 @@
                                                 <label for="guide">Guia</label>
                                                 <select class="form-control" name="guide" id="guide"
                                                     title="Seleccione el Guía.">
-                                                    <option value="" disabled selected>-- Opcional --</option>
 
                                                     @foreach ($guias as $guia)
-                                                        <option value="{{ $guia->id }}">{{ $guia->full_name }}</option>
+
+                                                        @if ($guia->id === 1)
+                                                            <option value="{{ $guia->id }}" selected>{{ $guia->full_name }}</option>
+                                                        @else
+                                                            <option value="{{ $guia->id }}">{{ $guia->full_name }}</option>
+                                                        @endif
+
                                                     @endforeach
 
                                                 </select>

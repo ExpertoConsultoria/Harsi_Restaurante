@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('cajero'); // Nombre del Cajero
 
 
-            $table->unsignedBigInteger('guia_id')->nullable();
+            $table->unsignedBigInteger('guia_id')->default(1)->nullable();
             $table->foreign('guia_id')
                 ->references('id')->on('guias')
                 ->onDelete('cascade'); // ID del Guia
