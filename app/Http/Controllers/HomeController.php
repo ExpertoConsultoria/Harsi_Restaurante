@@ -71,8 +71,8 @@ class HomeController extends Controller
             $mesas = Mesa::all();
             $product_categories = CategoriaProducto::all();
             $producto = Producto::all();
-            $meseros = Guia::all();
-            $guias = Mesero::all();
+            $meseros = Mesero::all();
+            $guias = Guia::all();
 
             // Obtener el descuento basado en el rol
             $descuento = DescuentoUsuario::where('role', $role)

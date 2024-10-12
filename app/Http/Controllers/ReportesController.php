@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CategoriaProducto;
 use App\Models\Comanda;
 use App\Models\ComandaTemporal;
+use App\Models\Guia;
 use App\Models\Orden;
 use App\Models\OrdenCancelado;
 use App\Models\Producto;
@@ -70,8 +71,9 @@ class ReportesController extends Controller
         }
 
         $user = User::all();
+        $guias = Guia::all();
 
-        return view('Reportes.index', compact('user', 'variable', 'variable2', 'variable3'));
+        return view('Reportes.index', compact('user', 'guias','variable', 'variable2', 'variable3'));
     }
 
     public function obtenerMeses($estado) {
@@ -933,15 +935,17 @@ class ReportesController extends Controller
 
     }
 
-    public function commissionsPerDay ($fecha, $guide) {
+    public function commissionsPerDay ($fecha, $guide_id) {
 
         $restaurante = Restaurante::first();
 
+        $guia = Guia::findOrFail($guide_id);
+
         $ordenes = Orden::select('id', 'fecha', 'comision', 'total2', 'propina', 'comision_percentage')
                         ->where('fecha',$fecha)
-                        ->where('guia_id',$guide)
+                        ->where('guia_id',$guide_id)
                         ->get();
 
-        return view('pdf.commissionsPerDay', compact('ordenes', 'fecha', 'guide', 'restaurante'));
+        return view('pdf.commissionsPerDay', compact('ordenes', 'fecha', 'guia', 'restaurante'));
     }
 }

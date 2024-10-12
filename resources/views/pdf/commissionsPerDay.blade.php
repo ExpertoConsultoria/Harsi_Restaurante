@@ -1,7 +1,7 @@
 @extends('layouts.reporte')
 
 @section('title')
-Comisiones por Guia | {{ $fecha }} | {{ $guide }}
+Comisiones por Guia | {{ $fecha }} | {{ $guia->full_name }}
 @endsection
 
 @section('extra-styles')

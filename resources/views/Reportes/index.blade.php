@@ -410,9 +410,22 @@
                             <form method="post" id="guide_report_form" class="form-horizontal" enctype="multipart/form-data" autocomplete="off">
                                 <meta name="csrf-token" content="{{ csrf_token() }}">
                                 <div class="form-group row">
-                                    <label for="guide_name" class="col-md-3 col-form-label">Guía</label>
+                                    <label for="guide_id" class="col-md-3 col-form-label">Guía</label>
                                     <div class="col-md-9">
-                                        <input id="guide_name" name="guide_name" value="" class="form-control" type="text" placeholder="Nombre del Guia" required>
+                                        <select class="form-control" name="guide_id" id="guide_id"
+                                            title="Seleccione el Guía." required>
+
+                                            @foreach ($guias as $guia)
+
+                                                <option value="" selected disabled>-- Selecciona --</option>
+
+                                                @if ($guia->id !== 1)
+                                                    <option value="{{ $guia->id }}">{{ $guia->full_name }}</option>
+                                                @endif
+
+                                            @endforeach
+
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -696,30 +709,24 @@
                     },
                 });
 
-                $('#guide_name').on('change', function () {
-                    var guide_name = $(this).val(); // Cambiado $this a $(this)
-
-                    if (guide_name == "Ninguno") $('#guide_name').val("");
-                });
-
                 $('#guide_report_form').on('submit', function (event) {
                     event.preventDefault();
 
                     const service_day = $('#service_day').val();
-                    const guide_name = $('#guide_name').val();
+                    const guide_id = $('#guide_id').val();
 
                     var data = {
                         "_token": $("meta[name='csrf-token']").attr("content"),
                         "service_day": service_day,
-                        "guide_name": guide_name,
+                        "guide_id": guide_id,
                     };
                     $.ajax({
-                        url: `/commissionsPerDay/${service_day}/${guide_name}`,
+                        url: `/commissionsPerDay/${service_day}/${guide_id}`,
                         type: "GET",
                         success: function (data) {
                             $('#guide_report_form')[0].reset();
                             $('#modalPorGuia').modal('hide');
-                            $(location).attr('href', `/commissionsPerDay/${service_day}/${guide_name}`);
+                            $(location).attr('href', `/commissionsPerDay/${service_day}/${guide_id}`);
                         }
                     })
                 });
