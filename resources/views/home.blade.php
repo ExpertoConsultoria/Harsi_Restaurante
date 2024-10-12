@@ -723,7 +723,10 @@
                 $("#total").html("$" + "0.00");
 
                 $('#valor, #incrementa').val("0");
-                $('#guide, #mesero').val("Ninguno");
+
+                // Don Agave Inputs
+                $('#guide').val(1).trigger('change');
+                $('#mesero').val("");
                 $('#comensales').val(1);
 
                 // Colocamos los Valores de la Mesa en la Pantalla
@@ -1044,9 +1047,8 @@
 
                             $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #id_proveedor, #direccion, #cliente, #comentario, #comision_price').val('');
 
-                            $('#guide').val("Ninguno");
-                            $('#Comisión').val("");
-                            $('#mesero').val("Ninguno");
+                            $('#Comisión, #mesero').val("");
+                            $('#guide').val(1).trigger('change');
                             $('#comensales').val(1);
 
                             $('#total').html("$0.00");
@@ -1070,9 +1072,8 @@
                             $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #comentario, #comision_price').val('');
                             $('#detalle1, #total').html('');
 
-                            $('#guide').val("Ninguno");
-                            $('#Comisión').val("");
-                            $('#mesero').val("Ninguno");
+                            $('#guide').val(1);
+                            $('#Comisión, #mesero').val("");
                             $('#comensales').val(1);
 
                             $("#total").html("$" + "0.00");
@@ -1421,14 +1422,16 @@
                                         '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' + element.fila + '"></td></tr>'
                                     );
 
-                                    var mesero = element.mesero;
+                                    console.log(element);
+
+                                    var mesero = element.mesero_id;
                                     var comensales = element.num_comensales;
-                                    var guia = element.guia;
+                                    var guia = element.guia_id;
                                     $('#mesero').val(mesero);
                                     $('#comensales').val(comensales);
                                     $('#guide').val(guia).trigger('change');
 
-                                    if (guia !== "Ninguno") {
+                                    if (guia !== 1) {
                                         const comision = element.comision_percentage || 0;  // Evita valores undefined
                                         $('#comision').val(comision);
                                         calcular();
@@ -1517,8 +1520,8 @@
             $("#guide").on("change", activateForCommission);
 
             function activateForCommission() {
-                var guide_name = $('#guide').val().toString().trim();
-                var shouldShow = guide_name && guide_name !== "Ninguno";
+                const guideName = $('#guide').val();
+                const shouldShow = (guideName !== "1"); // Comparación como string
                 $("#comision_col, #comision_price, #res").toggle(shouldShow);
             }
 
@@ -2505,7 +2508,7 @@
                             text: 'Error el valor es incorrecto, verifique sus datos!',
                         })
                         return false;
-                    } else if (guide == null || guide.trim() == '') {
+                    } else if (guide == null || guide.trim() == '' || guide == 0) {
                         $('#lbguide').html("<span style='color:red;'>Nombre requerido</span>");
                         $('#guide').focus();
                         Swal.fire({
@@ -2515,7 +2518,7 @@
                         })
                         return false;
                     } else if (
-                        (guide == null || guide.trim() == '')
+                        (guide == null || guide.trim() == '' || guide == 0)
                         && (comision == null || isNaN(comision))
                     ) {
                         $('#lbcomision').html("<span style='color:red;'>% de Comisión requerido</span>");
