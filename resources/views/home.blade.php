@@ -1072,7 +1072,7 @@
                             $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #total1, #comentario, #comision_price').val('');
                             $('#detalle1, #total').html('');
 
-                            $('#guide').val(1);
+                            $('#guide').val(1).trigger('change');
                             $('#Comisión, #mesero').val("");
                             $('#comensales').val(1);
 
@@ -2401,7 +2401,7 @@
 
     </script>
 
-    {{-- Guardar Orden en la BD ##--}}
+    {{-- Guardar Orden en la BD --}}
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -2529,7 +2529,7 @@
                             text: 'Error: La Comisión del Guia es obligatoria!',
                         })
                         return false;
-                    } else if (mesero == null || mesero.trim() == '') {
+                    } else if (mesero == null || mesero.trim() == '' || mesero == 0) {
                         $('#lbmesero').html("<span style='color:red;'>Nombre requerido</span>");
                         $('#mesero').focus();
                         Swal.fire({
@@ -2558,8 +2558,18 @@
                                     type: "POST",
                                     data: $('#sample_venta').serialize(),
                                     success: function (data) {
-                                        location.reload();
-                                        window.open('/ticket', 'width=1000,height=800');
+                                        Swal.fire(
+                                            'Pagado!',
+                                            'Orden finalizada, ' + mesaTitulo + ' disponible.',
+                                            'success'
+                                        ).then(() => {
+                                            window.open('/ticket', 'width=1000,height=800');
+
+                                            // Después de 2 segundos, recargar la página
+                                            setTimeout(() => {
+                                                location.reload();
+                                            }, 2000);
+                                        });
                                     },
                                     error: function (error) {
                                         console.log(error);
@@ -2582,12 +2592,6 @@
                                 $('#detalle1, #total, #lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario, #lbpago').empty();
 
                                 $("#lbcupon, #lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbdos, #lbtres, #lbpago").hide();
-
-                                Swal.fire(
-                                    'Pagado!',
-                                    'Orden finalizada, ' + mesaTitulo + ' disponible.',
-                                    'success'
-                                );
 
                                 var data = {
                                     "_token": $("meta[name='csrf-token']").attr("content"),
@@ -2619,7 +2623,6 @@
                                     }
                                 });
 
-                                location.reload();
                             }
 
                         });

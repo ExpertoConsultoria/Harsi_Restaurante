@@ -21,9 +21,9 @@ class ComandaHomeController extends Controller
             $pedido->turno = $request->turno;
             $pedido->forma_pago = $request->forma_pago;
 
-            $pedido->guia = $request->guide;
+            $pedido->guia_id = $request->guide;
             $pedido->comision_percentage = $request->comision;
-            $pedido->mesero = $request->mesero;
+            $pedido->mesero_id = $request->mesero;
             $pedido->num_comensales = $request->comensales;
 
             $pedido->cliente = $request->cliente;
