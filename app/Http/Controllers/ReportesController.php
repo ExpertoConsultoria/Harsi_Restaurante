@@ -19,8 +19,8 @@ class ReportesController extends Controller
 {
     public function index() {
 
-        $orden1 = Orden::min('id');
-        // $orden1 = Orden::min('fecha');
+        $orden1 = Orden::min('id'); // For local and testing
+        // $orden1 = Orden::min('fecha'); // For Production
         $fecha1 = Carbon::parse($orden1);
         $fecha1 = strtotime($fecha1->year);
 
