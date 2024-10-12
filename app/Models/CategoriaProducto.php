@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CategoriaProducto extends Model
 {
     protected $table = 'categorias';
-    
+
     protected $fillable =
     [
         'titulo',
@@ -18,6 +18,7 @@ class CategoriaProducto extends Model
     public function producto(){
         return $this->hasMany('App\Models\Producto');
     }
+    
     public function subcategory(){
         return $this->hasMany('App\Models\SubcategoriaProducto');
     }

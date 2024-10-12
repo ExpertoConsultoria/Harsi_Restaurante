@@ -21,9 +21,19 @@ return new class extends Migration
             $table->string('estado')->nullable(); // Estado de la Mesa [Abierta, Cerrada]
             $table->string('cajero'); // Nombre del Cajero
 
-            $table->string('guia')->default('Ninguno')->nullable(); // Nombre del Guia
+
+            $table->unsignedBigInteger('guia_id')->default(1)->nullable();
+            $table->foreign('guia_id')
+                ->references('id')->on('guias')
+                ->onDelete('cascade'); // ID del Guia
+
             $table->decimal('comision_percentage',10,2)->nullable(); // % de Comisión por Guia
-            $table->string('mesero')->default('Ninguno')->nullable(); // Nombre del Mesero
+
+            $table->unsignedBigInteger('mesero_id')->default(1)->nullable();
+            $table->foreign('mesero_id')
+                ->references('id')->on('meseros')
+                ->onDelete('cascade'); // ID del Mesaro
+
             $table->integer('num_comensales')->default(1); // Cantidad de Comensales
 
             $table->string('cliente')->nullable(); // Nombre del Cliente

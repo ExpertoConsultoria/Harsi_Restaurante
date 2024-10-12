@@ -16,9 +16,9 @@ class Orden extends Model
         'turno', // Horario / Turno Laboral
         'forma_pago', // Forma de Pago
 
-        'guia', // Nombre del Guia
+        'guia_id', // Nombre del Guia
         'comision_percentage', // % de Comisión por Guia
-        'mesero', // Nombre del Mesero
+        'mesero_id', // Nombre del Mesero
         'num_comensales', // Cantidad de Comensales
 
         'cliente', // Nombre del Cliente
@@ -39,6 +39,17 @@ class Orden extends Model
     ];
 
     protected $primarykey = 'id';
+
+    //* Relationships
+    public function mesero()
+    {
+        return $this->belongsTo(Mesero::class, 'guia_id');
+    }
+
+    public function guia()
+    {
+        return $this->belongsTo(Guia::class, 'mesero_id');
+    }
 
     public function comandas()
     {

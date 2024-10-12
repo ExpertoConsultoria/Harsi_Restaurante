@@ -4,14 +4,17 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Calendar;
 use App\Models\CategoriaProducto;
 use App\Models\DescuentoUsuario;
 use App\Models\Estado;
+use App\Models\Guia;
 use App\Models\Horario;
 use App\Models\Mesa;
+use App\Models\Mesero;
 use App\Models\PayMethod;
 use App\Models\Restaurante;
+
+
 
 class FullSeeder extends Seeder
 {
@@ -202,6 +205,15 @@ class FullSeeder extends Seeder
                 'titulo' => 'Didi',
                 'estado' => 'Cerrada',
                 'color' => '#008000',
+            ]);
+
+        /* Meseros */
+            Mesero::create([
+                'full_name' => 'Ninguno',
+            ]);
+        /* Guías */
+            Guia::create([
+                'full_name' => 'Ninguno',
             ]);
 
         /* Metodos de Pago */
