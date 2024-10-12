@@ -94,57 +94,15 @@ class OrdenController extends Controller
     public function mostrar() {
 
         $id = Orden::all()->last()->id;
-        $dato = Restaurante::min('id');
 
-        if ($dato != null) {
-            $restaurante = DB::table('restaurante')
-                ->select('id', 'nombre', 'rfc', 'direccion', 'telefono', 'email', 'facebook', 'instagram', 'twitter', 'youTube', 'linkedIn')
-                ->first();
+        $restaurante = Restaurante::first();
 
-            $restaurante = array(
-                'id' => $restaurante->id,
-                'nombre' => $restaurante->nombre,
-                'rfc' => $restaurante->rfc,
-                'direccion' => $restaurante->direccion,
-                'telefono' => $restaurante->telefono,
-                'email' => $restaurante->email,
-                'facebook' => $restaurante->facebook,
-                'instagram' => $restaurante->instagram,
-                'twitter' => $restaurante->twitter,
-                'youTube' => $restaurante->youTube,
-                'linkedIn' => $restaurante->linkedIn,
-            );
+        $orden = Orden::where('id', $id)->first();
 
-        } else {
-            $restaurante = array(
-                'id' => 0,
-                'nombre' => '',
-                'rfc' => '',
-                'direccion' => '',
-                'telefono' => '',
-                'email' => '',
-                'facebook' => '',
-                'instagram' => '',
-                'twitter' => '',
-                'youTube' => '',
-                'linkedIn' => '',
-            );
-        }
+        $pedidos = Comanda::where('pedido_id', $id)->get();
+        $pedido_count = Comanda::where('pedido_id', $id)->count();
 
-        $producto = Producto::all();
-
-        $orden = DB::table('orden as o')
-            ->join('comanda as c', 'c.pedido_id', '=', 'o.id')
-            ->select('o.id', 'o.fecha', 'o.mesa', 'o.cajero', 'o.forma_pago', 'o.cliente', 'o.direccion', 'o.conf_total', 'o.descuento', 'o.propina', 'o.total', 'o.total2', 'o.pago', 'o.cambio', 'o.created_at')
-            ->where('o.id', '=', $id)
-            ->first();
-
-        $pedido = DB::table('comanda as d')
-            ->select('d.articulo', 'd.cantidad', 'd.precio_compra', 'd.subtotal')
-            ->where('d.pedido_id', '=', $id)
-            ->get();
-
-        return view('Ordenes.ticket', ['orden' => $orden, 'pedido' => $pedido, 'producto' => $producto, 'restaurante' => $restaurante]);
+        return view('Ordenes.show', ['orden' => $orden, 'pedidos' => $pedidos, 'restaurante' => $restaurante, 'pedido_count' => $pedido_count]);
 
     }
 

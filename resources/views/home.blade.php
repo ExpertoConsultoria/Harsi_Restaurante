@@ -2558,17 +2558,18 @@
                                     type: "POST",
                                     data: $('#sample_venta').serialize(),
                                     success: function (data) {
-                                        Swal.fire(
-                                            'Pagado!',
-                                            'Orden finalizada, ' + mesaTitulo + ' disponible.',
-                                            'success'
-                                        ).then(() => {
+                                        Swal.fire({
+                                            title: 'Pagado!',
+                                            text: 'Orden finalizada, ' + mesaTitulo + ' disponible.',
+                                            icon: 'success',
+                                            confirmButtonText: 'Imprimir ticket',
+                                        }).then(() => {
                                             window.open('/ticket', 'width=1000,height=800');
 
                                             // Después de 2 segundos, recargar la página
                                             setTimeout(() => {
                                                 location.reload();
-                                            }, 2000);
+                                            }, 1500);
                                         });
                                     },
                                     error: function (error) {

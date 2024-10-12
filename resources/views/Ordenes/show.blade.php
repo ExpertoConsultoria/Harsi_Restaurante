@@ -106,7 +106,7 @@
                     Ticket Externo
                 </a>
             </li>
-            @if($orden->guia != 'Ninguno')
+            @if($orden->guia_id != 1)
                 <li class="mx-2 nav-item">
                     <a class="nav-link" id="internal-tab" href="#internal" role="tab" aria-controls="internal" aria-selected="false">
                         Ticket Interno
@@ -150,7 +150,7 @@
                     <br><br>Mesa:  &nbsp;<span class="text-uppercase">{{ $orden->mesa }} -- {{ $orden->num_comensales }} Comensales</span>
                     <br>Turno:  &nbsp;<span class="text-uppercase">{{ $orden->turno }}</span>
 
-                    <br>Atendío &nbsp;<span class="text-uppercase">{{ $orden->mesero }}</span>
+                    <br>Atendío: &nbsp;<span class="text-uppercase">{{ $orden->mesero->full_name }}</span>
                     <br>Cobró: &nbsp;<span class="text-uppercase">{{ $orden->cajero }}</span>
                     <br>Fecha: {{ $orden->created_at }}
 
@@ -227,7 +227,7 @@
         </div>
 
         {{-- Internal Ticket  (Sin Guia)  --}}
-        @if($orden->guia != 'Ninguno')
+        @if($orden->guia_id != 1)
             <div class="tab-pane fade" id="internal" role="tabpanel" aria-labelledby="internal-tab">
                 <div class="rounded ticket">
                     <img src="{{ asset('img/imagenes-07.png') }}" alt="Harsi Logo" width="140" height="50">
@@ -258,11 +258,11 @@
                         <br><br>Mesa:  &nbsp;<span class="text-uppercase">{{ $orden->mesa }} -- {{ $orden->num_comensales }} Comensales</span>
                         <br>Turno:  &nbsp;<span class="text-uppercase">{{ $orden->turno }}</span>
 
-                        <br>Atendío &nbsp;<span class="text-uppercase">{{ $orden->mesero }}</span>
+                        <br>Atendío &nbsp;<span class="text-uppercase">{{ $orden->mesero->full_name }}</span>
                         <br>Cobró: &nbsp;<span class="text-uppercase">{{ $orden->cajero }}</span>
 
-                        @if($orden->guia != 'Ninguno')
-                            <br>Guía: &nbsp;<span class="text-uppercase">{{ $orden->guia }}</span>
+                        @if($orden->guia_id != 1)
+                            <br>Guía: &nbsp;<span class="text-uppercase">{{ $orden->guia->full_name }}</span>
                         @endif
 
                         <br>Fecha: {{ $orden->created_at }}
@@ -304,7 +304,7 @@
                             <br>Descuento: &nbsp;{{ $orden->descuento }} %
                         @endif
 
-                        @if($orden->guia != 'Ninguno')
+                        @if($orden->guia_id != 1)
                             <br>Subtotal: &nbsp;${{ $orden->total }}
                             <br>
                             Importe por Guia ({{ $orden->comision_percentage }}%):
