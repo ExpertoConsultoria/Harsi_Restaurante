@@ -939,7 +939,7 @@ class ReportesController extends Controller
 
         $ordenes = Orden::select('id', 'fecha', 'comision', 'total2', 'propina', 'comision_percentage')
                         ->where('fecha',$fecha)
-                        ->where('guia','like',$guide)
+                        ->where('guia_id',$guide)
                         ->get();
 
         return view('pdf.commissionsPerDay', compact('ordenes', 'fecha', 'guide', 'restaurante'));

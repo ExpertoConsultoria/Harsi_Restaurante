@@ -84,9 +84,9 @@ class ComandaHomeController extends Controller
         $temporal->estado = $request->estado;
         $temporal->cajero = $request->cajero;
 
-        $temporal->guia = $request->guide;
+        $temporal->guia_id = $request->guide;
         $temporal->comision_percentage = $request->comision;
-        $temporal->mesero = $request->mesero;
+        $temporal->mesero_id = $request->mesero;
         $temporal->num_comensales = $request->comensales;
 
         $temporal->cliente = $request->cliente;
@@ -117,9 +117,9 @@ class ComandaHomeController extends Controller
             $temporal->estado = $request->estado;
             $temporal->cajero = $request->cajero;
 
-            $temporal->guia = $request->guide;
+            $temporal->guia_id = $request->guide;
             $temporal->comision_percentage = $request->comision;
-            $temporal->mesero = $request->mesero;
+            $temporal->mesero_id = $request->mesero;
             $temporal->num_comensales = $request->comensales;
 
             $temporal->cliente = $request->cliente;
@@ -146,9 +146,9 @@ class ComandaHomeController extends Controller
             'fecha',
             'mesa',
             'cajero',
-            'guia',
+            'guia_id',
             'comision_percentage',
-            'mesero',
+            'mesero_id',
             'num_comensales',
             'cliente',
             'direccion',
@@ -175,9 +175,9 @@ class ComandaHomeController extends Controller
         $temporal->estado = $request->estado;
         $temporal->cajero = $request->cajero;
 
-        $temporal->guia = $request->guide;
+        $temporal->guia_id = $request->guide;
         $temporal->comision_percentage = $request->comision;
-        $temporal->mesero = $request->mesero;
+        $temporal->mesero_id = $request->mesero;
         $temporal->num_comensales = $request->comensales;
 
         $temporal->cliente = $request->cliente;

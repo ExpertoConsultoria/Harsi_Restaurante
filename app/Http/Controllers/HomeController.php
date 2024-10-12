@@ -6,7 +6,9 @@ use App\Models\CategoriaProducto;
 use App\Models\ComandaCancelado;
 use App\Models\ComandaTemporal;
 use App\Models\DescuentoUsuario;
+use App\Models\Guia;
 use App\Models\Mesa;
+use App\Models\Mesero;
 use App\Models\OrdenCancelado;
 use App\Models\PayMethod;
 use App\Models\Pedido;
@@ -220,8 +222,22 @@ class HomeController extends Controller
         $pedido->mesa = $request->mesa;
         $pedido->cajero = $request->cajero;
 
-        $pedido->guia = $request->guide;
-        $pedido->mesero = $request->mesero;
+        $guide = Guia::find($request->guide);
+
+        if ($guide) {
+            $pedido->guia = $guide->full_name;
+        } else {
+            $pedido->guia = 'Ninguno'; // Manejar el caso cuando no se encuentre la guía
+        }
+
+        $mesero = Mesero::find($request->mesero);
+
+        if ($mesero) {
+            $pedido->mesero = $mesero->full_name;
+        } else {
+            $pedido->mesero = 'Ninguno'; // Manejar el caso cuando no se encuentre la guía
+        }
+
         $pedido->num_comensales = $request->comensales;
 
         $pedido->cliente = $request->cliente;
