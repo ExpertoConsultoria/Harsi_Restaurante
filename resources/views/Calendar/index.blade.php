@@ -373,7 +373,6 @@
 
 
         $(function () {
-            $('#type').on('change', onWrite);
             $('#valueTypex').on('change', onSelectFilter);
         });
 
