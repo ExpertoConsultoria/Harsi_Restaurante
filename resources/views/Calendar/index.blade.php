@@ -4,6 +4,13 @@
 
 @section('content')
 
+    <style>
+        td, th {
+            text-align: center !important; /* Centra horizontalmente el contenido en cada celda */
+            vertical-align: middle !important; /* Centra verticalmente el contenido */
+        }
+    </style>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
@@ -14,68 +21,74 @@
     </div>
 
     <!-- Modal Form -->
-    <div id="formModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+    <div id="formModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Agregar Reservación</h4>
+                    <h5 class="modal-title" id="modalTitle">Agregar Reservación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <span id="form_result"></span>
-                    <form method="post" id="sample_form" class="form-horizontal" enctype="multipart/form-data"
-                        autocomplete="off">
+                    <form method="post" id="sample_form" class="needs-validation" novalidate enctype="multipart/form-data" autocomplete="off">
                         @csrf
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Nombre de la Reservación</label>
-                            <div class="col-md-8">
-                                <input type="text" name="titulo" id="titulo" class="form-control" required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Personas </label>
-                            <div class="col-md-8">
-                                <input type="text" name="personas" id="personas" class="form-control" required />
+
+                        <div class="form-row">
+                            <div class="form-group col-md-8 offset-md-2">
+                                <label for="titulo">Nombre de la Reservación</label>
+                                <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Ingrese nombre" required />
+                                <div class="invalid-feedback">Por favor, ingrese un nombre.</div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Fecha</label>
-                            <div class="col-md-8">
-                                <input type="date" value="<?php echo date("Y-m-d");?>" name="fecha_ini" id="fecha_ini"
-                                    class="form-control" required />
+                        <div class="form-row">
+                            <div class="form-group col-md-4 offset-md-2">
+                                <label for="personas">Personas</label>
+                                <input type="number" name="personas" id="personas" class="form-control" placeholder="Ej. 4" min="1" required />
+                                <div class="invalid-feedback">Ingrese la cantidad de personas.</div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="fecha_ini">Fecha</label>
+                                <input type="date" name="fecha_ini" id="fecha_ini" value="<?php echo date('Y-m-d'); ?>" class="form-control" required />
+                                <div class="invalid-feedback">Seleccione una fecha válida.</div>
                             </div>
                         </div>
 
-                        <div class="form-group col-md-8">
-                            <label for="mesas">Mesas</label>
-                            <select id="mesas" name="mesas[]" class="form-control selectpicker" title="-- Asignar Mesas --" multiple required>
+                        <div class="form-row">
+                            <div class="form-group col-md-8 offset-md-2">
+                                <label for="mesas">Mesas</label>
+                                <select id="mesas" name="mesas[]" class="form-control selectpicker" multiple title="-- Asignar Mesas --" required>
                                 <option value="Todas las Mesas">Todas las Mesas</option>
-                                    @foreach($mesas as $mesa)
-                                        <option value="{{ $mesa->titulo }}">{{ $mesa->titulo }}</option>
-                                    @endforeach
-                            </select>
+                                @foreach($mesas as $mesa)
+                                    <option value="{{ $mesa->titulo }}">{{ $mesa->titulo }}</option>
+                                @endforeach
+                                </select>
+                                <div class="invalid-feedback">Asigne al menos una mesa.</div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Color </label>
-                            <div class="col-md-8">
+                        <div class="form-row">
+                            <div class="form-group col-md-8 offset-md-2">
+                                <label for="color">Color</label>
                                 <input type="color" name="color" id="color" class="form-control" />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Detalles </label>
-                            <div class="col-md-8">
-                                <input type="text" name="detalles" id="detalles" class="form-control" required />
+
+                        <div class="form-row">
+                            <div class="form-group col-md-8 offset-md-2">
+                                <label for="detalles">Detalles</label>
+                                <input type="text" name="detalles" id="detalles" class="form-control" placeholder="Ingrese detalles adicionales" required />
+                                <div class="invalid-feedback">Por favor, ingrese los detalles.</div>
                             </div>
                         </div>
 
-                        <br>
-                        <div class="form-group" align="center">
+                        <div class="mt-4 text-center form-group">
                             <input type="hidden" name="action" id="action" />
                             <input type="hidden" name="hidden_id" id="hidden_id" />
-                            <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                                value="Add" />
+                            <button type="submit" id="action_button" class="btn btn-warning btn-lg">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -84,23 +97,26 @@
     </div>
 
     <!-- Modal Delete -->
-    <div id="confirmModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content" style="background: #e9605c;">
+    <div id="confirmModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="text-white modal-content bg-danger">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h2 class="modal-title">Confirmación</h2>
+                    <h5 class="modal-title" id="confirmModalLabel">Confirmación</h5>
+                    <button type="button" class="text-white close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <h4 class="text-center" style="margin:0;">Estas seguro de eliminar?</h4>
+                <div class="text-center modal-body">
+                    <p class="mb-0">¿Estás seguro de que deseas eliminar?</p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">OK</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" name="ok_button" id="ok_button" class="btn btn-light">OK</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Structure -->
 
@@ -118,7 +134,11 @@
                                             <th scope="col">Título</th>
                                             <th scope="col">Fecha</th>
                                             <th scope="col">Mesas</th>
-                                            <th scope="col">Acciones</th>
+                                            <th scope="col"
+                                                @if (Auth::user()->role == "administrador")
+                                                    width="35%"
+                                                @endif
+                                            >Acciones</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -442,7 +462,6 @@
                 ]
             });
 
-
             $('#create_record').click(function () {
                 $('.modal-title').text("Agregar Reservación");
                 $('#action_button').val("Agregar");
@@ -520,9 +539,11 @@
                     url: "/Calendar/" + id + "/edit",
                     dataType: "json",
                     success: function (html) {
+                        console.log(html.data.fecha);
+
                         $('#titulo').val(html.data.titulo);
                         $('#personas').val(html.data.personas);
-                        $('#fecha_ini').val(html.data.fecha_ini);
+                        $('#fecha_ini').val(html.data.fecha);
                         $('#mesas').val(html.data.mesas);
                         $('#color').val(html.data.color);
                         $('#detalles').val(html.data.detalles);
