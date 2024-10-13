@@ -9,8 +9,10 @@ use App\Http\Controllers\ComandaHomeController;
 use App\Http\Controllers\DetalleOrdenController;
 use App\Http\Controllers\ErrorsExceptions;
 use App\Http\Controllers\EstadoController;
+use App\Http\Controllers\GuiaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MesaController;
+use App\Http\Controllers\MeseroController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PayMethodController;
@@ -117,11 +119,20 @@ Route::middleware([
     Route::get('SubcategoriaProducto/destroy/{id}', [SubcategoriaProductoController::class, 'destroy']);
 
     //Productos Restaurant
-
     Route::resource('producto', ProductoController::class);
     Route::post('producto/update', [ProductoController::class, 'update'])->name('producto.update');
     Route::get('producto/destroy/{id}', [ProductoController::class, 'destroy']);
     Route::get('/subcategory/{id_categoria}', [ProductoController::class, 'subcategorias']);
+
+    // Restaurant Guides
+    Route::resource('guias', GuiaController::class);
+    Route::post('guias/update', [GuiaController::class, 'update'])->name('guias.update');
+    Route::get('guias/destroy/{id}', [GuiaController::class, 'destroy']);
+
+    // Restaurant Waitress
+    Route::resource('meseros', MeseroController::class);
+    Route::post('meseros/update', [MeseroController::class, 'update'])->name('meseros.update');
+    Route::get('meseros/destroy/{id}', [MeseroController::class, 'destroy']);
 
     //Metodo de pago
     Route::resource('paymethod', PayMethodController::class);

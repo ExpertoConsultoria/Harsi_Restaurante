@@ -389,6 +389,19 @@ return [
             'icon'        => 'fas fa-users',
         ],
 
+        [
+            'id' => 2,
+            'text'        => 'Guías',
+            'url'         => 'guias',
+            'icon'        => 'fas fa-map',
+        ],
+        [
+            'id' => 2,
+            'text'        => 'Meseros',
+            'url'         => 'meseros',
+            'icon'        => 'fab fa-pagelines',
+        ],
+
         ['header' => 'Panel', 'id' => 2],
         [
             'id' => 2,
