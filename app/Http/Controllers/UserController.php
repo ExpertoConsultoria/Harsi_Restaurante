@@ -12,24 +12,18 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
 
-    public function index() {
-
-        if (Auth::check() && Auth::user()->role == 'administrador') {
-            $horario = Horario::all();
-
-            $user = User::where('role', '=', 'cajero')
-                ->orwhere('role', '=', 'administrador')
-                ->get();
-            return view('usuarios.index', compact('user', 'horario'));
-        }
-        else {
+    public function index()
+    {
+        if (!Auth::check() || Auth::user()->role !== 'administrador') {
             return view('error');
         }
 
-        $user = User::all();
+        $horario = Horario::all();
+        $user = User::whereIn('role', ['cajero', 'administrador'])->get();
 
-        return view('usuarios.index', compact('user'));
+        return view('usuarios.index', compact('user', 'horario'));
     }
+
 
     public function create() {
         return view('usuarios.create', compact('horario'));

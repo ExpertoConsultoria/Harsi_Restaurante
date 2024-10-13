@@ -14,9 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\MeseroController;
 use App\Http\Controllers\OrdenController;
-use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PayMethodController;
-use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\RestauranteController;
@@ -69,14 +67,11 @@ Route::middleware([
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('home', [HomeController::class, 'editMesa']);
 
-    Route::resource('panel', PanelController::class);
-    Route::get('/paneledit/{id}', [PedidoController::class, 'create']);
     Route::post('/datosHome', [HomeController::class, 'datos']);
     Route::post('/estadoHome', [HomeController::class, 'update']);
     Route::post('/cerrarMesa', [HomeController::class, 'cerrar']);
     Route::get('/ticket', [OrdenController::class, 'mostrar']);
     Route::post('/enviarTicket', [OrdenController::class, 'enviarTicket']);
-    Route::post('/enviarTicketOrden', [OrdenController::class, 'ticketPdfshow']);
     Route::get('/productos/{id_categoria}', [HomeController::class, 'productos']);
     Route::get('/precio/{id_producto}', [HomeController::class, 'precio']);
 
@@ -138,11 +133,6 @@ Route::middleware([
     Route::resource('paymethod', PayMethodController::class);
     Route::post('paymethod/update', [PayMethodController::class, 'update'])->name('paymethod.update');
     Route::get('paymethod/destroy/{id}', [PayMethodController::class, 'destroy']);
-
-    //Pedido
-    Route::resource('Pedido', PedidoController::class);
-    Route::post('Pedido/update', [PedidoController::class, 'update'])->name('Pedido.update');
-    Route::get('Pedido/destroy/{id}', [PedidoController::class, 'destroy']);
 
     //Comanda Home
     Route::resource('ComandaHome', ComandaHomeController::class);

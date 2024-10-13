@@ -433,29 +433,7 @@ class ReportesController extends Controller
 
     public function reporteDiario($estado, $fecha) {
         $fecha1 = Carbon::parse($fecha);
-        $dato = Restaurante::min('id');
-        if ($dato != null) {
-            $restaurante = DB::table('restaurante')
-                ->select('id', 'nombre', 'rfc', 'direccion', 'telefono')
-                ->first();
-
-            $restaurante = array(
-                'id' => $restaurante->id,
-                'nombre' => $restaurante->nombre,
-                'rfc' => $restaurante->rfc,
-                'direccion' => $restaurante->direccion,
-                'telefono' => $restaurante->telefono,
-            );
-
-        } else {
-            $restaurante = array(
-                'id' => 0,
-                'nombre' => '',
-                'rfc' => '',
-                'direccion' => '',
-                'telefono' => '',
-            );
-        }
+        $restaurante = Restaurante::first();
 
         if (Auth::check() && Auth::user()->role == 'administrador') {
             if ($estado == 1) {

@@ -8,6 +8,12 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
+        /*
+            * System Roles
+
+                - administrador
+                - cajero
+        */
 
         User::create([
             'name' => 'Don Agave',

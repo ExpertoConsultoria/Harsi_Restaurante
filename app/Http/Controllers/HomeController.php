@@ -139,29 +139,6 @@ class HomeController extends Controller
         }
     }
 
-    public function create($id) {
-
-        if (Auth::check()) {
-            $comanda = Mesa::find($id);
-            $mesas = Mesa::all();
-            $mesaedit = $mesas; // Reutilizamos la misma consulta para 'mesas' y 'mesaedit'
-            $cta = CategoriaProducto::all();
-            $producto = Producto::all();
-            $pedido = Pedido::all();
-            $paymethod = PayMethod::all();
-
-            if (Auth::user()->role == 'administrador') {
-                $comanda->estado = 'Abierta';
-                $comanda->color = '#ce0018';
-                $comanda->save();
-            }
-
-            return view('home', compact('mesas', 'mesaedit', 'producto', 'cta', 'pedido', 'paymethod', 'comanda'));
-        }
-
-        return view('inicio');
-    }
-
     public function editMesa($id) {
         $mesaedit = Mesa::find('id', $id)->get();
         return response()->json(['mesaedit' => $mesaedit]);

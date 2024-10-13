@@ -32,34 +32,55 @@ class ApiController extends Controller
     }
 
     public function getResumeSales() {
-        $userg = User::where('role', 'gerente')->count();
-        $userc = User::where('role', 'cajero')->count();
-        $usera = User::where('role', 'administrador')->count();
-        $user = $userg + $userc + $usera;
-        $orden = Orden::whereMonth('fecha', Carbon::today())->whereYear('fecha', Carbon::today())->count();
-        $ordenD = Orden::whereDay('fecha', Carbon::today())->whereMonth('fecha', Carbon::today())->whereYear('fecha', Carbon::today())->count();
-        $mesa = Mesa::select('id')->count();
-        $venta = Orden::whereMonth('fecha', Carbon::now())->whereYear('fecha', Carbon::today())->sum('total');
-        $ventaD = Orden::where('fecha', Carbon::today())->sum('total');
-        $ventaPl = Orden::whereMonth('fecha', Carbon::now())->whereYear('fecha', Carbon::today())->where('mesa', '=', 'Para llevar')->sum('total');
-        $ventaDPl = Orden::where('fecha', Carbon::today())->where('mesa', '=', 'Para llevar')->sum('total');
-        $cancelado = ComandaTemporal::whereMonth('fecha', Carbon::now())->where('status', 'Cancelado')->count();
-        $canceladoD = ComandaTemporal::whereDay('fecha', Carbon::now())->where('status', 'Cancelado')->count();
-        $event = Calendar::select('id')->whereMonth('updated_at', Carbon::now())->whereYear('updated_at', Carbon::today())->count();
-        $eventD = Calendar::select('id')->whereDay('updated_at', Carbon::today())->whereMonth('updated_at', Carbon::today())->whereYear('updated_at', Carbon::today())->count();
-        $producto = Producto::select('titulo')->count();
-        $eliminado = ComandaTemporal::whereMonth('fecha', Carbon::now())->whereYear('fecha', Carbon::today())->where('status', 'Eliminado')->count();
-        $eliminadoD = ComandaTemporal::whereDay('fecha', Carbon::now())->whereMonth('fecha', Carbon::now())->whereYear('fecha', Carbon::today())->where('status', 'Eliminado')->count();
-        $mesasC = OrdenCancelado::whereMonth('fecha', Carbon::now())->whereYear('fecha', Carbon::today())->count();
-        $mesasCD = OrdenCancelado::whereMonth('fecha', Carbon::now())->whereDay('fecha', Carbon::now())->whereYear('fecha', Carbon::today())->count();
-        $ventaApps = Orden::whereMonth('fecha', Carbon::today())->whereYear('fecha', Carbon::today())->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('total');
-        $ventaAppsD = Orden::whereDay('fecha', Carbon::today())->whereMonth('fecha', Carbon::today())->whereYear('fecha', Carbon::today())->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('total');
-        $descuento = Orden::whereDay('fecha', Carbon::today())->whereMonth('fecha', Carbon::today())->whereYear('fecha', Carbon::today())->sum('descuento_pesos');
-        $descuentoD = Orden::whereDay('fecha', Carbon::today())->whereMonth('fecha', Carbon::today())->whereYear('fecha', Carbon::today())->sum('descuento_pesos');
-        $propina = Orden::whereMonth('fecha', Carbon::today())->whereYear('fecha', Carbon::today())->sum('propina');
-        $propinaD = Orden::whereDay('fecha', Carbon::today())->whereMonth('fecha', Carbon::today())->whereYear('fecha', Carbon::today())->sum('propina');
+        $today = Carbon::today();
+        $now = Carbon::now();
 
+        // Conteo de usuarios
+        $user = User::whereIn('role', ['cajero', 'administrador'])->count();
 
+        // Ordenes
+        $orden = Orden::whereMonth('fecha', $today)->whereYear('fecha', $today)->count();
+        $ordenD = Orden::whereDate('fecha', $today)->count();
+
+        // Ventas
+        $venta = Orden::whereMonth('fecha', $now)->whereYear('fecha', $today)->sum('total');
+        $ventaD = Orden::whereDate('fecha', $today)->sum('total');
+        $ventaPl = Orden::whereMonth('fecha', $now)->whereYear('fecha', $today)->where('mesa', 'Para llevar')->sum('total');
+        $ventaDPl = Orden::whereDate('fecha', $today)->where('mesa', 'Para llevar')->sum('total');
+
+        // Cancelaciones y eliminaciones
+        $cancelado = ComandaTemporal::whereMonth('fecha', $now)->where('status', 'Cancelado')->count();
+        $canceladoD = ComandaTemporal::whereDate('fecha', $now)->where('status', 'Cancelado')->count();
+        $eliminado = ComandaTemporal::whereMonth('fecha', $now)->whereYear('fecha', $today)->where('status', 'Eliminado')->count();
+        $eliminadoD = ComandaTemporal::whereDate('fecha', $now)->where('status', 'Eliminado')->count();
+
+        // Eventos
+        $event = Calendar::whereMonth('updated_at', $now)->whereYear('updated_at', $today)->count();
+        $eventD = Calendar::whereDate('updated_at', $today)->count();
+
+        // Otros datos
+        $producto = Producto::count();
+        $mesa = Mesa::count();
+        $mesasC = OrdenCancelado::whereMonth('fecha', $now)->whereYear('fecha', $today)->count();
+        $mesasCD = OrdenCancelado::whereDate('fecha', $now)->count();
+
+        // Ventas por apps
+        $ventaApps = Orden::whereMonth('fecha', $today)
+            ->whereYear('fecha', $today)
+            ->whereIn('mesa', ['Uber', 'Rappi', 'Diddi'])
+            ->sum('total');
+
+        $ventaAppsD = Orden::whereDate('fecha', $today)
+            ->whereIn('mesa', ['Uber', 'Rappi', 'Diddi'])
+            ->sum('total');
+
+        // Descuentos y propinas
+        $descuento = Orden::whereDate('fecha', $today)->sum('descuento_pesos');
+        $descuentoD = $descuento;  // Redundante, pero mantenido según requisitos
+        $propina = Orden::whereMonth('fecha', $today)->whereYear('fecha', $today)->sum('propina');
+        $propinaD = Orden::whereDate('fecha', $today)->sum('propina');
+
+        // Respuesta
         $response = [
             'user' => $user,
             'mesa' => $mesa,
@@ -87,8 +108,8 @@ class ApiController extends Controller
         ];
 
         return $response;
-
     }
+
 
     public function createEvents() {
         $calendar = Calendar::all();

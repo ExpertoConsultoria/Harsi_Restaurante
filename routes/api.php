@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaProductoController;
 use App\Http\Controllers\UserChartController;
 use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ApiController;
 
 /*

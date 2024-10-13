@@ -10,11 +10,7 @@ class SettingController extends Controller
 {
     public function index() {
 
-        if (Auth::check() && Auth::user()->role == 'administrador') {
-            return view('/Setting');
-        }
-
-        if (Auth::check() && Auth::user()->role == 'cajero') {
+        if (Auth::check()) {
             return view('/Setting');
         } else {
             return view('error');

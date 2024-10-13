@@ -11,52 +11,33 @@ use Illuminate\Support\Facades\Auth;
 class CalendarController extends Controller
 {
     public function index() {
-        if (Auth::check() && Auth::user()->role == 'administrador') {
-            $calendar = Calendar::all();
-
-            $mesas = Mesa::select('titulo')
-                ->where('titulo', 'NOT LIKE', '%Didi%')
-                ->where('titulo', 'NOT LIKE', '%Para llevar%')
-                ->where('titulo', 'NOT LIKE', '%Rappi%')
-                ->where('titulo', 'NOT LIKE', '%Uber%')
-                ->get();
-
-            if (request()->ajax()) {
-                return datatables()->of(Calendar::latest()->get())
-                    ->addColumn('action', function ($data) {
-                        $button = '<button type="button" name="edit" id="' . $data->id . '"class="edit btn btn-primary btn-sm" >Editar</button>';
-                        $button .= '&nbsp;&nbsp;';
-                        $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Eliminar</button>';
-                        return $button;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-            }
-            return view('Calendar.index', compact('calendar', 'mesas'));
-        }
-
-        if (Auth::check() && Auth::user()->role == 'cajero') {
-            $calendar = Calendar::all();
-            $mesas = Mesa::select('titulo')
-                ->where('titulo', 'NOT LIKE', '%Didi%')
-                ->where('titulo', 'NOT LIKE', '%Para llevar%')
-                ->where('titulo', 'NOT LIKE', '%Rappi%')
-                ->where('titulo', 'NOT LIKE', '%Uber%')
-                ->get();
-            if (request()->ajax()) {
-                return datatables()->of(Calendar::latest()->get())
-                    ->addColumn('action', function ($data) {
-                        $button = '<button type="button" name="edit" id="' . $data->id . '"class="edit btn btn-primary btn-sm" >Editar</button>';
-                        $button .= '&nbsp;&nbsp;';
-                        return $button;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-            }
-            return view('Calendar.index', compact('calendar', 'mesas'));
-        } else {
+        if (!Auth::check()) {
             return view('error');
         }
+
+        $userRole = Auth::user()->role;
+        $calendar = Calendar::all();
+        $mesas = Mesa::select('titulo')
+            ->whereNotLike('titulo', ['%Didi%', '%Para llevar%', '%Rappi%', '%Uber%'])
+            ->get();
+
+        if (request()->ajax()) {
+            $datatable = datatables()->of(Calendar::latest()->get())
+                ->addColumn('action', function ($data) use ($userRole) {
+                    $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Editar</button>';
+                    if ($userRole === 'administrador') {
+                        $button .= '&nbsp;&nbsp;';
+                        $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Eliminar</button>';
+                    }
+                    return $button;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+
+            return $datatable;
+        }
+
+        return view('Calendar.index', compact('calendar', 'mesas'));
     }
 
     public function store(Request $request) {

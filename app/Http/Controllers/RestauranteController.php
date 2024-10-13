@@ -12,14 +12,16 @@ class RestauranteController extends Controller
 
     public function index()
     {
-        $restaurante = Restaurante::all();
 
         if (request()->ajax()) {
             return datatables()->of(Restaurante::latest()->get())
                 ->addColumn('action', function ($data) {
                     $button = '<button type="button" name="edit" id="' . $data->id . '"class="edit btn btn-primary btn-sm" >Editar</button>';
-                    $button .= '&nbsp;&nbsp;';
-                    $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Eliminar</button>';
+
+                    if ($data->id != 1) {
+                        $button .= '&nbsp;&nbsp;';
+                        $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Eliminar</button>';
+                    }
                     return $button;
                 })
                 ->rawColumns(['action'])
@@ -60,7 +62,7 @@ class RestauranteController extends Controller
 
         }
 
-        return view('restaurante.index', compact('user', 'restaurante', 'contador'));
+        return view('restaurante.index', compact('user', 'contador'));
     }
 
     public function store(Request $request) {
