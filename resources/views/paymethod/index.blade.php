@@ -3,7 +3,7 @@
 @section('plugins.Sweetalert2',true)
 @section('content')
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
             <div >
                 <br>
                 <h1 align="left">Métodos de pago</h1>
@@ -131,22 +131,22 @@
                         data: 'titulo',
                         name: 'titulo'
                     },
-{
-                    data: 'created_at',
-                    name: 'created_at',
-                    render: function(data, type, row) {
-                        // Formatear la fecha a la zona horaria deseada
-                        return new Date(data).toLocaleString('es-ES', { timeZone: 'America/Mexico_City' });
-                    }
-                },
-                {
-                    data: 'updated_at',
-                    name: 'updated_at',
-                    render: function(data, type, row) {
-                        // Formatear la fecha a la zona horaria deseada
-                        return new Date(data).toLocaleString('es-ES', { timeZone: 'America/Mexico_City' });
-                    }
-                },
+                    {
+                        data: 'created_at',
+                        name: 'created_at',
+                        render: function(data, type, row) {
+                            // Formatear la fecha a la zona horaria deseada
+                            return new Date(data).toLocaleString('es-ES', { timeZone: 'America/Mexico_City' });
+                        }
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at',
+                        render: function(data, type, row) {
+                            // Formatear la fecha a la zona horaria deseada
+                            return new Date(data).toLocaleString('es-ES', { timeZone: 'America/Mexico_City' });
+                        }
+                    },
                     {
                         data: 'action',
                         name: 'action',

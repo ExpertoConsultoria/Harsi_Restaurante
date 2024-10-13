@@ -6,7 +6,7 @@
 
     @if ($isActivated->subcategoria == 'Si')
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <div>
                     <br>
                     <h1 align="left">SubCategoría de los Productos</h1>
@@ -16,7 +16,7 @@
                     </div>
                     <br>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover " id="subcategoria_table">
+                        <table class="table table-sm table-bordered table-striped table-hover " id="subcategoria_table">
                             <thead>
                             <tr>
                                 <th scope="col">Categoría</th>
@@ -92,10 +92,10 @@
         </div>
     @else
 
-        <div class="row justify-content-center align-items-center g-2 mt-5">
+        <div class="mt-5 row justify-content-center align-items-center g-2">
             <div class="col-5">
 
-                <div class="card text-center">
+                <div class="text-center card">
                   <img class="card-img-top" src="{{ asset('img/imagenes-07.png') }}" alt="Title">
                   <div class="card-body">
                     <h2 class="text-center">Lo sentimos</h2>

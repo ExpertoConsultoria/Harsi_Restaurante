@@ -3,7 +3,7 @@
 @section('plugins.Sweetalert2',true)
 @section('content')
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
             <div>
                 <br>
                 <h1 align="left">Mesas</h1>

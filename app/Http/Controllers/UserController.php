@@ -44,14 +44,9 @@ class UserController extends Controller
 
     }
 
-    public function show($id) {
-        $user = User::find($id);
-        return view('usuarios.show', ['user' => $user]);
-    }
-
     public function edit($id) {
         $horario = Horario::all();
-        $user = User::where('id', $id)->get();
+        $user = User::findOrFail($id);
         return view('usuarios.edit', compact('user', 'horario'));
     }
 

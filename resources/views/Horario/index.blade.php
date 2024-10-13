@@ -6,6 +6,7 @@
 
     <div align="left">
         <button type="button" name="create_record" id="create_record" class="btn btn-primary">✚ Nuevo turno</button>
+        &nbsp;
         <a type="button" class="oculto-impresion btn btn-warning" href="{{ route('usuarios.index') }}">Regresar</a>
     </div>
 
@@ -74,16 +75,9 @@
     </div>
 
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-8">
             <div class="box box-primary" style="margin-top:10px;">
-                    <div class="box-header with-border">
-                    <h3 class="box-title">Tabla de turnos</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                    </div>
+
                     <div class="box-body">
                     <br>
                     <div class="chart">

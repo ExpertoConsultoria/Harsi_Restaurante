@@ -18,8 +18,14 @@ class CalendarController extends Controller
         $userRole = Auth::user()->role;
         $calendar = Calendar::all();
         $mesas = Mesa::select('titulo')
-            ->whereNotLike('titulo', ['%Didi%', '%Para llevar%', '%Rappi%', '%Uber%'])
-            ->get();
+                        ->where(function ($query) {
+                            $query->where('titulo', 'not like', '%Didi%')
+                                ->where('titulo', 'not like', '%Para llevar%')
+                                ->where('titulo', 'not like', '%Rappi%')
+                                ->where('titulo', 'not like', '%Uber%');
+                        })
+                        ->get();
+
 
         if (request()->ajax()) {
             $datatable = datatables()->of(Calendar::latest()->get())

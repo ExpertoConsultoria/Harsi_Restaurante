@@ -112,7 +112,7 @@
                         <br>
                         <div class="chart" id="chart">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover " id="user_table">
+                                <table class="table table-sm table-bordered table-striped table-hover " id="user_table">
                                     <thead>
                                         <tr>
                                             <th scope="col">Título</th>
@@ -178,9 +178,9 @@
                     day: 'numeric'
                 },
                 headerToolbar: {
-                    start: 'prevYear,prev,next,nextYear today',
+                    start: 'prev,next,today',
                     center: 'title',
-                    end: 'dayGridMonth,timeGridWeek,listWeek'
+                    end: 'dayGridMonth'
                 },
 
                 navLinkDayClick: function (date, jsEvent) {

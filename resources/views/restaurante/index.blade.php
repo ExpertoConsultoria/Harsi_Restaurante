@@ -4,7 +4,7 @@
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
         <div>
             <input type="hidden" name="contador" id="contador" class="form-control" value="{{$contador}}" />
             <input type="hidden" name="validar" id="validar" class="form-control" value="{{$user['expiracion']}}" />
@@ -40,7 +40,7 @@
             </div>
 
             <div class="mt-3 table-responsive">
-                <table class="table table-bordered table-striped table-hover " id="user_table">
+                <table class="table table-sm table-bordered table-striped table-hover " id="user_table">
                     <thead>
                         <tr>
                             <th width="10%">Nombre</th>
