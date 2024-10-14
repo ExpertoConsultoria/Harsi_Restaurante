@@ -19,7 +19,7 @@ class UserController extends Controller
         }
 
         $horario = Horario::all();
-        $user = User::whereIn('role', ['cajero', 'administrador'])->get();
+        $user = User::whereIn('role', ['cajero', 'administrador', 'jefe_meseros', 'jefe_cocina'])->get();
 
         return view('usuarios.index', compact('user', 'horario'));
     }

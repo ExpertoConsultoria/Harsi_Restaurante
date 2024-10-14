@@ -95,7 +95,7 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Opciones <span class="caret"></span>
                         </a>
-                        @if (Auth::check() && Auth::user()->role == 'administrador')
+                        @if (Auth::check() && in_array(Auth::user()->role, ['administrador', 'jefe_meseros']))
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ url('/inicio') }}">
                                 Inicio

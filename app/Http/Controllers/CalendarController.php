@@ -31,7 +31,7 @@ class CalendarController extends Controller
             $datatable = datatables()->of(Calendar::latest()->get())
                 ->addColumn('action', function ($data) use ($userRole) {
                     $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Editar</button>';
-                    if ($userRole === 'administrador') {
+                    if (in_array($userRole, ['administrador', 'jefe_meseros'])) {
                         $button .= '&nbsp;&nbsp;';
                         $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Eliminar</button>';
                     }

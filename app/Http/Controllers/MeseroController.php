@@ -14,7 +14,7 @@ class MeseroController extends Controller
 
     public function index() {
 
-        if (Auth::user()->role !== 'administrador') {
+        if (!in_array(Auth::user()->role, ['administrador', 'jefe_meseros'])) {
                 return view('error');
         }
 

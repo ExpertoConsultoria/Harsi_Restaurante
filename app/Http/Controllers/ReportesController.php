@@ -439,7 +439,7 @@ class ReportesController extends Controller
         $total = $baseQuery->sum('total');
         $propina = $baseQuery->sum('propina');
         $total2 = $baseQuery->sum('total2');
-        $ordenc = $estado == 1 && Auth::check() && Auth::user()->role == 'administrador' ? Comanda::all() : [];
+        $ordenc = $estado == 1 && Auth::check() && in_array(Auth::user()->role, ['administrador', 'jefe_meseros']) ? Comanda::all() : [];
 
         return view('pdf.reporteDiario', compact(
             'orden', 'importe', 'total', 'propina', 'total2', 'descuento',

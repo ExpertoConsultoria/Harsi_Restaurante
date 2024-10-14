@@ -16,7 +16,7 @@
         </style>
 
         {{-- General Resports --}}
-            @if(Auth::check() && Auth::user()->role == 'administrador')
+            @if(Auth::check() && in_array(Auth::user()->role, ['administrador', 'jefe_meseros']))
                 <div class="panel panel-primary">
                     <div class="mb-3 panel-heading">
                         <h3 class="panel-title">Reportes</h3>

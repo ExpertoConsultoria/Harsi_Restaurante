@@ -63,6 +63,8 @@
                                     <option value="" disabled selected>{{ __('Selecciona un rol') }}</option>
                                     <option value="administrador">Administrador</option>
                                     <option value="cajero">Cajero</option>
+                                    <option value="jefe_meseros">Jefe de Meseros</option>
+                                    <option value="jefe_cocina">Jefe de Cocina</option>
                                 </select>
                                 @if ($errors->has('role'))
                                     <span class="help-block">

@@ -13,6 +13,8 @@ class UserSeeder extends Seeder
 
                 - administrador
                 - cajero
+                - jefe_meseros
+                - jefe_cocina
         */
 
         User::create([
@@ -31,6 +33,26 @@ class UserSeeder extends Seeder
             'email' => 'cajero@gmail.com',
             'password' => bcrypt('holamundo'),
             'role' => 'cajero',
+            'turno' => 'Completo',
+            'expiracion' => '2026-12-12 00:00:00',
+        ]);
+
+        User::create([
+            'name' => 'Jefe de Meseros',
+            'apellidos' => 'Base',
+            'email' => 'meseros@gmail.com',
+            'password' => bcrypt('holamundo'),
+            'role' => 'jefe_meseros',
+            'turno' => 'Completo',
+            'expiracion' => '2026-12-12 00:00:00',
+        ]);
+
+        User::create([
+            'name' => 'Jefe de Cocina',
+            'apellidos' => 'Base',
+            'email' => 'cocina@gmail.com',
+            'password' => bcrypt('holamundo'),
+            'role' => 'jefe_cocina',
             'turno' => 'Completo',
             'expiracion' => '2026-12-12 00:00:00',
         ]);

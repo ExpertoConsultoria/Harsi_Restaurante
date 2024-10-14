@@ -39,6 +39,11 @@
                                 ['url' => '/Calendar', 'img' => '/img/harhomB-03.png'],
                                 ['url' => '/Setting', 'img' => '/img/harhomB-04.png']
                             ],
+                            'jefe_meseros' => [
+                                ['url' => '/home', 'img' => '/img/harhomB_Mesa de trabajo 1.png'],
+                                ['url' => '/Reportes', 'img' => '/img/harhomB-02.png'],
+                                ['url' => '/Calendar', 'img' => '/img/harhomB-03.png'],
+                            ],
                             'cajero' => [
                                 ['url' => '/home', 'img' => '/img/harhomB_Mesa de trabajo 1.png'],
                                 ['url' => '/Calendar', 'img' => '/img/harhomB-03.png']

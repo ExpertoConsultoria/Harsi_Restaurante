@@ -152,38 +152,57 @@
             </div>
 
             <div id="formModal1" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title1">Descuento permitido por usuario</h4>
+                            <h5 class="modal-title">Descuento permitido por usuario</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
                             <span id="form_result1"></span>
-                            <form method="post" id="sample_form1" class="form-horizontal" enctype="multipart/form-data"
-                                autocomplete="off">
+                            <form method="post" id="sample_form1" class="form-horizontal" enctype="multipart/form-data" autocomplete="off">
                                 @csrf
-                                <div class="form-group">
-                                    <label class="control-label col-md-2">Administrador </label>
-                                    <div class="col-md-8">
-                                        <input type="text" name="administrador" id="administrador"
-                                            placeholder="Descuento permitido %" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-2">Cajero </label>
-                                    <div class="col-md-8">
-                                        <input type="text" name="cajero" id="cajero" class="form-control"
-                                            placeholder="Descuento permitido %" required />
+                                <div class="mb-3 form-row">
+                                    <label for="administrador" class="col-sm-4 offset-sm-1 col-form-label">Administrador</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" step="1" name="administrador" id="administrador"
+                                            class="form-control" placeholder="Descuento permitido %" />
                                     </div>
                                 </div>
 
-                                <br>
-                                <div class="form-group" align="center">
+                                <div class="mb-3 form-row">
+                                    <label for="cajero" class="col-sm-4 offset-sm-1 col-form-label">Cajero</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" step="1" name="cajero" id="cajero"
+                                            class="form-control" placeholder="Descuento permitido %" required />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 form-row">
+                                    <label for="jefe_meseros" class="col-sm-4 offset-sm-1 col-form-label">Jefe de Meseros</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" step="1" name="jefe_meseros" id="jefe_meseros"
+                                            class="form-control" placeholder="Descuento permitido %" required />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 form-row">
+                                    <label for="jefe_cocina" class="col-sm-4 offset-sm-1 col-form-label">Jefe de Cocina</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" step="1" name="jefe_cocina" id="jefe_cocina"
+                                            class="form-control" placeholder="Descuento permitido %" required />
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 text-center form-group">
                                     <input type="hidden" name="action1" id="action1" />
                                     <input type="hidden" name="hidden_id1" id="hidden_id1" />
-                                    <input type="submit" name="action_button1" id="action_button1"
-                                        class="btn btn-warning" value="Add1" />
+                                    <button type="submit" name="action_button1" id="action_button1"
+                                            class="btn btn-warning">
+                                        Modificar
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -231,41 +250,42 @@
                 </div>
             </div>
 
-
-            <div id="formModal3" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+            <div id="formModal3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalTitle3" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title3">Subcategoría</h4>
+                            <h5 class="modal-title" id="modalTitle3">Subcategoría</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
                             <span id="form_result3"></span>
-                            <form method="post" id="sample_form3" class="form-horizontal" enctype="multipart/form-data"
-                                autocomplete="off">
+                            <form method="post" id="sample_form3" class="form-horizontal" enctype="multipart/form-data" autocomplete="off">
                                 @csrf
-                                <div class="form-group">
-                                    <label class="control-label col-md-2">¿Tiene subcategoría? </label>
-                                    <div class="col-md-8">
-                                        <select id="subcategoria3" name="subcategoria3" class="form-control"
-                                            required="">
+                                <div class="form-group row">
+                                    <label for="subcategoria3" class="col-sm-5 col-form-label">¿Tiene subcategoría?</label>
+                                    <div class="col-sm-7">
+                                        <select id="subcategoria3" name="subcategoria3" class="form-control" required>
                                             <option value="No">No</option>
-                                            <option value="Si">Si</option>
+                                            <option value="Si">Sí</option>
                                         </select>
                                     </div>
                                 </div>
-                                <br>
-                                <div class="form-group" align="center">
-                                    <input type="hidden" name="action3" id="action3" />
-                                    <input type="hidden" name="hidden_id3" id="hidden_id3" />
-                                    <input type="submit" name="action_button3" id="action_button3"
-                                        class="btn btn-warning" value="Add3" />
+
+                                <div class="mt-4 text-center form-group">
+                                    <input type="hidden" name="action3" id="action3">
+                                    <input type="hidden" name="hidden_id3" id="hidden_id3">
+                                    <button type="submit" name="action_button3" id="action_button3" class="btn btn-warning">
+                                        Cambiar
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <div id="confirmModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -515,9 +535,11 @@
             $.ajax({
                 url: "/editDescuento",
                 dataType: "json",
-                success: function (html) {
-                    $('#administrador').val(html.data1.descuento);
-                    $('#cajero').val(html.data2.descuento);
+                success: function (data) {
+                    $('#administrador').val(data.administrador);
+                    $('#cajero').val(data.cajero);
+                    $('#jefe_meseros').val(data.jefe_meseros);
+                    $('#jefe_cocina').val(data.jefe_cocina);
                     $('.modal-title1').text("Descuento permitido por usuario");
                     $('#action_button1').val("Modificar");
                     $('#action1').val("Add1");
@@ -535,7 +557,6 @@
 
         $('#sample_form1').on('submit', function (event) {
             event.preventDefault();
-
 
             if ($('#action1').val() == "Add1") {
                 $.ajax({
@@ -578,8 +599,6 @@
                 });
             }
         });
-
-
 
         $('#sample_form').on('submit', function (event) {
             event.preventDefault();

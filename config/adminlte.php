@@ -318,7 +318,7 @@ return [
         ['header' => 'RESTAURANTE', 'id' => 1,],
 
         [
-            'id' => 2,
+            'id' => 3,
             'text' => 'General',
             'url'  => 'restaurante',
             'icon' => 'fas fa-info-circle',
@@ -348,7 +348,7 @@ return [
             'icon' => 'fas fa-cart-plus',
         ],
         [
-            'id' => 2,
+            'id' => 3,
             'text' => 'Métodos de pago',
             'url'  => 'paymethod',
             'icon' => 'fas fa-money-check-alt',
@@ -383,7 +383,7 @@ return [
 
         ['header' => 'PERSONAL', 'id' => 2],
         [
-            'id' => 2,
+            'id' => 3,
             'text'        => 'Usuarios',
             'url'         => 'usuarios',
             'icon'        => 'fas fa-users',

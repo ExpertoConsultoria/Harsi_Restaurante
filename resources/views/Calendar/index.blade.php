@@ -46,7 +46,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4 offset-md-2">
                                 <label for="personas">Personas</label>
-                                <input type="number" name="personas" id="personas" class="form-control" placeholder="Ej. 4" min="1" required />
+                                <input type="number" name="personas" id="personas" class="form-control" placeholder="Ej. 4" min="1" value="1" required />
                                 <div class="invalid-feedback">Ingrese la cantidad de personas.</div>
                             </div>
 
@@ -80,7 +80,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-8 offset-md-2">
                                 <label for="detalles">Detalles</label>
-                                <input type="text" name="detalles" id="detalles" class="form-control" placeholder="Ingrese detalles adicionales" required />
+                                <input type="text" name="detalles" id="detalles" class="form-control" placeholder="Ingrese detalles adicionales" value="Ninguno" required/>
                                 <div class="invalid-feedback">Por favor, ingrese los detalles.</div>
                             </div>
                         </div>
@@ -135,7 +135,7 @@
                                             <th scope="col">Fecha</th>
                                             <th scope="col">Mesas</th>
                                             <th scope="col"
-                                                @if (Auth::user()->role == "administrador")
+                                                @if (in_array(Auth::user()->role, ['administrador', 'jefe_meseros']))
                                                     width="35%"
                                                 @endif
                                             >Acciones</th>

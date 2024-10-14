@@ -36,7 +36,7 @@ class ApiController extends Controller
         $now = Carbon::now();
 
         // Conteo de usuarios
-        $user = User::whereIn('role', ['cajero', 'administrador'])->count();
+        $user = User::whereIn('role', ['cajero', 'administrador', 'jefe_meseros', 'jefe_cocina'])->count();
 
         // Ordenes
         $orden = Orden::whereMonth('fecha', $today)->whereYear('fecha', $today)->count();

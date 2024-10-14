@@ -124,6 +124,14 @@ class FullSeeder extends Seeder
                 'role' => 'Cajero',
                 'descuento' => 10,
             ]);
+            DescuentoUsuario::create([
+                'role' => 'Jefe de Meseros',
+                'descuento' => 25,
+            ]);
+            DescuentoUsuario::create([
+                'role' => 'Jefe de Cocina',
+                'descuento' => 25,
+            ]);
 
         /* Status */
             Estado::create([

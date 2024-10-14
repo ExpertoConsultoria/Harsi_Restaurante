@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->enum('role', [
                 'administrador',
                 'cajero',
+                'jefe_meseros',
+                'jefe_cocina',
             ]);
             $table->string('turno')->nullable();
             $table->date('expiracion')->nullable();

@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 @section ('content')
 
-    @if (Auth::check() && Auth::user()->role == 'administrador')
+    @if (Auth::check() && in_array(Auth::user()->role, ['administrador', 'jefe_meseros']))
         <div class="my-4 row">
             <div class="col-6">
                 <h2> PANEL DE CONFIGURACIÓN</h2>
@@ -181,9 +181,7 @@
                 </div>
             </div>
         </div>
-    @endif
-
-    @if (Auth::check() && Auth::user()->role == 'cajero')
+    @else
         <div class="mt-5 row justify-content-center align-items-center g-2">
             <div class="col-5">
 

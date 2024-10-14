@@ -43,6 +43,8 @@
                 <select name="role" class="form-control">
                     <option value="administrador">Administrador</option>
                     <option value="cajero">Cajero</option>
+                    <option value="jefe_meseros">Jefe de Meseros</option>
+                    <option value="jefe_cocina">Jefe de Cocina</option>
                 </select>
             </div>
         </div>

@@ -87,25 +87,38 @@ class RestauranteController extends Controller
 
     public function editDescuento() {
         if (request()->ajax()) {
-            $data1 = DescuentoUsuario::select('id', 'role', 'descuento')
-                ->where('role', 'Administrador')
-                ->first();
-            $data2 = DescuentoUsuario::select('id', 'role', 'descuento')
-                ->where('role', 'Cajero')
-                ->first();
-            return response()->json(['data1' => $data1, 'data2' => $data2]);
+            $administrador = DescuentoUsuario::select('descuento')
+                                ->where('role', 'Administrador')
+                                ->first();
+            $cajero = DescuentoUsuario::select('descuento')
+                                ->where('role', 'Cajero')
+                                ->first();
+            $jefe_meseros = DescuentoUsuario::select('descuento')
+                                ->where('role', 'Jefe de Meseros')
+                                ->first();
+            $jefe_cocina = DescuentoUsuario::select('descuento')
+                                ->where('role', 'Jefe de Cocina')
+                                ->first();
+
+            return response()->json(['administrador' => $administrador?->descuento, 'cajero' => $cajero?->descuento, 'jefe_meseros' => $jefe_meseros?->descuento, 'jefe_cocina' => $jefe_cocina?->descuento]);
         }
     }
 
-    public function updateDescuento(Request $request) {
+    public function updateDescuento(Request $request)
+    {
+        $roles = [
+            'Administrador' => $request->administrador,
+            'Cajero' => $request->cajero,
+            'Jefe de Meseros' => $request->jefe_meseros,
+            'Jefe de Cocina' => $request->jefe_cocina
+        ];
 
-        $administrador = $request->administrador;
-        $cajero = $request->cajero;
+        // Realiza las actualizaciones en un solo ciclo
+        foreach ($roles as $role => $descuento) {
+            DescuentoUsuario::where('role', $role)->update(['descuento' => $descuento]);
+        }
 
-        DescuentoUsuario::where('role', 'Administrador')->update(['descuento' => $administrador]);
-        DescuentoUsuario::where('role', 'Cajero')->update(['descuento' => $cajero]);
-
-        return response()->json(['success', ' Bien Hecho']);
+        return response()->json(['success' => '¡Bien hecho!']);
     }
 
     public function editSubcategoria() {
