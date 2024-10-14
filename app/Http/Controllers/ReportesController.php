@@ -19,61 +19,43 @@ use Illuminate\Support\Facades\DB;
 class ReportesController extends Controller
 {
     public function index() {
+        // Obtener fechas mínimas y máximas de las órdenes
+        // $fechaMinOrden = Orden::min('id'); // Para pruebas locales
+        $fechaMinOrden = Orden::min('fecha'); // Para producción
 
-        $orden1 = Orden::min('id'); // For local and testing
-        // $orden1 = Orden::min('fecha'); // For Production
-        $fecha1 = Carbon::parse($orden1);
-        $fecha1 = strtotime($fecha1->year);
+        $fechaMaxOrden = Orden::max('fecha');
 
-        $orden2 = Orden::max('fecha');
-        $fecha2 = Carbon::parse($orden2);
-        $fecha2 = strtotime($fecha2->subYear());
+        $anioMin = $fechaMinOrden ? Carbon::parse($fechaMinOrden)->year : null;
+        $anioMax = $fechaMaxOrden ? Carbon::parse($fechaMaxOrden)->subYear()->year : null;
 
-        $variable = [];
+        // Inicializar las variables que se retornarán
+        $aniosDisponibles = [];
+        $rangoAnios = [];
+        $aniosGuias = [];
 
-        if ($orden1 != null && $fecha1 > $fecha2) {
+        if ($fechaMinOrden && $anioMin > $anioMax) {
+            $anioInicio = Carbon::parse(Orden::min('fecha'))->year;
+            $anioFinal = Carbon::parse(Orden::max('fecha'))->subYear()->year;
 
-            $data1 = Orden::min('fecha');
-            $fechai = Carbon::parse($data1);
-            $fechai = $fechai->year;
-
-            $data2 = Orden::max('fecha');
-            $fechaf = Carbon::parse($data2);
-            $fechaf = $fechaf->subYear();
-            $fechaf = $fechaf->year;
-
-            for ($i = $fechai; $i <= $fechaf; $i++) {
-                $variable[] = $i;
-            }
-
+            $aniosDisponibles = range($anioInicio, $anioFinal);
         } else {
-            $variable[] = date('Y');
+            $aniosDisponibles[] = date('Y');
         }
 
-        if ($orden1 != null) {
+        if ($fechaMinOrden) {
+            $anioInicio = Carbon::parse(Orden::min('fecha'))->year;
+            $anioFinal = Carbon::parse(Orden::max('fecha'))->year;
 
-            $data1 = Orden::min('fecha');
-            $fechai = Carbon::parse($data1);
-            $fechai = $fechai->year;
-
-            $data3 = Orden::max('fecha');
-            $fechafinal = Carbon::parse($data3);
-            $fechafinal = $fechafinal->year;
-
-            for ($x = $fechai; $x <= $fechafinal; $x++) {
-                $variable2[] = $x;
-                $variable3[] = $x;
-            }
-
+            $rangoAnios = $aniosGuias = range($anioInicio, $anioFinal);
         } else {
-            $variable2[] = 'No hay registros';
-            $variable3[] = 'No hay registros';
+            $rangoAnios = $aniosGuias = ['No hay registros'];
         }
 
-        $user = User::all();
+        // Obtener usuarios y guías
+        $usuarios = User::all();
         $guias = Guia::all();
 
-        return view('Reportes.index', compact('user', 'guias','variable', 'variable2', 'variable3'));
+        return view('Reportes.index', compact('usuarios', 'guias', 'aniosDisponibles', 'rangoAnios', 'aniosGuias'));
     }
 
     public function obtenerMeses($estado) {
@@ -432,89 +414,52 @@ class ReportesController extends Controller
     }
 
     public function reporteDiario($estado, $fecha) {
-        $fecha1 = Carbon::parse($fecha);
+        $fecha = Carbon::parse($fecha);
         $restaurante = Restaurante::first();
+        $turno = Auth::check() ? Auth::user()->turno : null;
+        $cajero = Auth::check() ? Auth::user()->name : null;
 
-        if (Auth::check() && Auth::user()->role == 'administrador') {
-            if ($estado == 1) {
-                $ordenc = Comanda::all();
-                $orden = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->get();
-                $importe = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('conf_total');
-                $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('descuento_pesos');
-                $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('total');
-                $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('propina');
-                $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->sum('total2');
-                return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'ordenc', 'estado', 'fecha'));
+        // Consulta base común
+        $baseQuery = Orden::whereDay('fecha', $fecha)
+            ->whereMonth('fecha', $fecha)
+            ->whereYear('fecha', $fecha);
 
-            } elseif ($estado == 2) {
-                $orden = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->get();
-                $importe = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('conf_total');
-                $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('descuento_pesos');
-                $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('total');
-                $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('propina');
-                $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->sum('total2');
-                return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
+        // Filtra según estado
+        $baseQuery = $this->filtrarPorEstado($baseQuery, $estado);
 
-            } elseif ($estado == 3) {
-                $orden = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->get();
-                $importe = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('conf_total');
-                $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('descuento_pesos');
-                $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('total');
-                $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('propina');
-                $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->sum('total2');
-
-                return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
-            } elseif ($estado == 4) {
-                $orden = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->get();
-                $importe = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('conf_total');
-                $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('descuento_pesos');
-                $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('total');
-                $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('propina');
-                $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('total2');
-                return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
-            }
-        }
+        // Si el usuario es cajero, agrega filtros adicionales
         if (Auth::check() && Auth::user()->role == 'cajero') {
-            if ($estado == 1) {
-                $ordenc = Comanda::all();
-                $orden = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->get();
-                $importe = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('conf_total');
-                $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('descuento_pesos');
-                $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total');
-                $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('propina');
-                $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', 'Para llevar')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total2');
-                return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'ordenc', 'estado', 'fecha'));
-
-            } elseif ($estado == 2) {
-                $orden = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->get();
-                $importe = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('conf_total');
-                $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('descuento_pesos');
-                $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total');
-                $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('propina');
-                $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where(function ($query) {$query->where('mesa', '=', 'Uber')->orWhere('mesa', '=', 'Rappi')->orWhere('mesa', '=', 'Diddi');})->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total2');
-                return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
-
-            } elseif ($estado == 3) {
-                $orden = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->get();
-                $importe = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('conf_total');
-                $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('descuento_pesos');
-                $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total');
-                $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('propina');
-                $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('mesa', '!=', 'Para llevar')->where('mesa', '!=', 'Uber')->where('mesa', '!=', 'Rappi')->where('mesa', '!=', 'Diddi')->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total2');
-
-                return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
-            } elseif ($estado == 4) {
-                $orden = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->get();
-                $importe = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('conf_total');
-                $descuento = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('descuento_pesos');
-                $total = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->sum('total');
-                $propina = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('propina');
-                $total2 = Orden::whereDay('fecha', $fecha1)->whereMonth('fecha', $fecha1)->whereYear('fecha', $fecha1)->where('turno', Auth::user()->turno)->where('cajero', Auth::user()->name)->sum('total2');
-
-                return view('pdf.reporteDiario', compact('orden', 'importe', 'total', 'propina', 'total2', 'descuento', 'restaurante', 'estado', 'fecha'));
-            }
+            $baseQuery->where('turno', $turno)->where('cajero', $cajero);
         }
 
+        // Obtén las órdenes y cálculos requeridos
+        $orden = $baseQuery->get();
+        $importe = $baseQuery->sum('conf_total');
+        $descuento = $baseQuery->sum('descuento_pesos');
+        $total = $baseQuery->sum('total');
+        $propina = $baseQuery->sum('propina');
+        $total2 = $baseQuery->sum('total2');
+        $ordenc = $estado == 1 && Auth::check() && Auth::user()->role == 'administrador' ? Comanda::all() : [];
+
+        return view('pdf.reporteDiario', compact(
+            'orden', 'importe', 'total', 'propina', 'total2', 'descuento',
+            'restaurante', 'ordenc', 'estado', 'fecha'
+        ));
+    }
+
+    // Función auxiliar para filtrar las órdenes según el estado
+    private function filtrarPorEstado($query, $estado) {
+        switch ($estado) {
+            case 1:
+                return $query->where('mesa', 'Para llevar');
+            case 2:
+                return $query->whereIn('mesa', ['Uber', 'Rappi', 'Diddi']);
+            case 3:
+                return $query->whereNotIn('mesa', ['Para llevar', 'Uber', 'Rappi', 'Diddi']);
+            case 4:
+            default:
+                return $query;
+        }
     }
 
     public function reporteMensual($estado, $meses) {

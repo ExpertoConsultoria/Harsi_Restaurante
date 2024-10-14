@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mesa;
-use DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MesaController extends Controller
 {
     public function index() {
+
+        if (Auth::user()->role !== 'administrador') {
+            return view('error');
+        }
 
         $mesa = Mesa::all();
 

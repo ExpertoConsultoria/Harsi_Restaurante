@@ -8,30 +8,20 @@ use App\Models\Restaurante;
 use App\Models\SubcategoriaProducto;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
     public function index() {
 
-        $producto = Producto::all();
-        $dato = Restaurante::min('id');
-        $categorias = CategoriaProducto::all();
-
-        if ($dato != null) {
-            $restaurante = DB::table('restaurante')
-                ->select('subcategoria')
-                ->first();
-            if ($restaurante->subcategoria != null) {
-                $restaurante = array(
-                    'subcategoria' => $restaurante->subcategoria,
-                );
-            }
-        } else {
-            $restaurante = array(
-                'subcategoria' => 'No',
-            );
+        if (Auth::user()->role !== 'administrador') {
+            return view('error');
         }
+
+        $producto = Producto::all();
+        $categorias = CategoriaProducto::all();
+        $restaurante = Restaurante::first();
 
         if (request()->ajax()) {
             return datatables()->of(Producto::latest()->get())

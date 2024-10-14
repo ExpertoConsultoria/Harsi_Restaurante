@@ -6,12 +6,17 @@ use App\Models\DescuentoUsuario;
 use App\Models\Restaurante;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RestauranteController extends Controller
 {
 
     public function index()
     {
+        if (Auth::user()->role !== 'administrador') {
+            return view('error');
+        }
+
 
         if (request()->ajax()) {
             return datatables()->of(Restaurante::latest()->get())
@@ -28,41 +33,29 @@ class RestauranteController extends Controller
                 ->make(true);
         }
 
-        $dato = Restaurante::min('id');
 
-        if ($dato != null) {
-            $contador = Restaurante::select('id')->count();
-        } else {
-            $contador = '';
-        }
+        $contador = Restaurante::exists() ? Restaurante::count() : '';
 
-        $dato = User::min('id');
+        $user = User::where('role', 'administrador')
+                    ->select('id', 'name', 'role', 'expiracion')
+                    ->first();
 
-        if ($dato != null) {
-            $user = User::select('id', 'name', 'role', 'expiracion')
-                ->where('role', 'administrador')
-                ->first();
+        $userData = $user
+            ? [
+                'id' => $user->id,
+                'name' => $user->name,
+                'role' => $user->role,
+                'expiracion' => $user->expiracion ?? '',
+                ]
+            : [
+                'id' => 0,
+                'name' => '',
+                'role' => '',
+                'expiracion' => '',
+                ];
 
-            if ($user->expiracion != null) {
-                $user = array(
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'role' => $user->role,
-                    'expiracion' => $user->expiracion,
-                );
+        return view('restaurante.index', compact('userData', 'contador'));
 
-            } else {
-                $user = array(
-                    'id' => 0,
-                    'name' => '',
-                    'role' => '',
-                    'expiracion' => '',
-                );
-            }
-
-        }
-
-        return view('restaurante.index', compact('user', 'contador'));
     }
 
     public function store(Request $request) {

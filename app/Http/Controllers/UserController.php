@@ -45,6 +45,10 @@ class UserController extends Controller
     }
 
     public function edit($id) {
+        if (Auth::user()->role !== 'administrador') {
+            return view('error');
+        }
+
         $horario = Horario::all();
         $user = User::findOrFail($id);
         return view('usuarios.edit', compact('user', 'horario'));

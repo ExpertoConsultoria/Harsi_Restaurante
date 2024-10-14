@@ -7,11 +7,16 @@ use App\Models\Restaurante;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MeseroController extends Controller
 {
 
     public function index() {
+
+        if (Auth::user()->role !== 'administrador') {
+                return view('error');
+        }
 
         $restaurante = Restaurante::first();
 

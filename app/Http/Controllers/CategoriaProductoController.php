@@ -6,11 +6,16 @@ use App\Models\CategoriaProducto;
 use App\Models\Producto;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoriaProductoController extends Controller
 {
 
     public function index() {
+
+        if (Auth::user()->role !== 'administrador') {
+            return view('error');
+        }
 
         $categoria = CategoriaProducto::all();
 

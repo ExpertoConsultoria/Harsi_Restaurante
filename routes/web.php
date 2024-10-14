@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoriaProductoController;
 use App\Http\Controllers\ComandaHomeController;
-use App\Http\Controllers\DetalleOrdenController;
 use App\Http\Controllers\ErrorsExceptions;
 use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\GuiaController;
@@ -71,7 +70,6 @@ Route::middleware([
     Route::post('/estadoHome', [HomeController::class, 'update']);
     Route::post('/cerrarMesa', [HomeController::class, 'cerrar']);
     Route::get('/ticket', [OrdenController::class, 'mostrar']);
-    Route::post('/enviarTicket', [OrdenController::class, 'enviarTicket']);
     Route::get('/productos/{id_categoria}', [HomeController::class, 'productos']);
     Route::get('/precio/{id_producto}', [HomeController::class, 'precio']);
 
@@ -143,18 +141,6 @@ Route::middleware([
     Route::resource('Ordenes', OrdenController::class);
     Route::post('Ordenes/update', [OrdenController::class, 'update'])->name('Ordenes.update');
     Route::get('Ordenes/destroy/{id}', [OrdenController::class, 'destroy']);
-    Route::get('/ticketPdf', [OrdenController::class, 'ticketPdf'])->name('ticketPdf');
-    Route::get('pdf', [OrdenController::class, 'invoice']);
-
-    //DetalleOrden
-    Route::resource('DetalleOrden', DetalleOrdenController::class);
-    Route::post('DetalleOrden/update', [DetalleOrdenController::class, 'update'])->name('DetalleOrden.update');
-    Route::get('DetalleOrden/destroy/{id}', [DetalleOrdenController::class, 'destroy']);
-
-    //Estado de Orden
-    Route::resource('Estado', EstadoController::class);
-    Route::post('Estado/update', [EstadoController::class, 'update'])->name('Estado.update');
-    Route::get('Estado/destroy/{id}', [EstadoController::class, 'destroy']);
 
     //Calendario de eventos
     Route::resource('Calendar', CalendarController::class);

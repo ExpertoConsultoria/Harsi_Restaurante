@@ -88,7 +88,7 @@
                         </div>
                     </div>
                 </div>
-            @elseif(Auth::check() && Auth::user()->role == 'cajero')
+            @else
                 <div class="panel panel-primary">
                     <div class="mb-3 panel-heading">
                         <h3 class="panel-title">Reportes</h3>
@@ -128,8 +128,8 @@
                                     <div class="col-md-9">
                                         <select id="estado1" class="form-control" name="estado1" required>
                                             <option value="" selected disabled>Seleccione el año</option>
-                                            @foreach ($variable as $g)
-                                                <option value="{{ $g }}">{{ $g }}</option>
+                                            @foreach ($aniosDisponibles as $anio)
+                                                <option value="{{ $anio }}">{{ $anio }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -163,8 +163,8 @@
                                     <div class="col-md-9">
                                         <select id="estado" class="form-control" name="estado" required>
                                             <option value="" selected disabled>Seleccione el año</option>
-                                            @foreach ($variable2 as $g)
-                                                <option value="{{ $g }}">{{ $g }}</option>
+                                            @foreach ($rangoAnios as $anios)
+                                                <option value="{{ $anios }}">{{ $anios }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -345,8 +345,8 @@
                                     <div class="col-md-9">
                                         <select id="estado7" class="form-control" name="estado7" required>
                                             <option value="" selected disabled>Seleccione el año</option>
-                                            @foreach ($variable3 as $g)
-                                                <option value="{{ $g }}">{{ $g }}</option>
+                                            @foreach ($aniosGuias as $anios)
+                                                <option value="{{ $anios }}">{{ $anios }}</option>
                                             @endforeach
                                         </select>
                                     </div>

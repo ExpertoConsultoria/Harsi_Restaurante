@@ -6,13 +6,17 @@ use App\Models\CategoriaProducto;
 use App\Models\Producto;
 use App\Models\Restaurante;
 use App\Models\SubcategoriaProducto;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SubcategoriaProductoController extends Controller
 {
     public function index() {
+        if (Auth::user()->role !== 'administrador') {
+            return view('error');
+        }
 
         $isActivated = Restaurante::select('subcategoria')->orderBy('id', 'desc')->first();
 

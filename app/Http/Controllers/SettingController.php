@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 class SettingController extends Controller
 {
     public function index() {
-
         if (Auth::check()) {
             return view('/Setting');
         } else {

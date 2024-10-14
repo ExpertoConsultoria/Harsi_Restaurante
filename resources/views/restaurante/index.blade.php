@@ -7,7 +7,7 @@
     <div class="col-12">
         <div>
             <input type="hidden" name="contador" id="contador" class="form-control" value="{{$contador}}" />
-            <input type="hidden" name="validar" id="validar" class="form-control" value="{{$user['expiracion']}}" />
+            <input type="hidden" name="validar" id="validar" class="form-control" value="{{$userData['expiracion']}}" />
             <h1 class="mt-3">INFORMACIÓN DEL RESTAURANTE</h1>
 
             <div class="m-2 row">

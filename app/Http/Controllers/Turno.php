@@ -10,7 +10,7 @@ class Turno extends Controller
 {
     public function index()
     {
-        if (!Auth::check()) {
+        if (Auth::user()->role !== 'administrador') {
             return view('error');
         }
 
