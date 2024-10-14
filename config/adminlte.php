@@ -296,6 +296,7 @@ return [
 
         ID = 1 -> Show to Cajero
         ID = 2 -> Don't show to Cajero
+        ID = 3 -> Don't show to Jefe de Meseros
     */
 
     'menu' => [
