@@ -43,6 +43,10 @@ return new class extends Migration
             $table->string('cantidad')->nullable(); // Cantidad del Producto Solicitado
             $table->decimal('precio_compra',10,2)->nullable(); // Precio del Producto
             $table->decimal('subtotal',10,2)->nullable(); // Total a pagar por los Productos
+
+            $table->boolean('ready_to_serve')->default(0); // Estado de Preparación del Platillo
+            $table->string('notes', 500)->default('Ninguna')->nullable(); // Especificaciones del Platillo
+
             $table->string('status')->default('Disponible'); // Estado de la Comanda [Disponible, Eliminado]
             $table->string('motivo',500)->nullable(); // Motivo de Cancelación
             $table->string('comentario',500)->nullable(); // Comentario de la Comanda

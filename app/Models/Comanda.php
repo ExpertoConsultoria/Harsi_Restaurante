@@ -9,11 +9,14 @@ class Comanda extends Model
     protected $table = 'comanda';
 
     protected $fillable = [
-        'pedido_id',
-        'articulo',
-        'cantidad',
-        'precio_compra',
-        'subtotal',
+        'pedido_id', // Id de la Orden
+        'articulo', // Nombre del Producto
+        'cantidad', // Cantidad del Producto Solicitado
+        'precio_compra', // Precio del Producto
+        'subtotal', // Total a pagar por los Productos
+
+        'ready_to_serve', // Estado de Preparación del Platillo
+        'preparation_specifications', // Especificaciones del Platillo
     ];
 
     protected $primarykey = 'id';

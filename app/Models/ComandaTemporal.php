@@ -28,6 +28,10 @@ class ComandaTemporal extends Model
         'cantidad', // Cantidad del Producto Solicitado
         'precio_compra', // Precio del Producto
         'subtotal', // Total a pagar por los Productos
+
+        'ready_to_serve', // Estado de Preparación del Platillo
+        'preparation_specifications', // Especificaciones del Platillo
+
         'status', // Estado de la Comanda [Disponible, Eliminado]
         'motivo', // Motivo de Cancelación
         'comentario', // Comentario de la Comanda
