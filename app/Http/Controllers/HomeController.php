@@ -97,7 +97,7 @@ class HomeController extends Controller
                 );
             }
 
-            return view('/home', compact('mesas', 'producto', 'product_categories', 'descuento', 'restaurante', 'meseros', 'guias'));
+            return view('HomeViews.basic', compact('mesas', 'producto', 'product_categories', 'descuento', 'restaurante', 'meseros', 'guias'));
         } else {
             return view('inicio');
         }

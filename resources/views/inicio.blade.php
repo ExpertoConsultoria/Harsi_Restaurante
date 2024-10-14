@@ -32,22 +32,18 @@
 
                 @if(Auth::check())
                     @php
+                        $commonMenuItems = [
+                            ['url' => '/home', 'img' => '/img/harhomB_Mesa de trabajo 1.png'],
+                            ['url' => '/Reportes', 'img' => '/img/harhomB-02.png'],
+                            ['url' => '/Calendar', 'img' => '/img/harhomB-03.png'],
+                            ['url' => '/Setting', 'img' => '/img/harhomB-04.png'],
+                        ];
+
                         $menuItems = [
-                            'administrador' => [
-                                ['url' => '/home', 'img' => '/img/harhomB_Mesa de trabajo 1.png'],
-                                ['url' => '/Reportes', 'img' => '/img/harhomB-02.png'],
-                                ['url' => '/Calendar', 'img' => '/img/harhomB-03.png'],
-                                ['url' => '/Setting', 'img' => '/img/harhomB-04.png']
-                            ],
-                            'jefe_meseros' => [
-                                ['url' => '/home', 'img' => '/img/harhomB_Mesa de trabajo 1.png'],
-                                ['url' => '/Reportes', 'img' => '/img/harhomB-02.png'],
-                                ['url' => '/Calendar', 'img' => '/img/harhomB-03.png'],
-                            ],
-                            'cajero' => [
-                                ['url' => '/home', 'img' => '/img/harhomB_Mesa de trabajo 1.png'],
-                                ['url' => '/Calendar', 'img' => '/img/harhomB-03.png']
-                            ]
+                            'administrador' => $commonMenuItems,
+                            'jefe_meseros' => array_slice($commonMenuItems, 0, 3), // Solo los primeros 3 para jefe meseros
+                            'jefe_cocina' => [$commonMenuItems[0]], // Solo el primer menú para jefe cocina
+                            'cajero' => [$commonMenuItems[0], $commonMenuItems[2]], // Primer y tercer menú para cajero
                         ];
                     @endphp
 
@@ -66,14 +62,14 @@
                     </ul>
 
                     <div class="row justify-content-center align-items-center g-2">
-                        <div class="col-md-11" style="margin-top:10px">
+                        <div class="col-md-11">
                             <br>
-                            <h5 align="right" style="color:#999999;">{{ $message }}</h5>
+                            <h5 class="text-end" style="color:#999999;">{{ $message }}</h5>
                         </div>
-                        <div class="col-md-1" style="margin-top:10px">
-                            <div class="form-group">
+                        <div class="col-md-1">
+                            <div class="form-group text-end">
                                 <a id="logout" name="logout" class="logout" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <img src="/img/imagenes-06.png" height="50" width="50">
+                                    <img src="/img/imagenes-06.png" height="50" width="50" alt="Logout">
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
@@ -81,6 +77,7 @@
                             </div>
                         </div>
                     </div>
+
 
                 @else
                     @include('error')
