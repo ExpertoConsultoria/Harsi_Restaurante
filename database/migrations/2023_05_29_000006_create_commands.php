@@ -25,7 +25,7 @@ return new class extends Migration
             $table->decimal('subtotal',10,2); // Total a pagar por los Productos
 
             $table->boolean('ready_to_serve')->default(0); // Estado de Preparación del Platillo
-            $table->string('notes', 500)->default('Ninguna')->nullable(); // Especificaciones del Platillo
+            $table->string('preparation_specifications', 500)->default('Ninguna')->nullable(); // Especificaciones del Platillo
 
             $table->timestamps();
         });
