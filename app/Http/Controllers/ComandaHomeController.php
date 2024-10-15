@@ -48,6 +48,7 @@ class ComandaHomeController extends Controller
         $cantidad = $request->get('cantidad');
         $precio_compra = $request->get('precio_compra');
         $subtotal = $request->get('subtotal');
+        $preparation_specifications = $request->get('preparation_specifications');
 
         $cont = 0;
 
@@ -60,6 +61,7 @@ class ComandaHomeController extends Controller
                 $detalle->cantidad = $cantidad[$cont];
                 $detalle->precio_compra = $precio_compra[$cont];
                 $detalle->subtotal = $subtotal[$cont];
+                $detalle->preparation_specifications = $preparation_specifications[$cont];
                 $detalle->save();
 
             $procant = $cantidad[$cont] . " " . $articulo[$cont];
@@ -97,6 +99,8 @@ class ComandaHomeController extends Controller
         $temporal->cantidad = $request->cantidad;
         $temporal->precio_compra = $request->precio_compra;
         $temporal->subtotal = $request->subtotal;
+        $temporal->preparation_specifications = $request->preparation_specifications;
+
         $temporal->save();
 
         return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa  .');
@@ -126,6 +130,8 @@ class ComandaHomeController extends Controller
             $temporal->direccion = $request->direccion;
             $temporal->comentario = $request->comentario;
             $temporal->save();
+
+            return;
         }
 
         ComandaTemporal::where([
@@ -156,6 +162,7 @@ class ComandaHomeController extends Controller
             'cantidad',
             'precio_compra',
             'subtotal',
+            'preparation_specifications',
             'comentario'
         )
             ->where('mesa', '=', $mesa)
@@ -188,6 +195,7 @@ class ComandaHomeController extends Controller
         $temporal->cantidad = $request->cantidad;
         $temporal->precio_compra = $request->precio_compra;
         $temporal->subtotal = $request->subtotal;
+        $temporal->preparation_specifications = $request->preparation_specifications;
         $temporal->save();
 
         return redirect()->route('Ordenes.index')->with('success', 'Reservación exitosa  .');

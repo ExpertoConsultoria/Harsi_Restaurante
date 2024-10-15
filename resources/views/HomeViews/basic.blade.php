@@ -295,6 +295,13 @@
                                                         <label for="" id="lbcantidad"></label>
                                                     </div>
 
+                                                    {{-- Especificaciones del Platillo --}}
+                                                    <div class="mt-0 col-12">
+                                                        <label for="pespecifications" class="mb-0">Especificaciones</label>
+                                                        <textarea type="text" id="pespecifications" class="form-control" required>Ninguna</textarea>
+                                                        <label for="" id="lbpespecifications"></label>
+                                                    </div>
+
                                                     {{-- Submit --}}
                                                     <div class="col-12">
                                                         <div class="text-center form-group">
@@ -325,24 +332,31 @@
                                             <!--  Sección 2 -->
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label class="mb-0" for="articulo">Producto extra</label>
+                                                    <label class="mb-0" for="pespecial">Producto extra</label>
                                                     <input type="text" id="pespecial" class="form-control">
                                                     <label for="" id="lbpespecial"></label>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="margin-top: -1.5rem">
                                                 <div class="form-group">
-                                                    <label class="mb-0" for="pprecio_compra">Precio</label>
+                                                    <label class="mb-0" for="pesprecio">Precio</label>
                                                     <input type="text" id="pesprecio" class="form-control">
                                                     <label for="" id="lbpesprecio"></label>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="margin-top: -1.5rem">
                                                 <div class="form-group">
-                                                    <label class="mb-0" for="pcantidad">Cantidad</label>
+                                                    <label class="mb-0" for="pespcant">Cantidad</label>
                                                     <input type="number" min="1" max="9" id="pespcant" class="form-control"
                                                         value="1">
                                                     <label for="" id="lbpespcant"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12" style="margin-top: -1.5rem">
+                                                <div class="form-group">
+                                                    <label class="mb-0" for="pxespecifications">Especificaciones</label>
+                                                    <textarea type="text" id="pxespecifications" class="form-control">Ninguna</textarea>
+                                                    <label for="" id="lbpxespecifications"></label>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="margin-top: -1.01rem">
@@ -1246,11 +1260,17 @@
 
                         }
 
-                        Swal.fire(
-                            'Cerrada!',
-                            'La mesa ha sido Cerrada.',
-                            'success'
-                        );
+                        Swal.fire({
+                            title: 'Cerrada!',
+                            text: 'La mesa ha sido Cerrada.',
+                            icon: 'success'
+                        }).then((result) => {
+                            if (result.isConfirmed || result.dismiss) {
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1000);
+                            }
+                        });
 
                     } else {
                         Swal.fire('La mesa sigue Abierta', '', 'info')
@@ -1332,15 +1352,35 @@
                                     var articulo = element.articulo;
 
                                     if (articulo != null) {
-                                        $('#detalles').append(
-                                            '<tr class="selected" id="fila' + element.fila + '">' +
-                                            '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + element.fila + ',' + element.subtotal + ')">Eliminar</button></td>' +
-                                            '<td><input type="hidden" name="articulo[]" value="' + element.articulo + '">' + element.articulo + '</td>' +
-                                            '<td><input type="hidden" name="cantidad[]" value="' + element.cantidad + '">' + element.cantidad + '</td>' +
-                                            '<td><input type="hidden" name="precio_compra[]" value="' + element.precio_compra + '">' + element.precio_compra + '</td>' +
-                                            '<td><input type="hidden" name="subtotal[]" value="' + element.subtotal + '">' + element.subtotal + '</td>' +
-                                            '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' + element.fila + '"></td></tr>'
-                                        );
+                                        $('#detalles').append(`
+                                            <tr class="selected" id="fila${element.fila}">
+                                                <td>
+                                                    <button type="button" class="btn btn-warning" onclick="eliminar(${element.fila}, ${element.subtotal})">
+                                                        Eliminar
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="articulo[]" value="${element.articulo}">
+                                                    ${element.articulo}
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="cantidad[]" value="${element.cantidad}">
+                                                    ${element.cantidad}
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="precio_compra[]" value="${element.precio_compra}">
+                                                    ${element.precio_compra}
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="subtotal[]" value="${element.subtotal}">
+                                                    ${element.subtotal}
+                                                </td>
+                                                <td style="display: none;">
+                                                    <input type="hidden" id="indice" name="indice" class="indice" value="${element.fila}">
+                                                    <input type="hidden" id="preparation_specifications" name="preparation_specifications[]" value="${element.preparation_specifications}">
+                                                </td>
+                                            </tr>
+                                        `);
 
                                         total += parseFloat(element.subtotal);
                                         base = total.toFixed(2);
@@ -1412,17 +1452,35 @@
                                 var articulo = element.articulo;
 
                                 if (articulo != null) {
-                                    $('#detalles').append(
-                                        '<tr class="selected" id="fila' + element.fila + '">' +
-                                        '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + element.fila + ',' + element.subtotal + ')">Eliminar</button></td>' +
-                                        '<td><input type="hidden" name="articulo[]" value="' + element.articulo + '">' + element.articulo + '</td>' +
-                                        '<td><input type="hidden" name="cantidad[]" value="' + element.cantidad + '">' + element.cantidad + '</td>' +
-                                        '<td><input type="hidden" name="precio_compra[]" value="' + element.precio_compra + '">' + element.precio_compra + '</td>' +
-                                        '<td><input type="hidden" name="subtotal[]" value="' + element.subtotal + '">' + element.subtotal + '</td>' +
-                                        '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' + element.fila + '"></td></tr>'
-                                    );
-
-                                    console.log(element);
+                                    $('#detalles').append(`
+                                        <tr class="selected" id="fila${element.fila}">
+                                            <td>
+                                                <button type="button" class="btn btn-warning" onclick="eliminar(${element.fila}, ${element.subtotal})">
+                                                    Eliminar
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="articulo[]" value="${element.articulo}">
+                                                ${element.articulo}
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="cantidad[]" value="${element.cantidad}">
+                                                ${element.cantidad}
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="precio_compra[]" value="${element.precio_compra}">
+                                                ${element.precio_compra}
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="subtotal[]" value="${element.subtotal}">
+                                                ${element.subtotal}
+                                            </td>
+                                            <td style="display: none;">
+                                                <input type="hidden" id="indice" name="indice" class="indice" value="${element.fila}">
+                                                <input type="hidden" id="preparation_specifications" name="preparation_specifications[]" value="${element.preparation_specifications}">
+                                            </td>
+                                        </tr>
+                                    `);
 
                                     var mesero = element.mesero_id;
                                     var comensales = element.num_comensales;
@@ -1694,11 +1752,12 @@
 
         function agregar() {
             //Obtener los valores de los inputs
-            id_articulo = $("#pid_articulo").val();
-            articulo = $("#pid_articulo").val();
-            cantidad = $("#pcantidad").val();
-            precio_compra = $("#pprecio_compra").val();
-            indice = $('#incrementa').val();
+            var id_articulo = $("#pid_articulo").val();
+            var articulo = $("#pid_articulo").val();
+            var cantidad = $("#pcantidad").val();
+            var precio_compra = $("#pprecio_compra").val();
+            var especificaciones = $("#pespecifications").val();
+            var indice = $('#incrementa').val();
 
             var fecha = $('#fecha').val();
             var mesa = $('#id_proveedor').val();
@@ -1715,15 +1774,10 @@
             var comentario = $('#comentario').val();
 
             if (mesa != "Para llevar") {
-                if (id_articulo != "" && cantidad > 0 && precio_compra != "" && mesa != "") {
+                if (id_articulo != "" && cantidad > 0 && precio_compra != "" && mesa != "" && especificaciones != "") {
 
                     //Borrar los errores.
-                    $('#lbmesa').html('');
-                    $('#lbprecio_compra').html('');
-                    $('#lbcantidad').html('');
-                    $('#lbpespecial').html('');
-                    $('#lbpesprecio').html('');
-                    $('#lbpespcant').html('');
+                    $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbpespecifications').html('');
 
                     contador = (cantidad * precio_compra);
                     num = $('#valor').val();
@@ -1732,19 +1786,36 @@
                     base = suma.toFixed(2);
                     sumatotal = contador.toFixed(2);
 
-                    var fila = '<tr class="selected" id="fila' + indice + '">' +
-                        '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + indice + ',' + sumatotal +
-                        ')">Eliminar</button></td>' +
-                        '<td><input type="hidden" id="articulo" name="articulo[] class="articulo" value="' + id_articulo +
-                        '">' + articulo + '</td>' +
-                        '<td><input type="hidden" id="cantidad" name="cantidad[]" value="' + cantidad + '">' + cantidad +
-                        '</td>' +
-                        '<td><input type="hidden" id="precio_compra" name="precio_compra[]" value="' + precio_compra +
-                        '">' + precio_compra + '</td>' +
-                        '<td><input type="hidden" id="subtotal" name="subtotal[]" value="' + sumatotal + '">' + sumatotal +
-                        '</td>' +
-                        '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
-                        indice + '"></td></tr>';
+                    var fila = `
+                        <tr class="selected" id="fila${indice}">
+                            <td>
+                                <button type="button" class="btn btn-warning" onclick="eliminar(${indice}, ${sumatotal})">
+                                    Eliminar
+                                </button>
+                            </td>
+                            <td>
+                                <input type="hidden" id="articulo" name="articulo[]" class="articulo" value="${id_articulo}">
+                                ${articulo}
+                            </td>
+                            <td>
+                                <input type="hidden" id="cantidad" name="cantidad[]" value="${cantidad}">
+                                ${cantidad}
+                            </td>
+                            <td>
+                                <input type="hidden" id="precio_compra" name="precio_compra[]" value="${precio_compra}">
+                                ${precio_compra}
+                            </td>
+                            <td>
+                                <input type="hidden" id="subtotal" name="subtotal[]" value="${sumatotal}">
+                                ${sumatotal}
+                            </td>
+                            <td style="display: none;">
+                                <input type="hidden" id="indice" name="indice" class="indice" value="${indice}">
+                                <input type="hidden" id="preparation_specifications" name="preparation_specifications[]" value="${especificaciones}">
+                            </td>
+                        </tr>
+                    `;
+
 
                     var data = {
                         "fecha": fecha,
@@ -1762,6 +1833,8 @@
                         "cantidad": cantidad,
                         "precio_compra": precio_compra,
                         "subtotal": sumatotal,
+                        "preparation_specifications": especificaciones,
+
                         "cliente": cliente,
                         "direccion": direccion,
                         "comentario": comentario
@@ -1792,7 +1865,8 @@
 
                     $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento').val("");
                     $("#pcantidad").val("1");
-                    $("#pprecio_compra, #select-categoria, #producto, #comentario").val("");
+                    $("#pespecifications").val("Ninguna");
+                    $("#pprecio_compra, #select-categoria, #producto").val("");
                     $("#total").html("$" + base);
                     $("#conftotal, #valor, #total1, #total2").val(base);
                     evaluar();
@@ -1836,6 +1910,17 @@
                         return false;
                     }
 
+                    if (especificaciones === '') {
+                        $('#lbpespecifications').html("<span style='color:red;'>Ingrese las Especificaciones</span>");
+                        $('#pespecifications').focus();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error: Las Especificaciones del Platillo son obligatorias!',
+                        });
+                        return false;
+                    }
+
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -1845,8 +1930,8 @@
 
                 }
             } else if (mesa == "Para llevar") {
-                if (cliente != "" && direccion != "" && id_articulo != "" && cantidad > 0 && precio_compra != "" && mesa != "") {
-                    $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion').html('');
+                if (cliente != "" && direccion != "" && id_articulo != "" && cantidad > 0 && precio_compra != "" && mesa != "" && especificaciones != "") {
+                    $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion, #lbpespecifications').html('');
 
                     contador = cantidad * precio_compra;
                     total = parseFloat($('#valor').val());
@@ -1854,19 +1939,35 @@
                     base = suma.toFixed(2);
                     sumatotal = contador.toFixed(2);
 
-                    var fila = '<tr class="selected" id="fila' + indice + '">' +
-                        '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + indice + ',' + sumatotal +
-                        ')">Eliminar</button></td>' +
-                        '<td><input type="hidden" id="articulo" name="articulo[] class="articulo" value="' + id_articulo +
-                        '">' + articulo + '</td>' +
-                        '<td><input type="hidden" id="cantidad" name="cantidad[]" value="' + cantidad + '">' + cantidad +
-                        '</td>' +
-                        '<td><input type="hidden" id="precio_compra" name="precio_compra[]" value="' + precio_compra +
-                        '">' + precio_compra + '</td>' +
-                        '<td><input type="hidden" id="subtotal" name="subtotal[]" value="' + sumatotal + '">' + sumatotal +
-                        '</td>' +
-                        '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
-                        indice + '"></td></tr>';
+                    var fila = `
+                        <tr class="selected" id="fila${indice}">
+                            <td>
+                                <button type="button" class="btn btn-warning" onclick="eliminar(${indice}, ${sumatotal})">
+                                    Eliminar
+                                </button>
+                            </td>
+                            <td>
+                                <input type="hidden" id="articulo" name="articulo[]" class="articulo" value="${id_articulo}">
+                                ${articulo}
+                            </td>
+                            <td>
+                                <input type="hidden" id="cantidad" name="cantidad[]" value="${cantidad}">
+                                ${cantidad}
+                            </td>
+                            <td>
+                                <input type="hidden" id="precio_compra" name="precio_compra[]" value="${precio_compra}">
+                                ${precio_compra}
+                            </td>
+                            <td>
+                                <input type="hidden" id="subtotal" name="subtotal[]" value="${sumatotal}">
+                                ${sumatotal}
+                            </td>
+                            <td style="display: none;">
+                                <input type="hidden" id="indice" name="indice" class="indice" value="${indice}">
+                                <input type="hidden" id="preparation_specifications" name="preparation_specifications[]" value="${especificaciones}">
+                            </td>
+                        </tr>
+                    `;
 
                     var data = {
                         "fecha": fecha,
@@ -1884,6 +1985,8 @@
                         "cantidad": cantidad,
                         "precio_compra": precio_compra,
                         "subtotal": sumatotal,
+                        "preparation_specifications": especificaciones,
+
                         "cliente": cliente,
                         "direccion": direccion,
                         "comentario": comentario
@@ -1913,8 +2016,9 @@
                     $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
                     $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento').val('');
+                    $("#pespecifications").val('Ninguna');
                     $("#pcantidad").val('1');
-                    $("#pprecio_compra, #select-categoria, #producto, #comentario").val('');
+                    $("#pprecio_compra, #select-categoria, #producto").val('');
                     $("#total").html("$" + base);
                     $("#conftotal, #valor, #total1, #total2").val(base);
                     evaluar();
@@ -1980,6 +2084,17 @@
                         return false;
                     }
 
+                    if (especificaciones === '') {
+                        $('#lbpespecifications').html("<span style='color:red;'>Ingrese las Especificaciones</span>");
+                        $('#pespecifications').focus();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error: Las Especificaciones del Platillo son obligatorias!',
+                        });
+                        return false;
+                    }
+
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -2002,7 +2117,7 @@
             $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').html('');
 
             // $('#cupon').val(""); // Descomentar si es necesario
-            $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #select-categoria, #producto, #pprecio_compra, #pcantidad, #pespecial, #pesprecio, #pespcant, #comentario').val('');
+            $('#conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #select-categoria, #producto, #pprecio_compra, #pcantidad, #pespecial, #pesprecio, #pespcant').val('');
             $('#pcantidad, #pespcant').val('1');
         }
 
@@ -2097,6 +2212,7 @@
             var especialidad = $("#pespecial").val();
             var esprecio = $("#pesprecio").val();
             var espcant = $("#pespcant").val();
+            var especificaciones = $("#pxespecifications").val();
             var indice = $('#incrementa').val();
 
             var fecha = $('#fecha').val();
@@ -2114,31 +2230,46 @@
             var comentario = $('#comentario').val();
 
             if (mesa != "Para llevar") {
-                if (especialidad != "" && espcant > 0 && esprecio != "" && mesa != "") {
+                if (especialidad != "" && espcant > 0 && esprecio != "" && mesa != "" && especificaciones != "") {
 
                     esprecio += ".00";
 
-                    $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant').html('');
+                    $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbpxespecifications').html('');
 
                     contador = espcant * esprecio;
                     var total = parseFloat($('#valor').val());
                     var suma = total + contador;
                     var base = suma.toFixed(2);
                     var sumatotal = contador.toFixed(2);
-
-                    var fila = '<tr class="selected" id="fila' + indice + '">' +
-                        '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + indice + ',' + sumatotal +
-                        ')">Eliminar</button></td>' +
-                        '<td><input type="hidden" id="articulo" name="articulo[]" value="' + especialidad + '">' +
-                        especialidad + '</td>' +
-                        '<td><input type="hidden" id="cantidad" name="cantidad[]" value="' + espcant + '">' + espcant +
-                        '</td>' +
-                        '<td><input type="hidden" id="precio_compra" name="precio_compra[]" value="' + esprecio + '">' +
-                        esprecio + '</td>' +
-                        '<td><input type="hidden" id="subtotal" name="subtotal[]" value="' + sumatotal + '">' + sumatotal +
-                        '</td>' +
-                        '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
-                        indice + '"></td></tr>';
+                    var fila = `
+                        <tr class="selected" id="fila${indice}">
+                            <td>
+                                <button type="button" class="btn btn-warning" onclick="eliminar(${indice}, ${sumatotal})">
+                                    Eliminar
+                                </button>
+                            </td>
+                            <td>
+                                <input type="hidden" id="articulo" name="articulo[]" value="${especialidad}">
+                                ${especialidad}
+                            </td>
+                            <td>
+                                <input type="hidden" id="cantidad" name="cantidad[]" value="${espcant}">
+                                ${espcant}
+                            </td>
+                            <td>
+                                <input type="hidden" id="precio_compra" name="precio_compra[]" value="${esprecio}">
+                                ${esprecio}
+                            </td>
+                            <td>
+                                <input type="hidden" id="subtotal" name="subtotal[]" value="${sumatotal}">
+                                ${sumatotal}
+                            </td>
+                            <td style="display: none;">
+                                <input type="hidden" id="indice" name="indice" class="indice" value="${indice}">
+                                <input type="hidden" id="preparation_specifications" name="preparation_specifications[]" value="${especificaciones}">
+                            </td>
+                        </tr>
+                    `;
 
                     var data = {
                         "fecha": fecha,
@@ -2156,6 +2287,8 @@
                         "cantidad": espcant,
                         "precio_compra": esprecio,
                         "subtotal": sumatotal,
+                        "preparation_specifications": especificaciones,
+
                         "cliente": cliente,
                         "direccion": direccion,
                         "comentario": comentario
@@ -2186,6 +2319,7 @@
                     $('#valor, #total1, #total2, #conftotal').val(base);
                     evaluar();
                     $("#detalles").append(fila);
+                    $("#pxespecifications").val("Ninguna");
 
                     // reiniciar();
                     calcular();
@@ -2228,6 +2362,15 @@
                             text: 'Error: el campo cantidad es obligatorio, ingrese la cantidad!',
                         });
                         return false;
+                    } else if (especificaciones === '') {
+                        $('#lbpxespecifications').html("<span style='color:red;'>Ingrese las Especificaciones</span>");
+                        $('#pxespecifications').focus();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error: Las Especificaciones del Platillo son obligatorias!',
+                        });
+                        return false;
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -2239,28 +2382,44 @@
 
                 }
             } else if (mesa == "Para llevar") {
-                if (cliente != "" && direccion != "" && especialidad != "" && espcant > 0 && esprecio != "" && mesa != "") {
+                if (cliente != "" && direccion != "" && especialidad != "" && espcant > 0 && esprecio != "" && mesa != "" && especificaciones != "") {
 
                     esprecio += ".00";
-                    $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion').empty();
+                    $('#lbmesa, #lbprecio_compra, #lbcantidad, #lbpespecial, #lbpesprecio, #lbpespcant, #lbcliente, #lbdireccion, #lbpxespecifications').empty();
                     contador = espcant * esprecio;
                     total = parseFloat($('#valor').val());
                     base = (total + contador).toFixed(2);
                     sumatotal = contador.toFixed(2);
 
-                    var fila = '<tr class="selected" id="fila' + indice + '">' +
-                        '<td><button type="button" class="btn btn-warning" onclick="eliminar(' + indice + ',' + sumatotal +
-                        ')">Eliminar</button></td>' +
-                        '<td><input type="hidden" id="articulo" name="articulo[]" value="' + especialidad + '">' +
-                        especialidad + '</td>' +
-                        '<td><input type="hidden" id="cantidad" name="cantidad[]" value="' + espcant + '">' + espcant +
-                        '</td>' +
-                        '<td><input type="hidden" id="precio_compra" name="precio_compra[]" value="' + esprecio + '">' +
-                        esprecio + '</td>' +
-                        '<td><input type="hidden" id="subtotal" name="subtotal[]" value="' + sumatotal + '">' + sumatotal +
-                        '</td>' +
-                        '<td style="visibility:hidden;"><input type="hidden" id="indice" name="indice" class="indice" value="' +
-                        indice + '"></td></tr>';
+                    var fila = `
+                        <tr class="selected" id="fila${indice}">
+                            <td>
+                                <button type="button" class="btn btn-warning" onclick="eliminar(${indice}, ${sumatotal})">
+                                    Eliminar
+                                </button>
+                            </td>
+                            <td>
+                                <input type="hidden" id="articulo" name="articulo[]" value="${especialidad}">
+                                ${especialidad}
+                            </td>
+                            <td>
+                                <input type="hidden" id="cantidad" name="cantidad[]" value="${espcant}">
+                                ${espcant}
+                            </td>
+                            <td>
+                                <input type="hidden" id="precio_compra" name="precio_compra[]" value="${esprecio}">
+                                ${esprecio}
+                            </td>
+                            <td>
+                                <input type="hidden" id="subtotal" name="subtotal[]" value="${sumatotal}">
+                                ${sumatotal}
+                            </td>
+                            <td style="display: none;">
+                                <input type="hidden" id="indice" name="indice" class="indice" value="${indice}">
+                                <input type="hidden" id="preparation_specifications" name="preparation_specifications[]" value="${especificaciones}">
+                            </td>
+                        </tr>
+                    `;
 
                     var data = {
                         "fecha": fecha,
@@ -2278,6 +2437,8 @@
                         "cantidad": espcant,
                         "precio_compra": esprecio,
                         "subtotal": sumatotal,
+                        "preparation_specifications": especificaciones,
+
                         "cliente": cliente,
                         "direccion": direccion,
                         "comentario": comentario
@@ -2304,6 +2465,7 @@
 
                     $("#total").html("$" + base);
                     $('#valor, #total1, #total2, #conftotal').val(base);
+                    $("#pxespecifications").val("Ninguna");
 
                     evaluar();
 
@@ -2321,6 +2483,7 @@
                         { condition: especialidad.trim() === '', message: 'Ingrese la especialidad', element: '#lbpespecial', focusElement: '#pespecial' },
                         { condition: esprecio === '' || esprecio <= 0 || isNaN(esprecio), message: 'Ingrese el precio', element: '#lbpesprecio', focusElement: '#pesprecio' },
                         { condition: espcant.trim() === '' || isNaN(espcant) || espcant <= 0, message: 'Seleccione la cantidad', element: '#lbpespcant', focusElement: '#pespcant' },
+                        { condition: especificaciones === '', message: 'Ingrese las Especificaciones', element: '#lbpxespecifications', focusElement: '#pxespecifications' },
                     ];
 
                     for (const { condition, message, element, focusElement } of errors) {
@@ -2356,7 +2519,7 @@
         function limpiar() {
             $('#lbconf_total, #lbdesc, #lbres, #lbpropina, #lbtotal2, #lbcupon, #lbdos, #lbtres, #lbmotivoDescuento, #lbcomentario').empty();
 
-            $('#cupon, #conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #pespcant, #pesprecio, #pespecial, #comentario').val(function() {
+            $('#cupon, #conftotal, #desc, #res, #propina, #total2, #dos, #tres, #motivoDescuento, #pespcant, #pesprecio, #pespecial').val(function() {
                 return $(this).is('#pespcant') ? '1' : '';
             });
         }
