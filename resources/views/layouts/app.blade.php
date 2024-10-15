@@ -42,18 +42,19 @@
     <div id="app">
         <nav class="bg-white shadow-sm navbar navbar-expand-md navbar-light">
             <div class="container">
-                @yield('imagen')
-                <label id="imagen" name="imagen"><a class="navbar-brand" href="{{ url('/inicio') }}">
-                        <img src="../img/imagenes-07.png" alt="" width="200" height="70">
-                    </a></label>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="{{ __('Toggle navigation') }}">
+                <label style="margin-bottom: 0rem;">
+                    <a class="navbar-brand py-0" href="{{ url('/inicio') }}">
+                        <img src="{{ asset('img/imagenes-07.png') }}" alt="" width="200" height="70">
+                    </a>
+                </label>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="col-md-2">
-                </div>
+                <div class="col-md-2"></div>
+
                 <div class="col-md-5">
                     <h5 style="color: #006b8e;font-weight: 600;">
                         <?php

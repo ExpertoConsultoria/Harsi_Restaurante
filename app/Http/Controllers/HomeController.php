@@ -10,8 +10,6 @@ use App\Models\Guia;
 use App\Models\Mesa;
 use App\Models\Mesero;
 use App\Models\OrdenCancelado;
-use App\Models\PayMethod;
-use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\Restaurante;
 use App\Models\User;
@@ -30,9 +28,9 @@ class HomeController extends Controller
 
     public function inicio() {
 
-        $dato = User::min('id'); // Obtenemos el Usuario Administrador Base
+        $admin = User::min('id'); // Obtenemos el Usuario Administrador Base
 
-        if ($dato != null) {
+        if ($admin != null) {
 
             $user = User::select('id', 'name', 'role', 'expiracion')
                 ->where('role', 'administrador')
@@ -68,36 +66,31 @@ class HomeController extends Controller
 
         if (Auth::check()) {
             $role = Auth::user()->role;
-            $mesas = Mesa::all();
-            $product_categories = CategoriaProducto::all();
-            $producto = Producto::all();
-            $meseros = Mesero::all();
-            $guias = Guia::all();
 
-            // Obtener el descuento basado en el rol
-            $descuento = DescuentoUsuario::where('role', $role)
-                ->select('id', 'role', 'descuento')
-                ->first();
+            if (in_array($role, ['administrador', 'cajero'])) {
+                $product_categories = CategoriaProducto::all();
+                $restaurante = Restaurante::first();
+                $meseros = Mesero::all();
+                $guias = Guia::all();
 
-            // Obtener los datos del restaurante
-            $dato = Restaurante::min('id');
-
-            if ($dato != null) {
-                $restaurante = Restaurante::select('subcategoria')
+                // Obtener el descuento basado en el rol
+                $descuento = DescuentoUsuario::where('role', $role)
+                    ->select('id', 'role', 'descuento')
                     ->first();
 
-                if ($restaurante->subcategoria != null) {
-                    $restaurante = array(
-                        'subcategoria' => $restaurante->subcategoria
-                    );
-                }
-            } else {
-                $restaurante = array(
-                    'subcategoria' => 'No'
-                );
+                return view('HomeViews.basic', compact('product_categories', 'descuento', 'restaurante', 'meseros', 'guias'));
             }
 
-            return view('HomeViews.basic', compact('mesas', 'producto', 'product_categories', 'descuento', 'restaurante', 'meseros', 'guias'));
+            if ($role === 'jefe_meseros') {
+
+                return view('HomeViews.jefe_meseros');
+            }
+
+            if ($role === 'jefe_cocina') {
+
+                return view('HomeViews.jefe_cocina');
+            }
+
         } else {
             return view('inicio');
         }
