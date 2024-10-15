@@ -219,7 +219,7 @@
                                                         <div class="col-11">
                                                             <div class="form-group">
                                                                 <label class="mb-0" for="select_categoria">Categoría</label>
-                                                                <select id="select_categoria" name="select_categoria" size="4" class="form-control selectpicker" data-live-search="true">
+                                                                <select id="select_categoria" name="select_categoria" size="6" class="form-control selectpicker" data-live-search="true">
                                                                     <option selected disabled>-- Selecciona --</option>
                                                                     @foreach($product_categories as $cta)
                                                                         <option value="{{ $cta->id }}">{{ $cta->titulo }}</option>
@@ -232,7 +232,7 @@
                                                         <div class="col-11">
                                                             <div class="form-group">
                                                                 <label class="mb-0" for="select_subcategoria">Subcategoría</label>
-                                                                <select id="select_subcategoria" name="select_subcategoria" size="4" class="form-control selectpicker" data-live-search="true">
+                                                                <select id="select_subcategoria" name="select_subcategoria" size="6" class="form-control selectpicker" data-live-search="true">
                                                                     <option selected disabled>-- Selecciona --</option>
                                                                 </select>
                                                             </div>
@@ -251,7 +251,7 @@
                                                         <div class="col-12">
                                                             <div class="form-group">
                                                                 <label for="select_categoria">Categoría</label>
-                                                                <select id="select_categoria" name="select_categoria" size="6" class="form-control selectpicker" data-live-search="true">
+                                                                <select id="select_categoria" name="select_categoria" size="10" class="form-control selectpicker" data-live-search="true">
                                                                     <option selected disabled>-- Selecciona una Categoría --</option>
                                                                     @foreach($product_categories as $cta)
                                                                         <option value="{{ $cta->id }}">{{ $cta->titulo }}</option>
