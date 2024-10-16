@@ -126,8 +126,8 @@ class HomeController extends Controller
                                                 $product_data->product_quantity = $command->cantidad;
                                                 $product_data->product_price = $command->precio_compra;
 
-                                            $column_data->waiter_name = $command->mesero_id != null ? $command->mesero->full_name : '-- -- --'; // Nombre del Mesero
-                                            $column_data->guide_name = $command->guia_id != null ? $command->guia->full_name : '-- -- --'; // Nombre del Guía
+                                            $column_data->waiter_name = $command?->mesero?->full_name ? $command?->mesero?->full_name : '-- -- --'; // Nombre del Mesero
+                                            $column_data->guide_name = $command?->guia?->full_name ? $command?->guia?->full_name : '-- -- --'; // Nombre del Guía
                                             $column_data->subtotal += $command->subtotal; // Total por Consumo
                                             $column_data->food_dishes[] = $product_data; // Productos Solicitados (nombre, cantidad)
                                         }
@@ -146,6 +146,61 @@ class HomeController extends Controller
             }
 
             if ($role === 'jefe_cocina') {
+
+                if ($request->ajax()) {
+
+                    $response = [];
+                    $mesas = Mesa::orderBy('estado', 'asc')->get();
+
+                    foreach ($mesas as $mesa) {
+
+                        $column_data = new stdClass;
+                            $column_data->table_name = $mesa->titulo; // Nombre de la Mesa
+
+                            if($mesa->estado === 'Cerrada') {
+                                $column_data->table_status = "Disponible"; // Estado de la Mesa
+                                $column_data->waiter_name = "-- -- --"; // Nombre del Mesero
+                                $column_data->food_dishes = []; // Productos Solicitados (id, nombre, cantidad, especificaciones, estado)
+                            } else {
+
+                                $column_data->table_status = "Ocupada"; // Estado de la Mesa
+                                $column_data->waiter_name = "-- -- --"; // Nombre del Mesero
+                                $column_data->food_dishes = []; // Productos Solicitados (id, nombre, cantidad, especificaciones, estado)
+
+                                $table_actual_commands = ComandaTemporal::where('mesa', '=', $mesa->titulo)
+                                                            ->where('estado', '=', 'Abierta')
+                                                            ->where('status', '=', 'Disponible')
+                                                            ->orderBy('ready_to_serve', 'asc')
+                                                            ->get();
+
+                                $count_actual_commands = ComandaTemporal::where('mesa', '=', $mesa->titulo)
+                                                            ->where('estado', '=', 'Abierta')
+                                                            ->where('status', '=', 'Disponible')
+                                                            ->count();
+
+                                if ($count_actual_commands) {
+                                    foreach ($table_actual_commands as $command) {
+                                        if ($command->articulo != null) {
+                                            $product_data = new stdClass;
+                                                $product_data->product_id = $command->id;
+                                                $product_data->product_name = $command->articulo;
+                                                $product_data->product_quantity = $command->cantidad;
+                                                $product_data->product_specifications = $command->preparation_specifications;
+                                                $product_data->ready_to_serve = $command->ready_to_serve;
+
+                                            $column_data->waiter_name = $command?->mesero?->full_name ? $command?->mesero?->full_name : '-- -- --'; // Nombre del Mesero
+                                            $column_data->food_dishes[] = $product_data; // Productos Solicitados (id, nombre, cantidad, especificaciones, estado)
+                                        }
+                                    }
+                                }
+
+                            }
+
+                        $response[] = $column_data;
+                    }
+
+                    return Response()->json($response);
+                }
 
                 return view('HomeViews.jefe_cocina');
             }

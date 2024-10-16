@@ -154,8 +154,6 @@
             let tables = localStorage.getItem("Tables");
 
             $.get('/home', function (data) {
-                console.log(data);
-
                 const dataString = JSON.stringify(data);
 
                 // Si hay tablas guardadas en localStorage
@@ -170,7 +168,7 @@
         }
 
         $(document).ready(function () {
-            setInterval(getTables, 20000); // Cada 20 segundos (20 mil milisegundos)
+            setInterval(getTables, 15000); // Cada 15 segundos (15 mil milisegundos)
         });
 
     </script>

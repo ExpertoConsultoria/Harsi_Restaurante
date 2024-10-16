@@ -42,11 +42,11 @@ class ComandaTemporal extends Model
     //* Relationships
     public function mesero()
     {
-        return $this->belongsTo(Mesero::class, 'guia_id');
+        return $this->belongsTo(Mesero::class, 'mesero_id');
     }
 
     public function guia()
     {
-        return $this->belongsTo(Guia::class, 'mesero_id');
+        return $this->belongsTo(Guia::class, 'guia_id');
     }
 }
