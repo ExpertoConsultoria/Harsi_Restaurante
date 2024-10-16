@@ -245,9 +245,9 @@ class FullSeeder extends Seeder
             Restaurante::create([
                 'nombre' => 'Don Agave',
                 'rfc' => 'Desconocido',
-                'direccion' => 'Desconocido',
-                'telefono' => 'Desconocido',
-                'email' => 'Desconocido',
+                'direccion' => '70461 Macuilxóchitl de Artigas Carranza, Oax.',
+                'telefono' => '951 127 9665',
+                'email' => 'comercializadora.xagga@gmail.com',
                 'subcategoria' => 'No',
                 'facebook' => 'Ninguno',
                 'instagram' => 'Ninguno',
