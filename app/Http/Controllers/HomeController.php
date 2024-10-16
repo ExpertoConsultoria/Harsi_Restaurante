@@ -127,7 +127,7 @@ class HomeController extends Controller
                                                 $product_data->product_price = $command->precio_compra;
 
                                             $column_data->waiter_name = $command->mesero_id != null ? $command->mesero->full_name : '-- -- --'; // Nombre del Mesero
-                                            $column_data->guide_name = $command->guia_id != null ? $command->guia?->full_name : '-- -- --'; // Nombre del Guía
+                                            $column_data->guide_name = $command->guia_id != null ? $command->guia->full_name : '-- -- --'; // Nombre del Guía
                                             $column_data->subtotal += $command->subtotal; // Total por Consumo
                                             $column_data->food_dishes[] = $product_data; // Productos Solicitados (nombre, cantidad)
                                         }
