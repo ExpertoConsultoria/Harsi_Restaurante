@@ -2,20 +2,24 @@
 
 @section('content')
 
-        <div id="carouselMesas" class="pt-4 carousel slide" data-ride="carousel" data-interval="false">
-            <div class="carousel-inner" id="carousel_tables">
+    <div class="py-3">
+        <div id="carouselMesas" class="pt-4 carousel slide" data-ride="carousel" data-interval="false" style="height: 100vh;">
+            {{-- Contenido del Carrusel --}}
+            <div class="carousel-inner " id="carousel_tables">
             </div>
 
             <!-- Controles del Carousel -->
-            <a class="carousel-control-prev" href="#carouselMesas" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <a class="pr-5 carousel-control-prev" href="#carouselMesas" role="button" data-slide="prev">
+                <span class="px-3 py-1 carousel-control-prev-icon btn-success" aria-hidden="true"></span>
                 <span class="sr-only">Anterior</span>
             </a>
-            <a class="carousel-control-next" href="#carouselMesas" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <a class="pl-5 carousel-control-next" href="#carouselMesas" role="button" data-slide="next">
+                <span class="px-3 py-1 carousel-control-next-icon btn-success" aria-hidden="true"></span>
                 <span class="sr-only">Siguiente</span>
             </a>
+
         </div>
+    </div>
 
 @endsection
 
@@ -125,7 +129,7 @@
                                     {{-- Subtotal --}}
                                     <div class="col-6">
                                         <p class="card-text">
-                                            <strong>Subtotal:</strong> ${table_data.subtotal}
+                                            <strong>Subtotal:</strong> $${table_data.subtotal}
                                         </p>
                                     </div>
                                 </div>
@@ -166,7 +170,7 @@
         }
 
         $(document).ready(function () {
-            // setInterval(getTables, 20000); // Cada 20 segundos (20 mil milisegundos)
+            setInterval(getTables, 20000); // Cada 20 segundos (20 mil milisegundos)
         });
 
     </script>
