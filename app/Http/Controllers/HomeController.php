@@ -14,6 +14,7 @@ use App\Models\Producto;
 use App\Models\Restaurante;
 use App\Models\User;
 
+use stdClass;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,7 +63,7 @@ class HomeController extends Controller
         return view('inicio', compact('message', 'days_left'));
     }
 
-    public function index() {
+    public function index(Request $request) {
 
         if (Auth::check()) {
             $role = Auth::user()->role;
@@ -82,6 +83,64 @@ class HomeController extends Controller
             }
 
             if ($role === 'jefe_meseros') {
+
+                if ($request->ajax()) {
+
+                    $response = [];
+                    $mesas = Mesa::all();
+
+                    foreach ($mesas as $mesa) {
+
+                        $column_data = new stdClass;
+                            $column_data->table_name = $mesa->titulo; // Nombre de la Mesa
+
+                            if($mesa->estado === 'Cerrada') {
+                                $column_data->table_status = "Disponible"; // Estado de la Mesa
+                                $column_data->waiter_name = "-- -- --"; // Nombre del Mesero
+                                $column_data->guide_name = "-- -- --"; // Nombre del Guía
+                                $column_data->subtotal = "-- -- --"; // Total por Consumo
+                                $column_data->food_dishes = []; // Productos Solicitados (nombre, cantidad)
+                            } else {
+
+                                $column_data->table_status = "Ocupada"; // Estado de la Mesa
+                                $column_data->waiter_name = "-- -- --"; // Nombre del Mesero
+                                $column_data->guide_name = "-- -- --"; // Nombre del Guía
+                                $column_data->subtotal = 0; // Total por Consumo
+                                $column_data->food_dishes = []; // Productos Solicitados (nombre, cantidad)
+
+                                $table_actual_commands = ComandaTemporal::where('mesa', '=', $mesa->titulo)
+                                                            ->where('estado', '=', 'Abierta')
+                                                            ->where('status', '=', 'Disponible')
+                                                            ->get();
+
+                                $count_actual_commands = ComandaTemporal::where('mesa', '=', $mesa->titulo)
+                                                            ->where('estado', '=', 'Abierta')
+                                                            ->where('status', '=', 'Disponible')
+                                                            ->count();
+
+                                if ($count_actual_commands) {
+                                    foreach ($table_actual_commands as $command) {
+                                        if ($command->articulo != null) {
+                                            $product_data = new stdClass;
+                                                $product_data->product_name = $command->articulo;
+                                                $product_data->product_quantity = $command->cantidad;
+                                                $product_data->product_price = $command->precio_compra;
+
+                                            $column_data->waiter_name = $command->mesero_id != null ? $command->mesero->full_name : '-- -- --'; // Nombre del Mesero
+                                            $column_data->guide_name = $command->guia_id != null ? $command->guia?->full_name : '-- -- --'; // Nombre del Guía
+                                            $column_data->subtotal += $command->subtotal; // Total por Consumo
+                                            $column_data->food_dishes[] = $product_data; // Productos Solicitados (nombre, cantidad)
+                                        }
+                                    }
+                                }
+
+                            }
+
+                        $response[] = $column_data;
+                    }
+
+                    return Response()->json($response);
+                }
 
                 return view('HomeViews.jefe_meseros');
             }
