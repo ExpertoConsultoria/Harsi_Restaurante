@@ -55,11 +55,11 @@
         // Renderizar Tabla (Mesas)
         function generateFoodDishesList(table_data) {
             return `
-                <ul class="px-2 pt-3 list-group list-group-flush">
+                <ul class="px-2 pt-3 pb-1 list-group list-group-flush">
                     ${table_data.table_status !== 'Disponible' ? (
                         table_data.food_dishes.length > 0 ?
                             table_data.food_dishes.map(dish => `
-                                <li class="list-group-item ${dish.ready_to_serve ? 'bg-light' : ''}">
+                                <li class="list-group-item" style="${dish.ready_to_serve ? 'background-color:#F0F0F0' : ''}">
 
                                     {{-- Producto y Cantidad --}}
                                     <div class="pb-0 mb-0 mb-2 d-flex justify-content-between align-items-center">
