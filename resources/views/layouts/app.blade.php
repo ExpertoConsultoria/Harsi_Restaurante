@@ -38,12 +38,12 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
-<body>
+<body style="height: 100vh;">
     <div id="app">
         <nav class="bg-white shadow-sm navbar navbar-expand-md navbar-light">
             <div class="container">
                 <label style="margin-bottom: 0rem;">
-                    <a class="navbar-brand py-0" href="{{ url('/inicio') }}">
+                    <a class="py-0 navbar-brand" href="{{ url('/inicio') }}">
                         <img src="{{ asset('img/imagenes-07.png') }}" alt="" width="200" height="70">
                     </a>
                 </label>
@@ -144,13 +144,11 @@
             </div>
         </nav>
 
-        <main class="py-4">
             @yield('content')
             @yield('comando')
             @yield('funciones')
             @yield('ticket')
             @yield('modal')
-        </main>
     </div>
 
 </body>

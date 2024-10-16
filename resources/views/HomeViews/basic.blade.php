@@ -4,7 +4,7 @@
 
     @if(Auth::check())
 
-        <div class="container-fluid">
+        <div class="py-4 container-fluid">
             <div class="px-0 mx-0 mt-2 row">
 
                 <!-- Tabla de Mesas -->
