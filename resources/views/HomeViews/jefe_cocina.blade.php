@@ -38,6 +38,7 @@
 @section('funciones')
     {{-- Importaciones --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     {{-- Get By Apis --}}
     <script type="text/javascript">
@@ -86,7 +87,7 @@
                                             ? ''
                                             : `
                                                 <div style="width: 20%;" class="text-right class="pb-0 mb-0">
-                                                    <button type="button" class="btn btn-primary">Listo</button>
+                                                    <button type="button" onclick="updateProductStatus(${dish.command_id})" class="btn btn-primary">Listo</button>
                                                 </div>
                                             `
                                         }
@@ -194,6 +195,62 @@
             setInterval(getTables, 8000); // Cada 20 segundos (20 mil milisegundos)
         });
 
+    </script>
+
+    {{-- Product Control Status --}}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        });
+
+        function updateProductStatus(command_id) {
+
+            Swal.fire({
+                title: 'Está seguro que desea pagar la mesa?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Sí!'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/updateFoodStatus", // Guardamos todo el Pedido
+                        type: "POST",
+                        data: {
+                            "command_id": command_id,
+                        },
+                        success: function (data) {
+                            Swal.fire({
+                                title: 'Actualiazdo!',
+                                text: 'Estado del Platillo Modificado.',
+                                icon: 'success',
+                                confirmButtonText: 'Entendido',
+                            }).then(() => {
+                                getTables();
+                            });
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'No se ha podido guardar!',
+                            })
+                        }
+                    });
+                }
+            });
+
+        }
     </script>
 
 @endsection

@@ -182,7 +182,7 @@ class HomeController extends Controller
                                     foreach ($table_actual_commands as $command) {
                                         if ($command->articulo != null) {
                                             $product_data = new stdClass;
-                                                $product_data->product_id = $command->id;
+                                                $product_data->command_id = $command->id;
                                                 $product_data->product_name = $command->articulo;
                                                 $product_data->product_quantity = $command->cantidad;
                                                 $product_data->product_specifications = $command->preparation_specifications;

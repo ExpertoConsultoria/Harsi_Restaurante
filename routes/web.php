@@ -80,6 +80,7 @@ Route::middleware([
     Route::post('/guardarComandaExtra', [ComandaHomeController::class, 'guardarextra']);
     Route::post('/ordenCancelada', [HomeController::class, 'ordenCancelada']);
     Route::post('/guardarComentario', [ComandaHomeController::class, 'guardarComentario']);
+    Route::post('/updateFoodStatus', [ComandaHomeController::class, 'updateFoodStatus']);
 
     //Usuarios
     Route::resource('usuarios', UserController::class);

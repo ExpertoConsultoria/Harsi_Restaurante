@@ -6,7 +6,9 @@ use App\Models\Comanda;
 use App\Models\ComandaTemporal;
 use App\Models\Orden;
 use App\Models\Pedido;
+
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class ComandaHomeController extends Controller
 {
@@ -214,4 +216,17 @@ class ComandaHomeController extends Controller
 
         return response()->json($temporal);
     }
+
+    public function updateFoodStatus(Request $request): JsonResponse
+    {
+        $comanda = ComandaTemporal::findOrFail($request->command_id);
+        $comanda->update(['ready_to_serve' => true]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Platillo Actualizado',
+            'data' => null,
+        ], 200);
+    }
+
 }
